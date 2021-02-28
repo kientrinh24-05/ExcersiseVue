@@ -4,21 +4,21 @@
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
       <b-row>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
+        <b-col xl="4" md="6">
+          <stats-card title="Số Sản Phẩm"
                       type="gradient-red"
                       sub-title="350,897"
                       icon="ni ni-active-40"
-                      class="mb-4">
+                      class="mb-2">
 
             <template slot="footer">
-              <span class="text-success mr-2">3.48%</span>
-              <span class="text-nowrap">Since last month</span>
+              <span class="text-success mr-2">3.481%</span>
+              <span class="text-nowrap">Kể từ tháng trước</span>
             </template>
           </stats-card>
         </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
+        <b-col xl="4" md="6">
+          <stats-card title="Doanh Thu"
                       type="gradient-orange"
                       sub-title="2,356"
                       icon="ni ni-chart-pie-35"
@@ -26,12 +26,12 @@
 
             <template slot="footer">
               <span class="text-success mr-2">12.18%</span>
-              <span class="text-nowrap">Since last month</span>
+                <span class="text-nowrap">Kể từ tháng trước</span>
             </template>
           </stats-card>
         </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Sales"
+        <b-col xl="4" md="2">
+          <stats-card title="Khách Hàng"
                       type="gradient-green"
                       sub-title="924"
                       icon="ni ni-money-coins"
@@ -39,24 +39,12 @@
 
             <template slot="footer">
               <span class="text-danger mr-2">5.72%</span>
-              <span class="text-nowrap">Since last month</span>
+                <span class="text-nowrap">Kể từ tháng trước</span>
             </template>
           </stats-card>
 
         </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Performance"
-                      type="gradient-info"
-                      sub-title="49,65%"
-                      icon="ni ni-chart-bar-32"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">54.8%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
+      
       </b-row>
     </base-header>
 
@@ -67,8 +55,8 @@
           <card type="default" header-classes="bg-transparent">
             <b-row align-v="center" slot="header">
               <b-col>
-                <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
-                <h5 class="h3 text-white mb-0">Sales value</h5>
+                <h6 class="text-light text-uppercase ls-1 mb-1">Thống kê</h6>
+                <h5 class="h3 text-white mb-0">Doanh thu đạt nhiều trong tuần</h5>
               </b-col>
               <b-col>
                 <b-nav class="nav-pills justify-content-end">
@@ -77,7 +65,7 @@
                        :active="bigLineChart.activeIndex === 0"
                        link-classes="py-2 px-3"
                        @click.prevent="initBigChart(0)">
-                      <span class="d-none d-md-block">Month</span>
+                      <span class="d-none d-md-block">Tháng</span>
                       <span class="d-md-none">M</span>
                   </b-nav-item>
                   <b-nav-item
@@ -85,7 +73,7 @@
                     :active="bigLineChart.activeIndex === 1"
                     @click.prevent="initBigChart(1)"
                   >
-                    <span class="d-none d-md-block">Week</span>
+                    <span class="d-none d-md-block">Tuần</span>
                     <span class="d-md-none">W</span>
                   </b-nav-item>
                 </b-nav>
@@ -105,8 +93,8 @@
           <card header-classes="bg-transparent">
             <b-row align-v="center" slot="header">
               <b-col>
-                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                <h5 class="h3 mb-0">Total orders</h5>
+                <h6 class="text-uppercase text-muted ls-1 mb-1">Thống Kê</h6>
+                <h5 class="h3 mb-0">Số Sản Phẩm</h5>
               </b-col>
             </b-row>
 

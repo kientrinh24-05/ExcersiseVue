@@ -36,7 +36,27 @@ const routes = [
         path: '/tables',
         name: 'tables',
         component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
-      }
+      },
+      {
+        path: '/viewproduct',
+        name: 'viewproduct',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/ViewProduct.vue')
+      },
+      {
+        path: '/viewspecies_product',
+        name: 'viewspecies_product',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/ViewSpeciesProduct.vue')
+      },
+      {
+        path: '/meterial_product',
+        name: 'meterial_product',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue')
+      },
+      {
+        path: '/report',
+        name: 'report',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/ReportProduct.vue')
+      },
     ]
   },
   {
