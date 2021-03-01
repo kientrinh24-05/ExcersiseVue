@@ -4,12 +4,8 @@
       <!-- Card stats -->
     </base-header>
     <b-container fluid class="mt--7">
-      <b-row>
-        <b-col>
-          <h3>Sản phẩm được sử dụng nhiều nhất</h3>
-        </b-col>
-      </b-row>
-      <div class="mt-7">
+      <div class="mt-8">
+        <h2>Top sản phẩm bán chạy</h2>
         <div class="items-click-add">
           <div>
             <b-form-radio-group
@@ -21,7 +17,6 @@
             ></b-form-radio-group>
           </div>
           <div class="form-group row">
-        
             <div class="">
               <input
                 class="form-control"
@@ -32,18 +27,25 @@
             </div>
           </div>
         </div>
-        <div>
-    <b-table striped hover :items="items"></b-table>
-  </div>
+        <div></div>
         <!-- Table  -->
-
-
       </div>
-      
+      <div>
+        <b-row class="mt-5">
+          <b-col xl="8" class="mb-5 mb-xl-0">
+            <page-visits-table></page-visits-table>
+          </b-col>
+          <b-col xl="4" class="mb-5 mb-xl-0">
+            <social-traffic-table></social-traffic-table>
+          </b-col>
+        </b-row>
+      </div>
     </b-container>
   </div>
 </template>
 <script>
+import SocialTrafficTable from "./Dashboard/SocialTrafficTable";
+import PageVisitsTable from "./Dashboard/PageVisitsTable";
 import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
@@ -57,6 +59,8 @@ export default {
     [DropdownMenu.name]: DropdownMenu,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
+    PageVisitsTable,
+    SocialTrafficTable,
   },
   data() {
     return {
@@ -69,12 +73,12 @@ export default {
         { item: "C", name: "Theo Ngày" },
       ],
       items: [
-          { Mã_Sản_Phẩm: 40, Tên_Sản_Phẩm: 'Dickerson', Số_lượng: '122' },
-          { Mã_Sản_Phẩm: 41, Tên_Sản_Phẩm: 'Dicn', Số_lượng: '1222' },
-          { Mã_Sản_Phẩm: 42, Tên_Sản_Phẩm: 'Kerson', Số_lượng: '1212' },
-          { Mã_Sản_Phẩm: 43, Tên_Sản_Phẩm: 'Rson', Số_lượng: '12233' },
-       
-        ],
+        { Mã_Sản_Phẩm: 40, Tên_Sản_Phẩm: "Dickerson", Số_lượng: "122" },
+        { Mã_Sản_Phẩm: 41, Tên_Sản_Phẩm: "Dicn", Số_lượng: "1222" },
+        { Mã_Sản_Phẩm: 42, Tên_Sản_Phẩm: "Kerson", Số_lượng: "1212" },
+        { Mã_Sản_Phẩm: 43, Tên_Sản_Phẩm: "Kerson", Số_lượng: "1212" },
+        { Mã_Sản_Phẩm: 44, Tên_Sản_Phẩm: "Rson", Số_lượng: "12233" },
+      ],
     };
   },
 };

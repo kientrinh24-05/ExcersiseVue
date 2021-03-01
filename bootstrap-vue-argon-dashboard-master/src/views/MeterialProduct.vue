@@ -5,168 +5,169 @@
     </base-header>
     <b-container fluid class="mt--7">
       <b-row>
-        <b-col>
-          <div class="items-click-add">
-            <h3>Danh sách nguyên liệu</h3>
+        <b-col lg="12">
+          <card header-classes="bg-transparent">
+            <div class="items-click-add">
+              <h3>Danh sách nguyên liệu</h3>
+              <div>
+                <b-button v-b-modal.modal-1>Tạo nguyên liệu</b-button>
+
+                <b-modal id="modal-1" title="">
+                  <p class="my-4">Thêm nguyên liệu</p>
+                  <div>
+                    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                      <b-form-group
+                        id="input-group-1"
+                        label="Tên nguyên liệu"
+                        label-for="input-1"
+                        description="We'll never share your email with anyone else."
+                      >
+                        <b-form-input
+                          id="input-1"
+                          v-model="form.email"
+                          type="email"
+                          placeholder="Nhập tên nguyên liệu"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+
+                      <b-form-group
+                        id="input-group-2"
+                        label="Nhà Phân Phối"
+                        label-for="input-2"
+                      >
+                        <b-form-input
+                          id="input-2"
+                          v-model="form.name"
+                          placeholder="Nhập nhà phân phối"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+
+                      <b-form-group
+                        id="input-group-3"
+                        label="Số Lượng"
+                        label-for="input-3"
+                      >
+                        <b-form-input
+                          id="input-3"
+                          v-model="form.name"
+                          placeholder="Nhập số lượng"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+                      <b-form-group
+                        id="input-group-2"
+                        label="Ngày nhập"
+                        label-for="input-2"
+                      >
+                        <div class="">
+                          <input
+                            class="form-control"
+                            type="datetime-local"
+                            value="2011-08-19T13:45:00"
+                            id="example-datetime-local-input"
+                          />
+                        </div>
+                      </b-form-group>
+
+                      <b-button type="submit" variant="primary">Submit</b-button>
+                      <b-button type="reset" variant="danger">Reset</b-button>
+                    </b-form>
+                  </div>
+                </b-modal>
+              </div>
+            </div>
+
+            <!-- Table -->
             <div>
-              <b-button v-b-modal.modal-1>Tạo nguyên liệu</b-button>
+              <div class="content_search">
+                <b-form-input
+                  id="input-1"
+                  type="email"
+                  placeholder="Nhập mã nguyên liệu"
+                  required
+                ></b-form-input>
+                <b-dropdown
+                  text="Nhà Phân Phối"
+                  style="width: 90%"
+                  block
+                  split
+                  split-variant="outline-primary"
+                  variant="primary"
+                  class="m-2"
+                >
+                  <b-dropdown-item href="#">DNTN Hoàng</b-dropdown-item>
+                  <b-dropdown-item href="#">Công ty TNHH Sáng</b-dropdown-item>
+                </b-dropdown>
 
-              <b-modal id="modal-1" title="">
-                <p class="my-4">Thêm nguyên liệu</p>
+                <b-button variant="outline-primary"
+                  ><i class="fa fa-search" aria-hidden="true"></i
+                ></b-button>
+              </div>
+              <b-table class="table-sc" striped hover :items="items" :fields="fields">
+                <template #cell(actions)="row">
+                  <i
+                    @click="info(row.item, row.index, $event.target)"
+                    class="fas fa-pencil-alt"
+                  ></i>
+                </template>
+              </b-table>
+              <b-card-footer class="py-4 d-flex justify-content-end">
+                <base-pagination
+                  v-model="currentPage"
+                  :per-page="10"
+                  :total="40"
+                ></base-pagination>
+              </b-card-footer>
+
+              <!-- Modal  -->
+              <b-modal :id="infoModal.id" ok-only>
+                <pre></pre>
                 <div>
-                  <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                    <b-form-group
-                      id="input-group-1"
-                      label="Tên nguyên liệu"
-                      label-for="input-1"
-                      description="We'll never share your email with anyone else."
-                    >
-                      <b-form-input
-                        id="input-1"
-                        v-model="form.email"
-                        type="email"
-                        placeholder="Nhập tên nguyên liệu"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
+                  <h2 style="text-align: center">Sửa Thể Loại</h2>
+                  <div>
+                    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                      <b-form-group
+                        id="input-group-1"
+                        label="Mã thể loại"
+                        label-for="input-1"
+                      >
+                        <b-form-input
+                          id="input-1"
+                          v-model="form.email"
+                          type="text"
+                          placeholder="Mã thể loại"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
 
-                    <b-form-group
-                      id="input-group-2"
-                      label="Nhà Phân Phối"
-                      label-for="input-2"
-                    >
-                      <b-form-input
-                        id="input-2"
-                        v-model="form.name"
-                        placeholder="Nhập nhà phân phối"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
+                      <b-form-group
+                        id="input-group-2"
+                        label="Tên thể loại:"
+                        label-for="input-2"
+                      >
+                        <b-form-input
+                          id="input-2"
+                          v-model="form.name"
+                          placeholder="Tên thể loại"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
 
-                    <b-form-group
-                      id="input-group-3"
-                      label="Số Lượng"
-                      label-for="input-3"
-                    >
-                      <b-form-input
-                        id="input-3"
-                        v-model="form.name"
-                        placeholder="Nhập số lượng"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-                    <b-form-group
-                      id="input-group-2"
-                      label="Ngày nhập"
-                      label-for="input-2"
-                    >
-                      <div class="">
-                        <input
-                          class="form-control"
-                          type="datetime-local"
-                          value="2011-08-19T13:45:00"
-                          id="example-datetime-local-input"
-                        />
+                      <!-- Show Modal Nguyên Liệu -->
+
+                      <!-- Button Click Submit -->
+                      <div class="link-btn">
+                        <b-button type="submit" variant="primary">Xác Nhận</b-button>
+                        <b-button type="reset" variant="danger">Reset</b-button>
                       </div>
-                    </b-form-group>
-
-                    <b-button type="submit" variant="primary">Submit</b-button>
-                    <b-button type="reset" variant="danger">Reset</b-button>
-                  </b-form>
+                    </b-form>
+                  </div>
                 </div>
               </b-modal>
             </div>
-          </div>
-         
-          <!-- Table -->
-          <div>
-             <div class="content_search">
-            <b-form-input
-              id="input-1"
-              type="email"
-              placeholder="Nhập mã nguyên liệu"
-              required
-            ></b-form-input>
-            <b-dropdown
-              text="Nhà Phân Phối"
-              style="width: 90%"
-              block
-              split
-              split-variant="outline-primary"
-              variant="primary"
-              class="m-2"
-            >
-              <b-dropdown-item href="#">DNTN Hoàng</b-dropdown-item>
-              <b-dropdown-item href="#">Công ty TNHH Sáng</b-dropdown-item>
-            </b-dropdown>
-
-            <b-button variant="outline-primary"
-              ><i class="fa fa-search" aria-hidden="true"></i
-            ></b-button>
-          </div>
-            <b-table
-              class="table-sc"
-              striped
-              hover
-              :items="items"
-              :fields="fields"
-            >
-              <template #cell(actions)="row">
-                <i
-                  @click="info(row.item, row.index, $event.target)"
-                  class="fas fa-pencil-alt"
-                ></i>
-              </template>
-            </b-table>
-
-            <!-- Modal  -->
-            <b-modal :id="infoModal.id" ok-only>
-              <pre></pre>
-              <div>
-                <h2 style="text-align: center">Sửa Thể Loại</h2>
-                <div>
-                  <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                    <b-form-group
-                      id="input-group-1"
-                      label="Mã thể loại"
-                      label-for="input-1"
-                    >
-                      <b-form-input
-                        id="input-1"
-                        v-model="form.email"
-                        type="text"
-                        placeholder="Mã thể loại"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-
-                    <b-form-group
-                      id="input-group-2"
-                      label="Tên thể loại:"
-                      label-for="input-2"
-                    >
-                      <b-form-input
-                        id="input-2"
-                        v-model="form.name"
-                        placeholder="Tên thể loại"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-
-                    <!-- Show Modal Nguyên Liệu -->
-
-                    <!-- Button Click Submit -->
-                    <div class="link-btn">
-                      <b-button type="submit" variant="primary"
-                        >Xác Nhận</b-button
-                      >
-                      <b-button type="reset" variant="danger">Reset</b-button>
-                    </div>
-                  </b-form>
-                </div>
-              </div>
-            </b-modal>
-          </div>
+          </card>
         </b-col>
       </b-row>
       <div class="mt-5"></div>
@@ -174,13 +175,7 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -248,7 +243,7 @@ export default {
           tên_nguyên_liệu: "Gạo Tẻ",
           nhà_phân_phối: "Gạo",
           số_lượng: "200000",
-          ngày_nhập: "Còn",
+          ngày_nhập: "02/05/2021 20.00PM",
         },
         {
           isActive: true,
@@ -256,7 +251,7 @@ export default {
           tên_nguyên_liệu: "Nước Suối",
           nhà_phân_phối: "Nước",
           số_lượng: "100000",
-          ngày_nhập: "Hết",
+          ngày_nhập: "02/05/2021 20.00PM",
         },
         {
           isActive: true,
@@ -264,7 +259,7 @@ export default {
           tên_nguyên_liệu: "Cam Sành",
           nhà_phân_phối: "Trái Cây",
           số_lượng: "1122",
-          ngày_nhập: "Còn",
+          ngày_nhập: "02/05/2021 20.00PM",
         },
       ],
     };
@@ -340,6 +335,6 @@ export default {
   margin: 3rem 0;
   display: flex;
   align-items: center;
-  justify-content: space-around
+  justify-content: space-around;
 }
 </style>

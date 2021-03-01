@@ -3,105 +3,72 @@
     <!-- BootstrapVue Done -->
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
-      <b-row>
-        <b-col xl="3" md="6">
-          <stats-card
-            title="Tổng số bàn"
-            type="gradient-red"
-            sub-title="350,897"
-            class="mb-4"
-          >
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card
-            title="Bàn Trống"
-            type="gradient-orange"
-            sub-title="2,356"
-            class="mb-4"
-          >
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card
-            title="Bàn Đã Có Người"
-            type="gradient-green"
-            sub-title="924"
-            class="mb-4"
-          >
-          </stats-card>
-        </b-col>
-
-        <b-col xl="3" md="6">
-          <stats-card>
-            <div>
-              <!-- Using modifiers -->
-
-              <!-- Using value -->
-
-              <b-button v-b-modal="'my-modal'">Tạo bàn</b-button>
-              <b-button>Chuyển bàn</b-button>
-
-              <!-- The modal -->
-              <b-modal id="my-modal">
-                <form action="">
-                  <label class="" style="display: flex" for="">Mã bàn ăn</label>
-                  <input
-                    type="text"
-                    placeholder="Nhập mã bàn ăn"
-                    style="width: 100%"
-                  />
-                  <hr />
-                  <div>
-                    <b-dropdown
-                      split
-                      split-href="#foo/bar"
-                      text="Trạng Thái"
-                      class="m-2"
-                    >
-                      <b-dropdown-item href="#">Có người</b-dropdown-item>
-                      <b-dropdown-item href="#">Trống</b-dropdown-item>
-                      <b-dropdown-item href="#"
-                        >Tạm ngưng hoạt động</b-dropdown-item
-                      >
-                    </b-dropdown>
-                  </div>
-                </form>
-              </b-modal>
-            </div>
-          </stats-card>
-        </b-col>
-      </b-row>
+      <b-row> </b-row>
     </base-header>
 
     <b-container fluid class="mt--7">
       <b-row class="justify-content-center">
         <b-col lg="12">
           <card header-classes="bg-transparent">
+            <div class="flex">
+              <h3 slot="header" class="mb-0">Tất cả bàn ăn</h3>
+              <ul class="list_btn">
+                <li class="btn_click">
+                  <b-button v-b-modal="'my-modal'" class="btn-plus"
+                    ><i class="fas fa-plus">Thêm bàn ăn</i></b-button
+                  >
+                  <b-modal id="my-modal">
+                    <form action="">
+                      <label class="" style="display: flex" for="">Mã bàn ăn</label>
+                      <input
+                        type="text"
+                        placeholder="Nhập mã bàn ăn"
+                        style="width: 100%"
+                      />
+                      <hr />
+                      <div>
+                        <b-dropdown
+                          split
+                          split-href="#foo/bar"
+                          text="Trạng Thái"
+                          class="m-2"
+                        >
+                          <b-dropdown-item href="#">Có người</b-dropdown-item>
+                          <b-dropdown-item href="#">Trống</b-dropdown-item>
+                          <b-dropdown-item href="#">Tạm ngưng hoạt động</b-dropdown-item>
+                        </b-dropdown>
+                      </div>
+                    </form>
+                  </b-modal>
+                </li>
+              </ul>
+            </div>
             <div class="content_search">
-             <b-form-input
-          id="input-1"
-          type="email"
-          placeholder="Nhập mã bàn"
-          required
-        ></b-form-input>
+              <b-form-input
+                id="input-1"
+                type="email"
+                placeholder="Nhập mã bàn"
+                required
+              ></b-form-input>
               <b-dropdown
-              text="Trạng thái"
-              style="width:90%"
-              block
-    split
-    split-variant="outline-primary"
-    variant="primary"
-    class="m-2"
+                text="Trạng thái"
+                style="width: 90%"
+                block
+                split
+                split-variant="outline-primary"
+                variant="primary"
+                class="m-2"
               >
                 <b-dropdown-item href="#">Đã có người</b-dropdown-item>
                 <b-dropdown-item href="#">Trống</b-dropdown-item>
                 <b-dropdown-item href="#">Tạm ngưng hoạt động</b-dropdown-item>
               </b-dropdown>
 
-               <b-button variant="outline-primary"><i class="fa fa-search" aria-hidden="true"></i></b-button>
+              <b-button variant="outline-primary"
+                ><i class="fa fa-search" aria-hidden="true"></i
+              ></b-button>
             </div>
-            <h3 slot="header" class="mb-0">Tất cả bàn ăn</h3>
+
             <b-row class="icon-examples">
               <b-col lg="3" md="6">
                 <b-button v-b-modal.modal-1 class="btn-icon-clipboard sucses"
@@ -156,7 +123,7 @@
         </b-col>
 
         <div class="action-f">
-          <ul >
+          <ul>
             <li>
               <div class="bg-span sucses"></div>
               Đã có người
@@ -229,11 +196,18 @@ ul li {
   margin: 1rem 0;
   display: flex;
   align-items: center;
-  justify-content: space-around
+  justify-content: space-around;
 }
-.action-f{
+.action-f {
   margin-top: 1rem;
 }
+.btn-plus {
+  background-color: #e74c3c;
+  color: white;
+  font-weight: bold;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
-
-

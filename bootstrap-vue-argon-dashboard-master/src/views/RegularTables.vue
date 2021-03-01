@@ -6,170 +6,179 @@
 
     <b-container fluid class="mt--7">
       <b-row>
-        <b-col>
-          <div class="items-click-add">
-            <h3>Danh sách nhà cung cấp</h3>
-            <div>
-              
-              <b-button v-b-modal.modal-1>Tạo nhà cung cấp</b-button>
-
-              <!-- Modal Tạo nhà cc -->
-              <b-modal id="modal-1" title="BootstrapVue">
-                <div>
-                  <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                    <h2 style="text-align: center">Thêm nhà cung cấp</h2>
-                    <b-form-group
-                      id="input-group-1"
-                      label="Mã nhà cung cấp"
-                      label-for="input-1"
-                    >
-                      <b-form-input
-                        id="input-1"
-                        type="email"
-                        placeholder="Mã nhà cung cấp"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-
-                    <b-form-group
-                      id="input-group-2"
-                      label="Tên nhà cung cấp"
-                      label-for="input-2"
-                    >
-                      <b-form-input
-                        id="input-2"
-                        v-model="form.name"
-                        placeholder="Tên nhà cung cấp"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-                    <b-form-group id="input-group-3" label="Địa chỉ" label-for="input-3">
-                      <b-form-input
-                        id="input-3"
-                        type="text"
-                        placeholder="Địa chỉ"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-                    <b-form-group
-                      id="input-group-4"
-                      label="Số Điện Thoại"
-                      label-for="input-4"
-                    >
-                      <b-form-input
-                        id="input-4"
-                        type="text"
-                        placeholder="Số Điện Thoại"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-
-                    <!-- <b-button type="submit" variant="primary">Submit</b-button>
-                    <b-button type="reset" variant="danger">Reset</b-button> -->
-                  </b-form>
-                </div>
-              </b-modal>
-            </div>
-          </div>
-
-           <div class="content_search">
-             <b-form-input
-          id="input-1"
-          type="email"
-          placeholder="Nhập tên nhà cung cấp"
-          required
-        ></b-form-input>
-              
-
-               <b-button variant="outline-primary"><i class="fa fa-search" aria-hidden="true"></i></b-button>
-            </div>
-          <!-- Table  -->
-          <div>
-            <b-card no-body>
+        <b-col lg="12">
+          <card header-classes="bg-transparent">
+            <div class="items-click-add">
+              <h3>Danh sách nhà cung cấp</h3>
               <div>
-                <b-table class="table-sc" striped hover :items="items" :fields="fields">
-                  <template #cell(actions)="row">
-                    <i
-                      @click="info(row.item, row.index, $event.target)"
-                      class="fas fa-pencil-alt"
-                    ></i>
-                  </template>
-                </b-table>
+                <b-button v-b-modal.modal-1>Tạo nhà cung cấp</b-button>
 
-                <!-- Modal  -->
-                <b-modal :id="infoModal.id" ok-only>
-                  <pre></pre>
+                <!-- Modal Tạo nhà cc -->
+                <b-modal id="modal-1" title="BootstrapVue">
                   <div>
-                    <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
-                    <div>
-                      <div>
-                  <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-            
-                    <b-form-group
-                      id="input-group-1"
-                      label="Mã nhà cung cấp"
-                      label-for="input-1"
-                    >
-                      <b-form-input
-                        id="input-1"
-                        type="email"
-                        placeholder="Mã nhà cung cấp"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
+                    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                      <h2 style="text-align: center">Thêm nhà cung cấp</h2>
+                      <b-form-group
+                        id="input-group-1"
+                        label="Mã nhà cung cấp"
+                        label-for="input-1"
+                      >
+                        <b-form-input
+                          id="input-1"
+                          type="email"
+                          placeholder="Mã nhà cung cấp"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
 
-                    <b-form-group
-                      id="input-group-2"
-                      label="Tên nhà cung cấp"
-                      label-for="input-2"
-                    >
-                      <b-form-input
-                        id="input-2"
-                        v-model="form.name"
-                        placeholder="Tên nhà cung cấp"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-                    <b-form-group id="input-group-3" label="Địa chỉ" label-for="input-3">
-                      <b-form-input
-                        id="input-3"
-                        type="text"
-                        placeholder="Địa chỉ"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-                    <b-form-group
-                      id="input-group-4"
-                      label="Số Điện Thoại"
-                      label-for="input-4"
-                    >
-                      <b-form-input
-                        id="input-4"
-                        type="text"
-                        placeholder="Số Điện Thoại"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
+                      <b-form-group
+                        id="input-group-2"
+                        label="Tên nhà cung cấp"
+                        label-for="input-2"
+                      >
+                        <b-form-input
+                          id="input-2"
+                          v-model="form.name"
+                          placeholder="Tên nhà cung cấp"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+                      <b-form-group
+                        id="input-group-3"
+                        label="Địa chỉ"
+                        label-for="input-3"
+                      >
+                        <b-form-input
+                          id="input-3"
+                          type="text"
+                          placeholder="Địa chỉ"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+                      <b-form-group
+                        id="input-group-4"
+                        label="Số Điện Thoại"
+                        label-for="input-4"
+                      >
+                        <b-form-input
+                          id="input-4"
+                          type="text"
+                          placeholder="Số Điện Thoại"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
 
-                    <!-- <b-button type="submit" variant="primary">Submit</b-button>
+                      <!-- <b-button type="submit" variant="primary">Submit</b-button>
                     <b-button type="reset" variant="danger">Reset</b-button> -->
-                  </b-form>
-                </div>
-                    </div>
+                    </b-form>
                   </div>
                 </b-modal>
               </div>
+            </div>
 
-              <b-card-footer class="py-4 d-flex justify-content-end">
-                <base-pagination
-                  v-model="currentPage"
-                  :per-page="10"
-                  :total="40"
-                ></base-pagination>
-              </b-card-footer>
-            </b-card>
-            <!-- End -->
-          </div>
+            <div class="content_search">
+              <b-form-input
+                id="input-1"
+                type="email"
+                placeholder="Nhập tên nhà cung cấp"
+                required
+              ></b-form-input>
+
+              <b-button variant="outline-primary"
+                ><i class="fa fa-search" aria-hidden="true"></i
+              ></b-button>
+            </div>
+            <!-- Table  -->
+            <div>
+              <b-card no-body>
+                <div>
+                  <b-table class="table-sc" striped hover :items="items" :fields="fields">
+                    <template #cell(actions)="row">
+                      <i
+                        @click="info(row.item, row.index, $event.target)"
+                        class="fas fa-pencil-alt"
+                      ></i>
+                    </template>
+                  </b-table>
+
+                  <!-- Modal  -->
+                  <b-modal :id="infoModal.id" ok-only>
+                    <pre></pre>
+                    <div>
+                      <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
+                      <div>
+                        <div>
+                          <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                            <b-form-group
+                              id="input-group-1"
+                              label="Mã nhà cung cấp"
+                              label-for="input-1"
+                            >
+                              <b-form-input
+                                id="input-1"
+                                type="email"
+                                placeholder="Mã nhà cung cấp"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+
+                            <b-form-group
+                              id="input-group-2"
+                              label="Tên nhà cung cấp"
+                              label-for="input-2"
+                            >
+                              <b-form-input
+                                id="input-2"
+                                v-model="form.name"
+                                placeholder="Tên nhà cung cấp"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-3"
+                              label="Địa chỉ"
+                              label-for="input-3"
+                            >
+                              <b-form-input
+                                id="input-3"
+                                type="text"
+                                placeholder="Địa chỉ"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-4"
+                              label="Số Điện Thoại"
+                              label-for="input-4"
+                            >
+                              <b-form-input
+                                id="input-4"
+                                type="text"
+                                placeholder="Số Điện Thoại"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+
+                            <!-- <b-button type="submit" variant="primary">Submit</b-button>
+                    <b-button type="reset" variant="danger">Reset</b-button> -->
+                          </b-form>
+                        </div>
+                      </div>
+                    </div>
+                  </b-modal>
+                </div>
+
+                <b-card-footer class="py-4 d-flex justify-content-end">
+                  <base-pagination
+                    v-model="currentPage"
+                    :per-page="10"
+                    :total="40"
+                  ></base-pagination>
+                </b-card-footer>
+              </b-card>
+              <!-- End -->
+            </div>
+          </card>
         </b-col>
       </b-row>
       <div class="mt-5"></div>
@@ -227,22 +236,22 @@ export default {
           isActive: true,
           mã_nhà_cung_cấp: 1,
           tên_nhà_cung_cấp: "Công Ty TNHH Song",
-          địa_chỉ:"Phú Yên",
-          số_điện_thoại:"0326633155"
+          địa_chỉ: "Phú Yên",
+          số_điện_thoại: "0326633155",
         },
         {
           isActive: true,
           mã_nhà_cung_cấp: 2,
           tên_nhà_cung_cấp: "DNTN Long",
-          địa_chỉ:"Phú Yên",
-          số_điện_thoại:"0326633155"
+          địa_chỉ: "Phú Yên",
+          số_điện_thoại: "0326633155",
         },
         {
           isActive: true,
           mã_nhà_cung_cấp: 3,
           tên_nhà_cung_cấp: "Công Ty TNHH Sơn Long",
-          địa_chỉ:"Phú Yên",
-          số_điện_thoại:"0326633155"
+          địa_chỉ: "Phú Yên",
+          số_điện_thoại: "0326633155",
         },
       ],
       form: {
