@@ -74,8 +74,66 @@
                 <b-button v-b-modal.modal-1 class="btn-icon-clipboard sucses"
                   >101
                   <div>
-                    <b-modal id="modal-1" title="BootstrapVue">
-                      <p class="my-4">Bàn 1</p>
+                    <b-modal id="modal-1" size="lg" title="Thông tin bàn  ">
+                      <b-row>
+                        <b-col lg="6" md="6">
+                          <h3>Thông tin bàn</h3>
+                          <b-form-group>
+                            <b-form-input
+                              id="input-1"
+                              type="text"
+                              placeholder="Mã bàn"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+
+                          <b-form-group>
+                            <b-form-input
+                              id="input-2"
+                              placeholder="Tình trạng bàn"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                        </b-col>
+                        <b-col lg="6" md="6">
+                          <h3>Gọi món</h3>
+                          <div>
+                            <b-dropdown
+                              id="dropdown-1"
+                              text="Chọn thể loại"
+                              class="m-md-2"
+                            >
+                              <b-dropdown-item>Rau</b-dropdown-item>
+                              <b-dropdown-item>Thịt</b-dropdown-item>
+                              <b-dropdown-item>Cá</b-dropdown-item>
+                              <b-dropdown-item>Đồ ăn nhanh</b-dropdown-item>
+                            </b-dropdown>
+                          </div>
+                        </b-col>
+                        <hr />
+                        <b-col lg="6" md="6">
+                          <h3>Hóa đơn</h3>
+                          <b-form-group>
+                            <b-form-input
+                              id="input-4"
+                              type="text"
+                              placeholder="Mã Hóa Đơn"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <hr />
+                          <b-table striped hover :items="items"></b-table>
+                          <b-form-group>
+                            <b-form-input
+                              id="input-4"
+                              type="text"
+                              placeholder="Tổng tiền"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-button>Thanh toán</b-button>
+                        </b-col>
+                      </b-row>
                     </b-modal>
                   </div>
                 </b-button>
@@ -89,7 +147,15 @@
                 </b-button>
               </b-col>
               <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">103</b-button>
+                <b-button class="btn-icon-clipboard no-sucses">
+                  103
+                  <sidebar-item
+                    :link="{
+                      path: '/productlist',
+                    }"
+                  >
+                  </sidebar-item>
+                </b-button>
               </b-col>
               <b-col lg="3" md="6">
                 <b-button class="btn-icon-clipboard sucses">104</b-button>
@@ -142,16 +208,30 @@
     </b-container>
   </div>
 </template>
+
 <script>
 import Vue from "vue";
 import VueClipboard from "vue-clipboard2";
 import BaseHeader from "@/components/BaseHeader";
+import LightTable from "./Tables/RegularTables/LightTable";
 
 Vue.use(VueClipboard);
 export default {
   name: "icons",
+  data() {
+    return {
+      items: [
+        { Mã_món: "M101", Tên_món: "Đậu hũ ba sa", Số_lượng: "1" },
+        { Mã_món: "M102", Tên_món: "Cá kho tộ", Số_lượng: "2" },
+        { Mã_món: "M103", Tên_món: "Cá lóc canh chua", Số_lượng: "344" },
+        { Mã_món: "M104", Tên_món: "Đậu hũ ba sa", Số_lượng: "5" },
+        { Mã_món: "M105", Tên_món: "Đậu hũ ba sa", Số_lượng: "12312" },
+      ],
+    };
+  },
   components: {
     BaseHeader,
+    LightTable,
   },
   methods: {
     onCopy() {
