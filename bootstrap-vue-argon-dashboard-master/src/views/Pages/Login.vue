@@ -35,8 +35,8 @@
                     alternative
                     class="mb-3"
                     name="Username"
-                    :rules="{ required: true, email: true }"
-                    prepend-icon="ni ni-email-83"
+                    :rules="{ required: true, text: true }"
+                    prepend-icon="fa fa-user"
                     placeholder="Tài đăng nhập"
                     v-model="model.username"
                   >

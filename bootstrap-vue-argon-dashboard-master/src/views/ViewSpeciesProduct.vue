@@ -10,7 +10,7 @@
             <div class="items-click-add">
               <h3>Danh sách thể loại</h3>
               <div>
-                <b-button v-b-modal.modal-1>Tạo thể loại</b-button>
+                <b-button v-b-modal.modal-1 variant="success"> Tạo thể loại</b-button>
 
                 <b-modal id="modal-1" title="Thêm thể loại">
                   <b-form @submit="onSubmit" @reset="onReset" v-if="show">

@@ -14,8 +14,8 @@
               <h3 slot="header" class="mb-0">Tất cả bàn ăn</h3>
               <ul class="list_btn">
                 <li class="btn_click">
-                  <b-button v-b-modal="'my-modal'" class="btn-plus"
-                    ><i class="fas fa-plus">Thêm bàn ăn</i></b-button
+                  <b-button v-b-modal="'my-modal'" variant="success"
+                    ><i class="fas fa-plus"></i>Thêm bàn ăn</b-button
                   >
                   <b-modal id="my-modal">
                     <form action="">
@@ -288,6 +288,11 @@ ul li {
 }
 .flex {
   display: flex;
+  justify-content: space-between;
+}
+.content_search {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 </style>

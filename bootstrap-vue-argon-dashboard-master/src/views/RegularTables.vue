@@ -11,7 +11,7 @@
             <div class="items-click-add">
               <h3>Danh sách nhà cung cấp</h3>
               <div>
-                <b-button v-b-modal.modal-1>Tạo nhà cung cấp</b-button>
+                <b-button v-b-modal.modal-1 variant="success">Tạo nhà cung cấp</b-button>
 
                 <!-- Modal Tạo nhà cc -->
                 <b-modal id="modal-1" title="BootstrapVue">
@@ -78,8 +78,8 @@
 
             <div class="content_search">
               <b-form-input
-                id="input-1"
-                type="email"
+                class="input-ncc"
+                type="text"
                 placeholder="Nhập tên nhà cung cấp"
                 required
               ></b-form-input>
@@ -91,7 +91,7 @@
             <!-- Table  -->
             <div>
               <b-card no-body>
-                <div>
+                <div class="content_table">
                   <b-table class="table-sc" striped hover :items="items" :fields="fields">
                     <template #cell(actions)="row">
                       <i
@@ -167,14 +167,6 @@
                     </div>
                   </b-modal>
                 </div>
-
-                <b-card-footer class="py-4 d-flex justify-content-end">
-                  <base-pagination
-                    v-model="currentPage"
-                    :per-page="10"
-                    :total="40"
-                  ></base-pagination>
-                </b-card-footer>
               </b-card>
               <!-- End -->
             </div>
@@ -318,5 +310,18 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.content_search {
+  margin: 1rem 0;
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.input-ncc {
+  max-width: 80%;
+}
+.content_table {
+  overflow-x: auto;
 }
 </style>

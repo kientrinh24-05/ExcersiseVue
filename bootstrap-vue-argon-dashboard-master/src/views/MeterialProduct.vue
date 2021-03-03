@@ -10,7 +10,7 @@
             <div class="items-click-add">
               <h3>Danh sách nguyên liệu</h3>
               <div>
-                <b-button v-b-modal.modal-1>Tạo nguyên liệu</b-button>
+                <b-button v-b-modal.modal-1 variant="success">Tạo nguyên liệu</b-button>
 
                 <b-modal id="modal-1" title="">
                   <p class="my-4">Thêm nguyên liệu</p>
@@ -80,93 +80,109 @@
             </div>
 
             <!-- Table -->
-            <div>
-              <div class="content_search">
-                <b-form-input
-                  id="input-1"
-                  type="email"
-                  placeholder="Nhập mã nguyên liệu"
-                  required
-                ></b-form-input>
-                <b-dropdown
-                  text="Nhà Phân Phối"
-                  style="width: 90%"
-                  block
-                  split
-                  split-variant="outline-primary"
-                  variant="primary"
-                  class="m-2"
-                >
-                  <b-dropdown-item href="#">DNTN Hoàng</b-dropdown-item>
-                  <b-dropdown-item href="#">Công ty TNHH Sáng</b-dropdown-item>
-                </b-dropdown>
-
-                <b-button variant="outline-primary"
-                  ><i class="fa fa-search" aria-hidden="true"></i
-                ></b-button>
-              </div>
-              <b-table class="table-sc" striped hover :items="items" :fields="fields">
-                <template #cell(actions)="row">
-                  <i
-                    @click="info(row.item, row.index, $event.target)"
-                    class="fas fa-pencil-alt"
-                  ></i>
-                </template>
-              </b-table>
-              <b-card-footer class="py-4 d-flex justify-content-end">
-                <base-pagination
-                  v-model="currentPage"
-                  :per-page="10"
-                  :total="40"
-                ></base-pagination>
-              </b-card-footer>
-
-              <!-- Modal  -->
-              <b-modal :id="infoModal.id" ok-only>
-                <pre></pre>
+            <b-row>
+              <b-col lg="12">
                 <div>
-                  <h2 style="text-align: center">Sửa Thể Loại</h2>
-                  <div>
-                    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                      <b-form-group
-                        id="input-group-1"
-                        label="Mã thể loại"
-                        label-for="input-1"
-                      >
-                        <b-form-input
-                          id="input-1"
-                          v-model="form.email"
-                          type="text"
-                          placeholder="Mã thể loại"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
+                  <div class="content_search1">
+                    <b-form-input
+                      id="input-id-meterial"
+                      type="text"
+                      placeholder="Nhập mã nguyên liệu"
+                      required
+                    ></b-form-input>
+                    <b-form-select
+                      v-model="selected"
+                      :options="options"
+                      class="ml-3 mr"
+                      value-field="item"
+                      text-field="name"
+                    ></b-form-select>
 
-                      <b-form-group
-                        id="input-group-2"
-                        label="Tên thể loại:"
-                        label-for="input-2"
-                      >
-                        <b-form-input
-                          id="input-2"
-                          v-model="form.name"
-                          placeholder="Tên thể loại"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-
-                      <!-- Show Modal Nguyên Liệu -->
-
-                      <!-- Button Click Submit -->
-                      <div class="link-btn">
-                        <b-button type="submit" variant="primary">Xác Nhận</b-button>
-                        <b-button type="reset" variant="danger">Reset</b-button>
-                      </div>
-                    </b-form>
+                    <b-button variant="outline-primary"
+                      ><i class="fa fa-search" aria-hidden="true"></i
+                    ></b-button>
                   </div>
+                  <div class="fillter_date">
+                    <span>Từ:</span>
+                    <b-form-input class="input-date" type="date"></b-form-input>
+                    <span>-</span>
+                    <b-form-input class="input-date" type="date"></b-form-input>
+                    <b-button>Tuần</b-button>
+                    <b-button>Tháng</b-button>
+                  </div>
+                  <div class="content-table">
+                    <b-table
+                      class="table-sc"
+                      striped
+                      hover
+                      :items="items"
+                      :fields="fields"
+                    >
+                      <template #cell(actions)="row">
+                        <i
+                          @click="info(row.item, row.index, $event.target)"
+                          class="fas fa-pencil-alt"
+                        ></i>
+                      </template>
+                    </b-table>
+                  </div>
+
+                  <b-card-footer class="py-4 d-flex justify-content-end">
+                    <base-pagination
+                      v-model="currentPage"
+                      :per-page="10"
+                      :total="40"
+                    ></base-pagination>
+                  </b-card-footer>
+
+                  <!-- Modal  -->
+                  <b-modal :id="infoModal.id" ok-only>
+                    <pre></pre>
+                    <div>
+                      <h2 style="text-align: center">Sửa Thể Loại</h2>
+                      <div>
+                        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                          <b-form-group
+                            id="input-group-1"
+                            label="Mã thể loại"
+                            label-for="input-1"
+                          >
+                            <b-form-input
+                              id="input-1"
+                              v-model="form.email"
+                              type="text"
+                              placeholder="Mã thể loại"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+
+                          <b-form-group
+                            id="input-group-2"
+                            label="Tên thể loại:"
+                            label-for="input-2"
+                          >
+                            <b-form-input
+                              id="input-2"
+                              v-model="form.name"
+                              placeholder="Tên thể loại"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+
+                          <!-- Show Modal Nguyên Liệu -->
+
+                          <!-- Button Click Submit -->
+                          <div class="link-btn">
+                            <b-button type="submit" variant="primary">Xác Nhận</b-button>
+                            <b-button type="reset" variant="danger">Reset</b-button>
+                          </div>
+                        </b-form>
+                      </div>
+                    </div>
+                  </b-modal>
                 </div>
-              </b-modal>
-            </div>
+              </b-col>
+            </b-row>
           </card>
         </b-col>
       </b-row>
@@ -200,6 +216,11 @@ export default {
         food: null,
         checked: [],
       },
+      options: [
+        { item: "A", name: "DNTN Sáng" },
+        { item: "B", name: "TNHH ToanTen" },
+        { item: "D", name: "TNHH Pham" },
+      ],
       infoModal: {
         id: "info-modal",
         title: "",
@@ -330,11 +351,25 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
-.content_search {
-  width: 60%;
-  margin: 3rem 0;
+.content_search1 {
+  max-width: 50%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+.content_search1 #input-id-meterial {
+  max-width: 80% !important;
+}
+.content-table {
+  overflow-x: auto;
+}
+.input-date {
+}
+.fillter_date {
+  max-width: 50%;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

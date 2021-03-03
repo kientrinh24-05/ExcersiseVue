@@ -10,7 +10,7 @@
             <div class="items-click-add">
               <h3>Danh sách món ăn</h3>
               <div>
-                <b-button v-b-modal.modal-1>Tạo món ăn</b-button>
+                <b-button v-b-modal.modal-1 variant="success">Tạo món ăn</b-button>
 
                 <b-modal id="modal-1" title="BootstrapVue">
                   <div>
@@ -102,7 +102,9 @@
               ></b-button>
             </div>
           </card>
-          <light-table />
+          <div class="content_Table">
+            <light-table />
+          </div>
         </b-col>
       </b-row>
       <div class="mt-5"></div>
@@ -186,5 +188,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+.content_Table {
+  overflow-x: auto;
 }
 </style>

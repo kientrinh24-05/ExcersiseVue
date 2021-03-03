@@ -72,16 +72,17 @@
                   </b-form-group>
 
                   <b-form-group>
-                  
-
                     <div>
                       <!-- Using modifiers -->
-            
-                      <b-button v-b-modal.modal-lg variant="primary">Xem Ng.Liệu</b-button>
 
+                      <b-button v-b-modal.modal-lg variant="primary"
+                        >Xem Ng.Liệu</b-button
+                      >
 
                       <!-- The modal -->
-                      <b-modal id="modal-lg" size="lg" >Danh sách nguyên liệu được dùng</b-modal>
+                      <b-modal id="modal-lg" size="lg">
+                        <DarkTable />
+                      </b-modal>
                     </div>
                   </b-form-group>
                 </div>
@@ -263,6 +264,7 @@ export default {
 .link-btn {
   text-align: center;
 }
-.modal-content  {
-width: 120% !important;}
+.modal-content {
+  width: 120% !important;
+}
 </style>
