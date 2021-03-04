@@ -64,7 +64,7 @@
                 <b-dropdown-item href="#">Tạm ngưng hoạt động</b-dropdown-item>
               </b-dropdown>
 
-              <b-button variant="outline-primary"
+              <b-button class="btn-search" variant="outline-primary"
                 ><i class="fa fa-search" aria-hidden="true"></i
               ></b-button>
             </div>
@@ -290,9 +290,13 @@ ul li {
   display: flex;
   justify-content: space-between;
 }
-.content_search {
+.btn-search {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
 </style>

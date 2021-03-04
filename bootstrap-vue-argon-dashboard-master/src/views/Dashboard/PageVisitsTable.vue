@@ -3,10 +3,10 @@
     <template v-slot:header>
       <b-row align-v="center">
         <b-col>
-          <h3 class="mb-0">Top sản phẩm bán chạy</h3>
+          <h2 class="mb-0">Top sản phẩm bán chạy</h2>
         </b-col>
         <b-col class="text-right">
-          <a href="#!" class="btn btn-sm btn-primary">See all</a>
+          <a href="#!" class="btn btn-sm btn-primary">Xem tất cả</a>
         </b-col>
       </b-row>
     </template>

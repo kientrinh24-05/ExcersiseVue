@@ -11,7 +11,7 @@ const routes = [
     children: [
       {
         path: '/dashboard',
-        name: 'dashboard',
+        name: 'Tổng Quát',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -19,47 +19,47 @@ const routes = [
       },
       {
         path: '/icons',
-        name: 'icons',
+        name: 'Quản Lý Bàn',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue')
       },
       {
         path: '/profile',
-        name: 'profile',
+        name: 'Thông tin người dùng',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/UserProfile.vue')
       },
       {
         path: '/maps',
-        name: 'maps',
+        name: 'Danh sách món ăn ',
         component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue')
       },
       {
         path: '/tables',
-        name: 'tables',
+        name: 'Quản Lý Nhà Cung Cấp',
         component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
       },
       {
         path: '/viewproduct',
-        name: 'viewproduct',
+        name: 'Quản Lý Món Ăn',
         component: () => import(/* webpackChunkName: "demo" */ '../views/ViewProduct.vue')
       },
       {
         path: '/viewspecies_product',
-        name: 'viewspecies_product',
+        name: 'Quản Lý Thể Loại Món',
         component: () => import(/* webpackChunkName: "demo" */ '../views/ViewSpeciesProduct.vue')
       },
       {
         path: '/meterial_product',
-        name: 'meterial_product',
+        name: 'Quản Lý Nguyên Liệu',
         component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue')
       },
       {
         path: '/report',
-        name: 'report',
+        name: 'Báo Cáo',
         component: () => import(/* webpackChunkName: "demo" */ '../views/ReportProduct.vue')
       },
       {
         path: '/productlist',
-        name: 'productlist',
+        name: 'Thông tin bàn ăn',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Product-List.vue')
       },
     ]
@@ -71,12 +71,12 @@ const routes = [
     children: [
       {
         path: '/login',
-        name: 'login',
+        name: 'Đăng Nhập',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Login.vue')
       },
       {
         path: '/register',
-        name: 'register',
+        name: 'Đăng Ký',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue')
       },
       { path: '*', component: NotFound }

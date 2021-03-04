@@ -12,7 +12,7 @@
         </b-table>
 
         <!-- Modal  -->
-        <b-modal :id="infoModal.id" :title="infoModal.title" ok-only>
+        <b-modal :id="infoModal.id" title="Thông tin món ăn" ok-only>
           <pre></pre>
           <div>
             <h2 style="text-align: center">Sửa Món Ăn</h2>
@@ -91,8 +91,8 @@
 
                 <!-- Button Click Submit -->
                 <div class="link-btn">
-                  <b-button type="submit" variant="primary">Submit</b-button>
-                  <b-button type="reset" variant="danger">Reset</b-button>
+                  <b-button type="submit" variant="primary">Xác Nhận</b-button>
+                  <b-button type="reset" variant="danger">Làm Mới</b-button>
                 </div>
               </b-form>
             </div>

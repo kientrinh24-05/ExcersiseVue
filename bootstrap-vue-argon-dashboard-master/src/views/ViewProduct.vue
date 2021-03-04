@@ -12,7 +12,7 @@
               <div>
                 <b-button v-b-modal.modal-1 variant="success">Tạo món ăn</b-button>
 
-                <b-modal id="modal-1" title="BootstrapVue">
+                <b-modal id="modal-1" title="Thêm món ăn">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <b-form-group
@@ -68,9 +68,10 @@
                           required
                         ></b-form-input>
                       </b-form-group>
-
-                      <b-button type="submit" variant="primary">Submit</b-button>
-                      <b-button type="reset" variant="danger">Reset</b-button>
+                      <div class="btn_click">
+                        <b-button type="submit" variant="primary">Xác Nhận</b-button>
+                        <b-button type="reset" variant="danger">Làm Mới</b-button>
+                      </div>
                     </b-form>
                   </div>
                 </b-modal>
@@ -97,7 +98,7 @@
                 <b-dropdown-item href="#">Hết</b-dropdown-item>
               </b-dropdown>
 
-              <b-button variant="outline-primary"
+              <b-button class="btn-search" variant="outline-primary"
                 ><i class="fa fa-search" aria-hidden="true"></i
               ></b-button>
             </div>
@@ -191,5 +192,17 @@ export default {
 }
 .content_Table {
   overflow-x: auto;
+}
+.btn_click {
+  text-align: center;
+}
+.btn-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
 </style>

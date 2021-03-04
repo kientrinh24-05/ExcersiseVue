@@ -58,7 +58,7 @@
                   required
                 ></b-form-input>
 
-                <b-button variant="outline-primary"
+                <b-button class="btn-search ml-3" variant="outline-primary"
                   ><i class="fa fa-search" aria-hidden="true"></i
                 ></b-button>
               </div>
@@ -276,5 +276,14 @@ export default {
 }
 .content_search {
   margin: 1rem 0;
+}
+.btn-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
 </style>

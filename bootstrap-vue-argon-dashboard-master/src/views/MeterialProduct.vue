@@ -12,15 +12,13 @@
               <div>
                 <b-button v-b-modal.modal-1 variant="success">Tạo nguyên liệu</b-button>
 
-                <b-modal id="modal-1" title="">
-                  <p class="my-4">Thêm nguyên liệu</p>
+                <b-modal id="modal-1" title="Thêm nguyên liệu">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <b-form-group
                         id="input-group-1"
                         label="Tên nguyên liệu"
                         label-for="input-1"
-                        description="We'll never share your email with anyone else."
                       >
                         <b-form-input
                           id="input-1"
@@ -98,7 +96,7 @@
                       text-field="name"
                     ></b-form-select>
 
-                    <b-button variant="outline-primary"
+                    <b-button class="btn-search ml-4" variant="outline-primary"
                       ><i class="fa fa-search" aria-hidden="true"></i
                     ></b-button>
                   </div>
@@ -126,6 +124,15 @@
                       </template>
                     </b-table>
                   </div>
+                  <div class="count_price">
+                    <b-col lg="4">
+                      <span>Tổng tiền</span>
+                      <b-form-input
+                        type="text"
+                        placeholder="Tổng tiền nhập"
+                      ></b-form-input>
+                    </b-col>
+                  </div>
 
                   <b-card-footer class="py-4 d-flex justify-content-end">
                     <base-pagination
@@ -136,7 +143,7 @@
                   </b-card-footer>
 
                   <!-- Modal  -->
-                  <b-modal :id="infoModal.id" ok-only>
+                  <b-modal :id="infoModal.id" title="Thông tin nguyên liệu" ok-only>
                     <pre></pre>
                     <div>
                       <h2 style="text-align: center">Sửa Thể Loại</h2>
@@ -144,29 +151,56 @@
                         <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                           <b-form-group
                             id="input-group-1"
-                            label="Mã thể loại"
+                            label="Tên nguyên liệu"
                             label-for="input-1"
                           >
                             <b-form-input
                               id="input-1"
                               v-model="form.email"
-                              type="text"
-                              placeholder="Mã thể loại"
+                              type="email"
+                              placeholder="Nhập tên nguyên liệu"
                               required
                             ></b-form-input>
                           </b-form-group>
 
                           <b-form-group
                             id="input-group-2"
-                            label="Tên thể loại:"
+                            label="Nhà Phân Phối"
                             label-for="input-2"
                           >
                             <b-form-input
                               id="input-2"
                               v-model="form.name"
-                              placeholder="Tên thể loại"
+                              placeholder="Nhập nhà phân phối"
                               required
                             ></b-form-input>
+                          </b-form-group>
+
+                          <b-form-group
+                            id="input-group-3"
+                            label="Số Lượng"
+                            label-for="input-3"
+                          >
+                            <b-form-input
+                              id="input-3"
+                              v-model="form.name"
+                              placeholder="Nhập số lượng"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-form-group
+                            id="input-group-2"
+                            label="Ngày nhập"
+                            label-for="input-2"
+                          >
+                            <div class="">
+                              <input
+                                class="form-control"
+                                type="datetime-local"
+                                value="2011-08-19T13:45:00"
+                                id="example-datetime-local-input"
+                              />
+                            </div>
                           </b-form-group>
 
                           <!-- Show Modal Nguyên Liệu -->
@@ -229,10 +263,6 @@ export default {
       show: true,
       fields: [
         {
-          key: "mã_nguyên_liệu",
-          sortable: true,
-        },
-        {
           key: "tên_nguyên_liệu",
           sortable: false,
         },
@@ -247,6 +277,10 @@ export default {
 
           sortable: true,
           // Variant applies to the whole column, including the header and footer
+        },
+        {
+          key: "giá",
+          sortable: true,
         },
         {
           key: "ngày_nhập",
@@ -264,6 +298,7 @@ export default {
           tên_nguyên_liệu: "Gạo Tẻ",
           nhà_phân_phối: "Gạo",
           số_lượng: "200000",
+          giá: 252,
           ngày_nhập: "02/05/2021 20.00PM",
         },
         {
@@ -272,6 +307,7 @@ export default {
           tên_nguyên_liệu: "Nước Suối",
           nhà_phân_phối: "Nước",
           số_lượng: "100000",
+          giá: 252,
           ngày_nhập: "02/05/2021 20.00PM",
         },
         {
@@ -280,6 +316,7 @@ export default {
           tên_nguyên_liệu: "Cam Sành",
           nhà_phân_phối: "Trái Cây",
           số_lượng: "1122",
+          giá: 252,
           ngày_nhập: "02/05/2021 20.00PM",
         },
       ],
@@ -371,5 +408,20 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.btn-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+.count_price {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 1rem 0;
 }
 </style>

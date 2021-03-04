@@ -5,6 +5,7 @@
       <template #cell(count)="row">
         <input type="number" style="width: 50px" @click="info(row.index)" />
       </template>
+      
       <template #cell(actions)="row">
         <b-button
           size="sm"

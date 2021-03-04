@@ -4,42 +4,43 @@
       <!-- Card stats -->
     </base-header>
     <b-container fluid class="mt--7">
-      <div class="mt-8">
-        <h2>Top sản phẩm bán chạy</h2>
-        <div class="items-click-add">
-          <div>
-            <b-form-radio-group
-              v-model="selected"
-              :options="options"
-              class="mb-2"
-              value-field="item"
-              text-field="name"
-            ></b-form-radio-group>
-          </div>
-          <div class="form-group row">
-            <div class="">
-              <input
-                class="form-control"
-                type="datetime-local"
-                value="2011-08-19T13:45:00"
-                id="example-datetime-local-input"
-              />
+      <b-row>
+        <b-col lg="12">
+          <card header-classes="bg-transparent">
+            <div class="content_title">
+              <b-col lg="3" md="6">
+                <b-form-select v-model="selected" :options="options"></b-form-select>
+              </b-col>
+              <b-col lg="4" md="6">
+                <input
+                  class="form-control"
+                  type="datetime-local"
+                  value="2011-08-19T13:45:00"
+                  id="example-datetime-local-input"
+                />
+              </b-col>
+              <b-col lg="2" md="6">
+                <b-button variant="outline-primary" class="btn-search"
+                  ><i class="fas fa-search"></i
+                ></b-button>
+              </b-col>
+
+              <!-- Table  -->
             </div>
-          </div>
-        </div>
-        <div></div>
-        <!-- Table  -->
-      </div>
-      <div>
-        <b-row class="mt-5">
-          <b-col xl="8" class="mb-5 mb-xl-0">
-            <page-visits-table></page-visits-table>
-          </b-col>
-          <b-col xl="4" class="mb-5 mb-xl-0">
-            <social-traffic-table></social-traffic-table>
-          </b-col>
-        </b-row>
-      </div>
+            <div>
+              <b-row class="mt-7">
+                <b-col xl="12" class="mb-5 mb-xl-0">
+                  <page-visits-table></page-visits-table>
+                </b-col>
+                <hr />
+                <b-col xl="12" class="mb-5 mb-xl-0 mt-6">
+                  <social-traffic-table></social-traffic-table>
+                </b-col>
+              </b-row>
+            </div>
+          </card>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -66,11 +67,12 @@ export default {
     return {
       projects,
       users,
-      selected: "A",
+      selected: null,
       options: [
-        { item: "A", name: "Theo Tuần" },
-        { item: "B", name: "Theo Tháng" },
-        { item: "C", name: "Theo Ngày" },
+        { value: null, text: "Chọn mục" },
+        { value: "week", text: "Theo Tuần" },
+        { value: "month", text: "Theo Tháng" },
+        { value: "day", text: "Theo Ngày" },
       ],
       items: [
         { Mã_Sản_Phẩm: 40, Tên_Sản_Phẩm: "Dickerson", Số_lượng: "122" },
@@ -103,5 +105,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.content_title {
+  display: flex;
+}
+.btn-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
 </style>

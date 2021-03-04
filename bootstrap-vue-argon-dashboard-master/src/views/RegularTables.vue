@@ -14,7 +14,7 @@
                 <b-button v-b-modal.modal-1 variant="success">Tạo nhà cung cấp</b-button>
 
                 <!-- Modal Tạo nhà cc -->
-                <b-modal id="modal-1" title="BootstrapVue">
+                <b-modal id="modal-1" title="Thêm nhà cung cấp">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <h2 style="text-align: center">Thêm nhà cung cấp</h2>
@@ -84,7 +84,7 @@
                 required
               ></b-form-input>
 
-              <b-button variant="outline-primary"
+              <b-button class="btn-search" variant="outline-primary"
                 ><i class="fa fa-search" aria-hidden="true"></i
               ></b-button>
             </div>
@@ -102,7 +102,7 @@
                   </b-table>
 
                   <!-- Modal  -->
-                  <b-modal :id="infoModal.id" ok-only>
+                  <b-modal :id="infoModal.id" title="Thông tin nhà cung cấp" ok-only>
                     <pre></pre>
                     <div>
                       <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
@@ -323,5 +323,14 @@ export default {
 }
 .content_table {
   overflow-x: auto;
+}
+.btn-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
 </style>

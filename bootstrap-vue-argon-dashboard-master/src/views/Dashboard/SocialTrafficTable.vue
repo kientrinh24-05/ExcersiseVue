@@ -3,10 +3,10 @@
     <template v-slot:header>
       <b-row align-v="center">
         <b-col>
-          <h3 class="mb-0">Số Ng.liệu</h3>
+          <h2 class="mb-0">Số Ng.liệu</h2>
         </b-col>
         <b-col class="text-right">
-          <base-button size="sm" type="primary">See all</base-button>
+          <base-button size="sm" type="primary">Xem tất cả</base-button>
         </b-col>
       </b-row>
     </template>
@@ -28,16 +28,14 @@
       <el-table-column label="Số lượng tiêu thụ" min-width="220px" prop="progress">
         <template v-slot="{ row }">
           <div class="d-flex align-items-center">
-            <span class="mr-2">{{ row.progress }}%</span>
-            <base-progress :type="row.progressType" :value="row.progress" />
+            <span class="mr-2">{{ row.progress }}</span>
           </div>
         </template>
       </el-table-column>
       <el-table-column label="Số lượng còn lại" min-width="220px" prop="progress">
         <template v-slot="{ row }">
           <div class="d-flex align-items-center">
-            <span class="mr-2">{{ row.progress }}%</span>
-            <base-progress :type="row.progressType" :value="row.progress" />
+            <span class="mr-2">{{ row.progress }}</span>
           </div>
         </template>
       </el-table-column>
@@ -64,31 +62,26 @@ export default {
           name: "Đậu Nành",
           visitors: "1,480",
           progress: 60,
-          progressType: "gradient-danger",
         },
         {
           name: "Đậu Hủ",
           visitors: "5,480",
           progress: 70,
-          progressType: "gradient-success",
         },
         {
           name: "Tương Ớt",
           visitors: "4,807",
           progress: 80,
-          progressType: "gradient-primary",
         },
         {
           name: "Ớt Bột",
           visitors: "3,678",
           progress: 75,
-          progressType: "gradient-info",
         },
         {
           name: "Chanh",
           visitors: "2,645",
           progress: 30,
-          progressType: "gradient-warning",
         },
       ],
     };

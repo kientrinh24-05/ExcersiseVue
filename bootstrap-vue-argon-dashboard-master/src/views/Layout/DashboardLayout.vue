@@ -20,6 +20,14 @@
           }"
         >
         </sidebar-item>
+        <sidebar-item
+          :link="{
+            name: 'Order Món Ăn',
+            path: '/productlist',
+            icon: 'ni ni-planet text-green',
+          }"
+        >
+        </sidebar-item>
         <!-- Cài đặt Món -->
         <sidebar-item
           :link="{
