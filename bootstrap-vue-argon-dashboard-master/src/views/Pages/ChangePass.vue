@@ -32,12 +32,13 @@
               <validation-observer v-slot="{ handleSubmit }" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
                   <base-input
+                    ase-input
                     alternative
                     class="mb-3"
                     name="Username"
                     :rules="{ required: true, text: true }"
                     prepend-icon="fa fa-user"
-                    placeholder="Tài đăng nhập"
+                    placeholder="Tên đăng nhập"
                     v-model="model.username"
                   >
                   </base-input>
@@ -60,8 +61,8 @@
                     :rules="{ required: true, min: 6 }"
                     prepend-icon="ni ni-lock-circle-open"
                     type="password"
-                    placeholder="Mật Khẩu"
-                    v-model="model.password"
+                    placeholder="Nhập lại mật khẩu  "
+                    v-model="model.retypepassword"
                   >
                   </base-input>
 
@@ -86,7 +87,7 @@
             <b-col cols="6" class="text-right">
               <router-link to="/register" class="text-light"
                 ><small>Đăng ký tài khoản</small></router-link
-              >  
+              >
             </b-col>
           </b-row>
         </b-col>
@@ -101,8 +102,9 @@ export default {
       model: {
         username: "",
         password: "",
+        retypepassword: "",
         rememberMe: false,
-      },  
+      },
     };
   },
   methods: {

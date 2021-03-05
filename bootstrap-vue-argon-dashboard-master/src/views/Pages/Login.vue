@@ -68,7 +68,7 @@
           </b-card>
           <b-row class="mt-3">
             <b-col cols="6">
-              <router-link to="/dashboard" class="text-light"
+              <router-link to="/changepass" class="text-light"
                 ><small>Đổi mật khẩu</small></router-link
               >
             </b-col>

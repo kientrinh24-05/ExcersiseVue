@@ -68,6 +68,15 @@
                           required
                         ></b-form-input>
                       </b-form-group>
+                      <b-form-group id="input-group-2" label="Hình Ảnh">
+                        <b-form-file
+                          v-model="file1"
+                          :state="Boolean(file1)"
+                          placeholder="Chọn địa chỉ hình ảnh..."
+                          drop-placeholder="Drop file here..."
+                        ></b-form-file>
+                      </b-form-group>
+
                       <div class="btn_click">
                         <b-button type="submit" variant="primary">Xác Nhận</b-button>
                         <b-button type="reset" variant="danger">Làm Mới</b-button>

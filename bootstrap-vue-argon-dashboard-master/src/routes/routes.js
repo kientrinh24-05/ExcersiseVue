@@ -62,6 +62,7 @@ const routes = [
         name: 'Thông tin bàn ăn',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Product-List.vue')
       },
+     
     ]
   },
   {
@@ -78,6 +79,11 @@ const routes = [
         path: '/register',
         name: 'Đăng Ký',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue')
+      },
+      {
+        path: '/changepass',
+        name: 'Đổi Mật Khẩu',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ChangePass.vue')
       },
       { path: '*', component: NotFound }
     ]

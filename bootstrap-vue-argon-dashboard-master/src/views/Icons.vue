@@ -249,7 +249,7 @@ ul {
   display: flex;
 }
 ul li {
-  margin-right: 2rem;
+  margin-right: 0.5rem;
 }
 .bg-span {
   width: 14px;
