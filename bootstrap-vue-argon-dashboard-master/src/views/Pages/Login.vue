@@ -35,7 +35,7 @@
                     alternative
                     class="mb-3"
                     name="Username"
-                    :rules="{ required: true, text: true }"
+                    :rules="{ required: true }"
                     prepend-icon="fa fa-user"
                     placeholder="Tài đăng nhập"
                     v-model="model.username"
@@ -84,6 +84,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -97,6 +98,13 @@ export default {
   methods: {
     onSubmit() {
       // this will be called only after form is valid. You can do api call here to login
+      axios
+        .get("http://127.0.0.1:8000/auth/login/", {
+          username: this.username,
+          password: this.password,  
+        })
+        .then((resp) => console.log("isaxr"))
+        .catch((err) => console.log("Eroor"));
     },
   },
 };

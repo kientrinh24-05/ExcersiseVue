@@ -27,7 +27,7 @@
             <b-card-body class="px-lg-5 py-lg-5">
               <h2 class="title">ĐĂNG KÝ</h2>
               <validation-observer v-slot="{ handleSubmit }" ref="formValidator">
-                <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
+                <b-form role="form" @submit.prevent="handleSubmit(Register)">
                   <base-input
                     alternative
                     class="mb-3"
@@ -35,7 +35,7 @@
                     placeholder="Tên đăng nhập"
                     name="Name"
                     :rules="{ required: true }"
-                    v-model="model.name"
+                    v-model="model.username"
                   >
                   </base-input>
 
@@ -69,7 +69,7 @@
                     type="password"
                     name="ConformPassword"
                     :rules="{ required: true, min: 6 }"
-                    v-model="model.conformpass"
+                    v-model="model.password2"
                   >
                   </base-input>
 
@@ -80,7 +80,7 @@
                         name="Privacy"
                         Policy
                       >
-                        <b-form-checkbox v-model="model.agree">
+                        <b-form-checkbox>
                           <span class="text-muted"
                             >Bạn đã đông ý vào những <a href="#!">điều khoản</a></span
                           >
@@ -89,7 +89,11 @@
                     </b-col>
                   </b-row>
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4"
+                    <b-button
+                      type="submit"
+                      variant="primary"
+                      class="mt-4"
+                      @click="Register"
                       >Đăng Ký</b-button
                     >
                   </div>
@@ -103,22 +107,30 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "register",
   data() {
     return {
       model: {
-        name: "",
+        username: "",
         email: "",
         password: "",
-        agree: false,
-        conformpass: "",
+        password2: "",
       },
     };
   },
   methods: {
     onSubmit() {
       // this will be called only after form is valid. You can do an api call here to register users
+    },
+
+    Register() {
+      axios
+        .post("http://127.0.0.1:8000/auth/register/?format=api", this.Register)
+        .then((response) => {
+          console.log(response);
+        });
     },
   },
 };
