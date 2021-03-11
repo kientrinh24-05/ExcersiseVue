@@ -54,9 +54,7 @@
                   >
                   </base-input>
 
-                  <b-form-checkbox v-model="model.rememberMe"
-                    >Lưu tên đăng nhập</b-form-checkbox
-                  >
+                  <b-form-checkbox>Lưu tên đăng nhập</b-form-checkbox>
                   <div class="text-center">
                     <base-button type="primary" native-type="submit" class="my-4"
                       >Đăng nhập</base-button
@@ -91,20 +89,17 @@ export default {
       model: {
         username: "",
         password: "",
-        rememberMe: false,
       },
     };
   },
   methods: {
     onSubmit() {
       // this will be called only after form is valid. You can do api call here to login
-      axios
-        .get("http://127.0.0.1:8000/auth/login/", {
-          username: this.username,
-          password: this.password,  
-        })
-        .then((resp) => console.log("isaxr"))
-        .catch((err) => console.log("Eroor"));
+      axios.post("http://127.0.0.1:8000/auth/login/", this.model).then(
+        function (response) {
+          console.log(response);
+        }.bind(this)
+      );
     },
   },
 };
