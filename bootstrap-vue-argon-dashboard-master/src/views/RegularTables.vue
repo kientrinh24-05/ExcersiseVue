@@ -18,18 +18,6 @@
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <h2 style="text-align: center">Thêm nhà cung cấp</h2>
-                      <b-form-group
-                        id="input-group-1"
-                        label="Mã nhà cung cấp"
-                        label-for="input-1"
-                      >
-                        <b-form-input
-                          id="input-1"
-                          type="email"
-                          placeholder="Mã nhà cung cấp"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
 
                       <b-form-group
                         id="input-group-2"
@@ -38,7 +26,7 @@
                       >
                         <b-form-input
                           id="input-2"
-                          v-model="form.name"
+                          v-model="form.supplier_name"
                           placeholder="Tên nhà cung cấp"
                           required
                         ></b-form-input>
@@ -50,6 +38,7 @@
                       >
                         <b-form-input
                           id="input-3"
+                          v-model="form.supplier_address"
                           type="text"
                           placeholder="Địa chỉ"
                           required
@@ -63,9 +52,11 @@
                         <b-form-input
                           id="input-4"
                           type="text"
+                          v-model="form.supplier_phone"
                           placeholder="Số Điện Thoại"
                           required
                         ></b-form-input>
+                        <b-button @click="addSuplier()"> Click Add</b-button>
                       </b-form-group>
 
                       <!-- <b-button type="submit" variant="primary">Submit</b-button>
@@ -183,6 +174,8 @@ import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import DarkTable from "./Tables/RegularTables/DarkTable";
+import axios from "axios";
+import { json } from "d3";
 
 export default {
   components: {
@@ -204,6 +197,7 @@ export default {
         title: "",
         content: "",
       },
+      items: [],
       fields: [
         {
           key: "mã_nhà_cung_cấp",
@@ -223,39 +217,57 @@ export default {
         },
         { key: "actions", label: "Hành Động" },
       ],
-      items: [
-        {
-          isActive: true,
-          mã_nhà_cung_cấp: 1,
-          tên_nhà_cung_cấp: "Công Ty TNHH Song",
-          địa_chỉ: "Phú Yên",
-          số_điện_thoại: "0326633155",
-        },
-        {
-          isActive: true,
-          mã_nhà_cung_cấp: 2,
-          tên_nhà_cung_cấp: "DNTN Long",
-          địa_chỉ: "Phú Yên",
-          số_điện_thoại: "0326633155",
-        },
-        {
-          isActive: true,
-          mã_nhà_cung_cấp: 3,
-          tên_nhà_cung_cấp: "Công Ty TNHH Sơn Long",
-          địa_chỉ: "Phú Yên",
-          số_điện_thoại: "0326633155",
-        },
-      ],
+
       form: {
-        email: "",
-        name: "",
+        supplier_name: "",
+        supplier_address: "",
+        supplier_phone: "",
         food: null,
         checked: [],
       },
       show: true,
     };
   },
+  created() {
+    // axios
+    //   .get("http://127.0.0.1:8000/supplier/list_supplier/")
+    //   .then((response) => {
+    //     this.items = response.data;
+    //     console.log(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+
+    fetch("http://127.0.0.1:8000/supplier/list_supplier/")
+      .then((response) => response.json())
+      .then(
+        (json) =>
+          (this.items = json.data.map((supplier) => {
+            return {
+              mã_nhà_cung_cấp: supplier.id,
+              tên_nhà_cung_cấp: supplier.supplier_name,
+              địa_chỉ: supplier.supplier_address,
+              số_điện_thoại: supplier.supplier_phone,
+            };
+          }))
+      );
+  },
   methods: {
+    addSuplier() {
+      axios
+        .post("http://127.0.0.1:8000/supplier/list_supplier/", {
+          name: this.addSuplier,
+        })
+        .then((response) => {
+          const data = response.data;
+          this.supplier_name.push(response.data);
+          this.supplier_address.push(response.data);
+          this.supplier_phone.push(response.data);
+          this.addSuplier = "";
+          console.log(response);
+        });
+    },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.content = JSON.stringify(item, null, 2);
