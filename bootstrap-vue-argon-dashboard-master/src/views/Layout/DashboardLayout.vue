@@ -78,7 +78,15 @@
           <sidebar-item
             :link="{
               name: 'Thiết lập nguyên liệu',
-              path: '/meterial_product',
+              path: '/meterial',
+              icon: 'ni ni-pin-3 text-orange',
+            }"
+          >
+          </sidebar-item>
+          <sidebar-item
+            :link="{
+              name: 'Nhập nguyên liệu',
+              path: '/import_meterial',
               icon: 'ni ni-pin-3 text-orange',
             }"
           >

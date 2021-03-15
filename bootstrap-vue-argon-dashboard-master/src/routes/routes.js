@@ -1,4 +1,4 @@
-import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
+import DashboardLayout from '@/views/Layout/Dashboar  Layout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
 
 import NotFound from '@/views/NotFoundPage.vue';

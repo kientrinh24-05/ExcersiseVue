@@ -201,19 +201,19 @@ export default {
       fields: [
         {
           key: "mã_nhà_cung_cấp",
-          sortable: true,
+         
         },
         {
           key: "tên_nhà_cung_cấp",
-          sortable: false,
+         
         },
         {
           key: "địa_chỉ",
-          sortable: false,
+         
         },
         {
           key: "số_điện_thoại",
-          sortable: false,
+     
         },
         { key: "actions", label: "Hành Động" },
       ],
