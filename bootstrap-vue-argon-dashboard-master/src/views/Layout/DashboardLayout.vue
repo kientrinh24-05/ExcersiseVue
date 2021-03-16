@@ -75,10 +75,9 @@
             }"
           >
           </sidebar-item>
-
           <sidebar-item
             :link="{
-              name: 'Nhập nguyên liệu',
+              name: 'Thiết lập nguyên liệu',
               path: '/meterial_product',
               icon: 'ni ni-pin-3 text-orange',
             }"

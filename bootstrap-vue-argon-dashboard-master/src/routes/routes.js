@@ -1,4 +1,4 @@
-import DashboardLayout from '@/views/Layout/DashboarLayout.vue';
+import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
 
 import NotFound from '@/views/NotFoundPage.vue';
@@ -48,14 +48,8 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/ViewSpeciesProduct.vue')
       },
       {
-        path: '/meterial',
-        name: 'Quản Lý Nguyên Liệu',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Meterial.vue')
-      },
-        
-      {
         path: '/meterial_product',
-        name: 'Nhập Nguyên Liệu',
+        name: 'Quản Lý Nguyên Liệu',
         component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue')
       },
       {

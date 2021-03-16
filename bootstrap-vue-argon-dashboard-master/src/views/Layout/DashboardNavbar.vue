@@ -90,11 +90,6 @@ import { CollapseTransition } from "vue2-transitions";
 import { BaseNav, Modal } from "@/components";
 
 export default {
-  data() {
-    return {
-      username,
-    };
-  },
   components: {
     CollapseTransition,
     BaseNav,
