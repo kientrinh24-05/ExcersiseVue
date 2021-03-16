@@ -14,7 +14,7 @@
                 <b-button v-b-modal.modal-1 variant="success">Tạo nhà cung cấp</b-button>
 
                 <!-- Modal Tạo nhà cc -->
-                <b-modal id="modal-1" title="Thêm nhà cung cấp">
+                <b-modal id="modal-1" title="Thêm nhà cung cấp" ref="addBookModal">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <h2 style="text-align: center">Thêm nhà cung cấp</h2>
@@ -56,7 +56,8 @@
                           placeholder="Số Điện Thoại"
                           required
                         ></b-form-input>
-                        <b-button @click="addSuplier()"> Click Add</b-button>
+
+                        <b-button type="submit" variant="primary">Submit</b-button>
                       </b-form-group>
 
                       <!-- <b-button type="submit" variant="primary">Submit</b-button>
@@ -85,34 +86,26 @@
                 <div class="content_table">
                   <b-table class="table-sc" striped hover :items="items" :fields="fields">
                     <template #cell(actions)="row">
-                      <i
-                        @click="info(row.item, row.index, $event.target)"
-                        class="fas fa-pencil-alt"
-                      ></i>
+                      <i @click="info(row.item, row.index, $event.target)"></i>
+                      <b-button v-b-modal.my-modal @click="editSuplier(sup)"
+                        ><i class="fas fa-pencil-alt"></i
+                      ></b-button>
                     </template>
                   </b-table>
 
                   <!-- Modal  -->
-                  <b-modal :id="infoModal.id" title="Thông tin nhà cung cấp" ok-only>
+                  <!-- <b-modal
+                    :id="infoModal.id"
+                    title="Thông tin nhà cung cấp"
+                    ok-only
+                    ref="editSupModal"
+                  >
                     <pre></pre>
                     <div>
                       <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
                       <div>
                         <div>
-                          <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                            <b-form-group
-                              id="input-group-1"
-                              label="Mã nhà cung cấp"
-                              label-for="input-1"
-                            >
-                              <b-form-input
-                                id="input-1"
-                                type="email"
-                                placeholder="Mã nhà cung cấp"
-                                required
-                              ></b-form-input>
-                            </b-form-group>
-
+                          <b-form @submit="onSubmitEdit" @reset="onReset" v-if="show">
                             <b-form-group
                               id="input-group-2"
                               label="Tên nhà cung cấp"
@@ -120,7 +113,7 @@
                             >
                               <b-form-input
                                 id="input-2"
-                                v-model="form.name"
+                                v-model="editform.supplier_name"
                                 placeholder="Tên nhà cung cấp"
                                 required
                               ></b-form-input>
@@ -132,6 +125,7 @@
                             >
                               <b-form-input
                                 id="input-3"
+                                v-model="editform.supplier_address"
                                 type="text"
                                 placeholder="Địa chỉ"
                                 required
@@ -144,14 +138,65 @@
                             >
                               <b-form-input
                                 id="input-4"
+                                v-model="editform.supplier_phone"
                                 type="text"
                                 placeholder="Số Điện Thoại"
                                 required
                               ></b-form-input>
                             </b-form-group>
-
-                            <!-- <b-button type="submit" variant="primary">Submit</b-button>
-                    <b-button type="reset" variant="danger">Reset</b-button> -->
+                            <b-button type="submit" variant="primary">Update</b-button>
+                      
+                          </b-form>
+                        </div>
+                      </div>
+                    </div>
+                  </b-modal> -->
+                  <!-- --- Modal-- -->
+                  <b-modal id="my-modal" ref="editSupModal">
+                    <div>
+                      <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
+                      <div>
+                        <div>
+                          <b-form @submit="onSubmitEdit" @reset="onReset" v-if="show">
+                            <b-form-group
+                              id="input-group-2"
+                              label="Tên nhà cung cấp"
+                              label-for="input-2"
+                            >
+                              <b-form-input
+                                id="input-2"
+                                v-model="editform.supplier_name"
+                                placeholder="Tên nhà cung cấp"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-3"
+                              label="Địa chỉ"
+                              label-for="input-3"
+                            >
+                              <b-form-input
+                                id="input-3"
+                                v-model="editform.supplier_address"
+                                type="text"
+                                placeholder="Địa chỉ"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-4"
+                              label="Số Điện Thoại"
+                              label-for="input-4"
+                            >
+                              <b-form-input
+                                id="input-4"
+                                v-model="editform.supplier_phone"
+                                type="text"
+                                placeholder="Số Điện Thoại"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-button type="submit" variant="primary">Update</b-button>
                           </b-form>
                         </div>
                       </div>
@@ -201,19 +246,15 @@ export default {
       fields: [
         {
           key: "mã_nhà_cung_cấp",
-          sortable: true,
         },
         {
           key: "tên_nhà_cung_cấp",
-          sortable: false,
         },
         {
           key: "địa_chỉ",
-          sortable: false,
         },
         {
           key: "số_điện_thoại",
-          sortable: false,
         },
         { key: "actions", label: "Hành Động" },
       ],
@@ -222,52 +263,78 @@ export default {
         supplier_name: "",
         supplier_address: "",
         supplier_phone: "",
-        food: null,
-        checked: [],
+      },
+      editform: {
+        id: "",
+        supplier_name: "",
+        supplier_address: "",
+        supplier_phone: "",
       },
       show: true,
     };
   },
   created() {
-    // axios
-    //   .get("http://127.0.0.1:8000/supplier/list_supplier/")
-    //   .then((response) => {
-    //     this.items = response.data;
-    //     console.log(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
-    fetch("http://127.0.0.1:8000/supplier/list_supplier/")
-      .then((response) => response.json())
-      .then(
-        (json) =>
-          (this.items = json.data.map((supplier) => {
-            return {
-              mã_nhà_cung_cấp: supplier.id,
-              tên_nhà_cung_cấp: supplier.supplier_name,
-              địa_chỉ: supplier.supplier_address,
-              số_điện_thoại: supplier.supplier_phone,
-            };
-          }))
-      );
+    this.getSuplier();
   },
   methods: {
-    addSuplier() {
+    // Get All
+    getSuplier() {
+      fetch("http://127.0.0.1:8000/supplier/list_supplier/")
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items = json.data.map((supplier) => {
+              return {
+                mã_nhà_cung_cấp: supplier.id,
+                tên_nhà_cung_cấp: supplier.supplier_name,
+                địa_chỉ: supplier.supplier_address,
+                số_điện_thoại: supplier.supplier_phone,
+              };
+            }))
+        );
+    },
+    // Add Suplier
+    addSuplier(payload) {
+      const path = "http://127.0.0.1:8000/supplier/list_supplier/";
       axios
-        .post("http://127.0.0.1:8000/supplier/list_supplier/", {
-          name: this.addSuplier,
+        .post(path, payload)
+        .then(() => {
+          this.getSuplier();
         })
-        .then((response) => {
-          const data = response.data;
-          this.supplier_name.push(response.data);
-          this.supplier_address.push(response.data);
-          this.supplier_phone.push(response.data);
-          this.addSuplier = "";
-          console.log(response);
+        .catch((error) => {
+          this.getSuplier();
+          console.log(error);
         });
     },
+    //Update
+    editSuplier(index) {
+      this.editform = index;
+      console.log(index);
+    },
+    onSubmitEdit(event) {
+      event.preventDefault();
+      this.$refs.editSupModal.hide();
+      const payload = {
+        supplier_name: this.editform.supplier_name,
+        supplier_address: this.editform.supplier_address,
+        supplier_phone: this.editform.supplier_phone,
+      };
+      this.updateSup(payload, this.editform.id);
+    },
+    // Update
+    updateSup(payload, Supid) {
+      const path = `http://127.0.0.1:8000/supplier/detail_supplier/${Supid}`;
+      axios
+        .put(path, payload)
+        .then(() => {
+          this.getSuplier();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getSuplier();
+        });
+    },
+
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.content = JSON.stringify(item, null, 2);
@@ -284,7 +351,15 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault();
-      // alert(JSON.stringify(this.form));
+
+      this.$refs.addBookModal.hide();
+      const payload = {
+        supplier_name: this.form.supplier_name,
+        supplier_address: this.form.supplier_address,
+        supplier_phone: this.form.supplier_phone,
+      };
+      this.addSuplier(payload);
+      console.log("kane");
     },
     onReset(event) {
       event.preventDefault();

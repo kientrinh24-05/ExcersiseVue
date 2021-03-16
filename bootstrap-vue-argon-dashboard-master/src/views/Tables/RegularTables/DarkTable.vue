@@ -5,7 +5,7 @@
       <template #cell(count)="row">
         <input type="number" style="width: 50px" @click="info(row.index)" />
       </template>
-      
+
       <template #cell(actions)="row">
         <b-button
           size="sm"
@@ -45,14 +45,12 @@ export default {
       fields: [
         {
           key: "idmiterial",
-          label: "Mã Nguyên Liệu",
-          sortable: true,
-          sortDirection: "desc",
+          label: "Mã Ng.Liệu",
         },
         {
           key: "namemiterial",
           label: "Tên Nguyên Liệu",
-          sortable: true,
+
           class: "text-center",
         },
         { key: "count", label: "Số Lượng" },

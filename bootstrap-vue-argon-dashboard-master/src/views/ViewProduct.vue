@@ -94,18 +94,6 @@
                 placeholder="Nhập mã món ăn"
                 required
               ></b-form-input>
-              <b-dropdown
-                text="Trạng thái"
-                style="width: 90%"
-                block
-                split
-                split-variant="outline-primary"
-                variant="primary"
-                class="m-2"
-              >
-                <b-dropdown-item href="#">Còn</b-dropdown-item>
-                <b-dropdown-item href="#">Hết</b-dropdown-item>
-              </b-dropdown>
 
               <b-button class="btn-search" variant="outline-primary"
                 ><i class="fa fa-search" aria-hidden="true"></i

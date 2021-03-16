@@ -4,6 +4,7 @@
       <div>
         <b-table class="table-sc" striped hover :items="items" :fields="fields">
           <template #cell(actions)="row">
+            <i @click="info2(row.item, row.index, $event.target)" class="far fa-eye"> </i>
             <i
               @click="info(row.item, row.index, $event.target)"
               class="fas fa-pencil-alt"
@@ -12,7 +13,7 @@
         </b-table>
 
         <!-- Modal  -->
-        <b-modal :id="infoModal.id" title="Thông tin món ăn" ok-only>
+        <b-modal :id="infoModal.id" title="Thông tin món ăn">
           <pre></pre>
           <div>
             <h2 style="text-align: center">Sửa Món Ăn</h2>
@@ -106,6 +107,22 @@
             </div>
           </div>
         </b-modal>
+        <b-modal :id="infoModal1.id" title="Danh sách nguyên liệu">
+          <pre></pre>
+          <div>
+            <div>
+              <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                <div class="item-group">
+                  <b-form-group>
+                    <div>
+                      <DarkTable />
+                    </div>
+                  </b-form-group>
+                </div>
+              </b-form>
+            </div>
+          </div>
+        </b-modal>
       </div>
 
       <b-card-footer class="py-4 d-flex justify-content-end">
@@ -141,10 +158,14 @@ export default {
         title: "",
         content: "",
       },
+      infoModal1: {
+        id: "info-modal1",
+        title: "",
+        content: "",
+      },
       fields: [
         {
           key: "mã_món_ăn",
-          sortable: true,
         },
         {
           key: "tên_món_ăn",
@@ -153,19 +174,11 @@ export default {
         {
           key: "phân_loại",
 
-          sortable: true,
           // Variant applies to the whole column, including the header and footer
         },
         {
           key: "giá_sản_phẩm",
 
-          sortable: true,
-          // Variant applies to the whole column, including the header and footer
-        },
-        {
-          key: "trạng_thái",
-
-          sortable: true,
           // Variant applies to the whole column, including the header and footer
         },
 
@@ -178,7 +191,6 @@ export default {
           tên_món_ăn: "Gạo Tẻ",
           phân_loại: "Gạo",
           giá_sản_phẩm: "200000",
-          trạng_thái: "Còn",
         },
         {
           isActive: true,
@@ -186,7 +198,6 @@ export default {
           tên_món_ăn: "Nước Suối",
           phân_loại: "Nước",
           giá_sản_phẩm: "100000",
-          trạng_thái: "Hết",
         },
         {
           isActive: true,
@@ -194,7 +205,6 @@ export default {
           tên_món_ăn: "Cam Sành",
           phân_loại: "Trái Cây",
           giá_sản_phẩm: "1122",
-          trạng_thái: "Còn",
         },
       ],
       form: {
@@ -225,6 +235,11 @@ export default {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.content = JSON.stringify(item, null, 2);
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+    },
+    info2(item, index, button) {
+      this.infoModal1.title = `Row index: ${index}`;
+      this.infoModal1.content = JSON.stringify(item, null, 2);
+      this.$root.$emit("bv::show::modal", this.infoModal1.id, button);
     },
     resetInfoModal() {
       this.infoModal.title = "";
@@ -274,5 +289,12 @@ export default {
 }
 .modal-content {
   width: 120% !important;
+}
+.fa-pencil-alt {
+  margin-left: 20px;
+  cursor: pointer;
+}
+.fa-eye {
+  cursor: pointer;
 }
 </style>

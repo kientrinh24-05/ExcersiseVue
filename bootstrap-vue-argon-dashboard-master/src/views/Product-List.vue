@@ -4,12 +4,56 @@
       <!-- Card stats -->
     </base-header>
     <b-container fluid class="mt--7">
+      <b-row class="justify-content-center">
+        <b-col lg="12">
+          <card header-classes="bg-transparent">
+            <b-row class="icon-examples">
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard sucses">101 </b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard no-sucses">102 </b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard no-sucses"> 103 </b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard sucses">104</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard sucses">105</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard no-sucses">106</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard no-sucses">107</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard change">108</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard change">109</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard change">110</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard change">111</b-button>
+              </b-col>
+              <b-col lg="3" md="6">
+                <b-button class="btn-icon-clipboard change">112</b-button>
+              </b-col>
+            </b-row>
+          </card>
+        </b-col>
+      </b-row>
       <b-row>
         <b-col lg="12">
-          <div>
+          <card header-classes="bg-transparent">
             <b-card no-body>
               <b-row>
-                <b-col lg="5 " md="12">
+                <b-col lg="6 " md="12">
                   <b-tabs pills card>
                     <b-tab title="Tất cả" active
                       ><b-card-text>
@@ -277,7 +321,7 @@
                     ></b-tab>
                   </b-tabs>
                 </b-col>
-                <b-col lg="7" md="12">
+                <b-col lg="6" md="12">
                   <div class="content_view">
                     <h2>Order Món Ăn</h2>
                     <!-- <div>
@@ -323,12 +367,7 @@
                         label="Tổng tiền"
                         label-for="input-1"
                       >
-                        <b-form-input
-                          id="input-1"
-                          type="text"
-                          placeholder="Tổng tiền:"
-                          required
-                        ></b-form-input>
+                        <label class="label-cout">6.223.334đ</label>
                       </b-form-group>
                     </div>
                   </div>
@@ -371,13 +410,8 @@
                 </b-col>
               </b-row>
             </b-card>
-          </div>
+          </card>
         </b-col>
-
-        <!-- <b-col>
-          <h3>Danh sách món ăn</h3>
-          <light-table />
-        </b-col> -->
       </b-row>
 
       <div class="mt-5"></div>
@@ -439,7 +473,7 @@ export default {
         {
           key: "nameproduct",
           label: "Tên Sản Phẩm",
-          sortable: true,
+
           class: "text-center",
         },
         { key: "count", label: "Số Lượng" },
@@ -508,5 +542,29 @@ export default {
   border-radius: 50%;
   height: 40px;
   width: 40px;
+}
+.label-cout {
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 20px;
+}
+.bg-span {
+  width: 14px;
+  height: 15px;
+  background: red;
+}
+.btn-icon-clipboard {
+  height: 5rem;
+  text-align: center;
+  font-weight: bold;
+}
+.sucses {
+  background: red;
+}
+.no-sucses {
+  background: green;
+}
+.change {
+  background: yellow;
 }
 </style>

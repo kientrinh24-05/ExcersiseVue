@@ -10,7 +10,7 @@
       <b-row class="justify-content-center">
         <b-col lg="12">
           <card header-classes="bg-transparent">
-            <div class="flex">
+            <!--  
               <h3 slot="header" class="mb-0">Tất cả bàn ăn</h3>
               <ul class="list_btn">
                 <li class="btn_click">
@@ -42,7 +42,7 @@
                   </b-modal>
                 </li>
               </ul>
-            </div>
+            </div> -->
             <div class="content_search">
               <b-form-input
                 id="input-1"
@@ -96,66 +96,58 @@
                           </b-form-group>
                         </b-col>
                         <b-col lg="6" md="6">
-                          <h3>Gọi món</h3>
-                          <div>
-                            <b-dropdown
-                              id="dropdown-1"
-                              text="Chọn thể loại"
-                              class="m-md-2"
-                            >
-                              <b-dropdown-item>Rau</b-dropdown-item>
-                              <b-dropdown-item>Thịt</b-dropdown-item>
-                              <b-dropdown-item>Cá</b-dropdown-item>
-                              <b-dropdown-item>Đồ ăn nhanh</b-dropdown-item>
-                            </b-dropdown>
-                          </div>
+                          <h3>Thông tin đặt bàn</h3>
+                          <b-form-group>
+                            <b-form-input
+                              id="input-1"
+                              type="text"
+                              placeholder="Tên Người Đặt"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+
+                          <b-form-group>
+                            <b-form-input
+                              id="input-2"
+                              placeholder="Số ĐT"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-form-group>
+                            <b-form-input
+                              id="input-2"
+                              placeholder="Số Lượng"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-form-group>
+                            <b-form-input
+                              id="input-2"
+                              placeholder="Ngày Đặt"
+                              required
+                              type="date"
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-form-group>
+                            <b-form-input
+                              id="input-2"
+                              placeholder="Tiền Đặt"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-button variant="success">Đặt Bàn</b-button>
                         </b-col>
                         <hr />
-                        <b-col lg="6" md="6">
-                          <h3>Hóa đơn</h3>
-                          <b-form-group>
-                            <b-form-input
-                              id="input-4"
-                              type="text"
-                              placeholder="Mã Hóa Đơn"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-                          <hr />
-                          <b-table striped hover :items="items"></b-table>
-                          <b-form-group>
-                            <b-form-input
-                              id="input-4"
-                              type="text"
-                              placeholder="Tổng tiền"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-                          <b-button>Thanh toán</b-button>
-                        </b-col>
                       </b-row>
                     </b-modal>
                   </div>
                 </b-button>
               </b-col>
               <b-col lg="3" md="6">
-                <b-button v-b-modal.modal-2 class="btn-icon-clipboard no-sucses"
-                  >102
-                  <b-modal id="modal-2" title="BootstrapVue">
-                    <p class="my-4">Bàn 2</p>
-                  </b-modal>
-                </b-button>
+                <b-button class="btn-icon-clipboard no-sucses">102 </b-button>
               </b-col>
               <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">
-                  103
-                  <sidebar-item
-                    :link="{
-                      path: '/productlist',
-                    }"
-                  >
-                  </sidebar-item>
-                </b-button>
+                <b-button class="btn-icon-clipboard no-sucses"> 103 </b-button>
               </b-col>
               <b-col lg="3" md="6">
                 <b-button class="btn-icon-clipboard sucses">104</b-button>
@@ -187,7 +179,6 @@
             </b-row>
           </card>
         </b-col>
-
         <div class="action-f">
           <ul>
             <li>

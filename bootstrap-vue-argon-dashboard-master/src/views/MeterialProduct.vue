@@ -13,66 +13,130 @@
                 <b-button v-b-modal.modal-1 variant="success">Tạo nguyên liệu</b-button>
 
                 <b-modal id="modal-1" title="Thêm nguyên liệu">
-                  <div>
-                    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                      <b-form-group
-                        id="input-group-1"
-                        label="Tên nguyên liệu"
-                        label-for="input-1"
-                      >
-                        <b-form-input
-                          id="input-1"
-                          v-model="form.email"
-                          type="email"
-                          placeholder="Nhập tên nguyên liệu"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
+                  <b-form @submit="onSubmit" @reset="onReset">
+                    <b-form-group
+                      id="input-group-1"
+                      label="Tên nguyên liệu"
+                      label-for="input-1"
+                    >
+                      <b-form-input
+                        id="input-1"
+                        v-model="meterial.tennl"
+                        placeholder="Nhập tên nguyên liệu"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
 
-                      <b-form-group
-                        id="input-group-2"
-                        label="Nhà Phân Phối"
-                        label-for="input-2"
-                      >
-                        <b-form-input
-                          id="input-2"
-                          v-model="form.name"
-                          placeholder="Nhập nhà phân phối"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
+                    <b-form-group
+                      id="input-group-2"
+                      label="Nhà Phân Phối"
+                      label-for="input-2"
+                    >
+                      <b-form-input
+                        id="input-2"
+                        v-model="meterial.nhacc"
+                        placeholder="Nhập nhà phân phối"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
 
-                      <b-form-group
-                        id="input-group-3"
-                        label="Số Lượng"
-                        label-for="input-3"
-                      >
-                        <b-form-input
-                          id="input-3"
-                          v-model="form.name"
-                          placeholder="Nhập số lượng"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-                      <b-form-group
-                        id="input-group-2"
-                        label="Ngày nhập"
-                        label-for="input-2"
+                    <b-form-group id="input-group-3" label="Số Lượng" label-for="input-3">
+                      <b-form-input
+                        id="input-3"
+                        v-model="meterial.soluong"
+                        placeholder="Nhập số lượng"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                    <b-form-group
+                      id="input-group-2"
+                      label="Ngày nhập"
+                      label-for="input-2"
+                    >
+                      <div class="">
+                        <input
+                          class="form-control"
+                          type="datetime-local"
+                          value="2011-08-19T13:45:00"
+                          id="example-datetime-local-input"
+                          v-model="meterial.ngaynhap"
+                        />
+                      </div>
+                    </b-form-group>
+
+                    <b-button type="submit" variant="primary">Submit</b-button>
+                    <b-button type="reset" variant="danger">Reset</b-button>
+                    <b-button
+                      type="button"
+                      v-on:click="addNewApartment"
+                      class="btn btn-success"
+                    >
+                      Add +
+                    </b-button>
+                  </b-form>
+
+                  <main class="container">
+                    <form id="app" data-apartments="[]">
+                      <hr />
+                      <div class="row">
+                        <div class="col-xs-2"></div>
+                      </div>
+                      <div
+                        v-for="(apartment, index) in apartments"
+                        :key="apartment.index"
                       >
                         <div class="">
-                          <input
-                            class="form-control"
-                            type="datetime-local"
-                            value="2011-08-19T13:45:00"
-                            id="example-datetime-local-input"
-                          />
+                          <div class="col-xs-2">
+                            <button
+                              type="button"
+                              v-on:click="removeApartment(index)"
+                              class="btn btn-danger"
+                              style="margin: 10px 0"
+                            >
+                              Rem -
+                            </button>
+                          </div>
+                          <div class="form-group">
+                            <b-form-input
+                              id="input-1"
+                              v-model="meterial.tennl"
+                              placeholder="Nhập tên nguyên liệu"
+                              name="meterials[][tennl]"
+                              required
+                            ></b-form-input>
+                          </div>
+                          <div class="form-group col-xs-5">
+                            <b-form-input
+                              v-model="meterial.nhacc"
+                              type="text"
+                              name="meterials[][nhacc]"
+                              class="form-control"
+                              placeholder="Nhập nhà phân phối"
+                            ></b-form-input>
+                          </div>
+                          <div class="form-group col-xs-5">
+                            <b-form-input
+                              v-model="meterial.soluong"
+                              type="text"
+                              name="meterials[][soluong]"
+                              class="form-control"
+                              placeholder="Nhập số lượng"
+                            ></b-form-input>
+                          </div>
+                          <div class="form-group col-xs-5">
+                            <input
+                              class="form-control"
+                              type="datetime-local"
+                              value="2011-08-19T13:45:00"
+                              name="meterials[][ngaynhap]"
+                              id="example-datetime-local-input"
+                              v-model="meterial.ngaynhap"
+                            />
+                          </div>
                         </div>
-                      </b-form-group>
-
-                      <b-button type="submit" variant="primary">Submit</b-button>
-                      <b-button type="reset" variant="danger">Reset</b-button>
-                    </b-form>
-                  </div>
+                      </div>
+                    </form>
+                  </main>
                 </b-modal>
               </div>
             </div>
@@ -127,10 +191,7 @@
                   <div class="count_price">
                     <b-col lg="4">
                       <span>Tổng tiền</span>
-                      <b-form-input
-                        type="text"
-                        placeholder="Tổng tiền nhập"
-                      ></b-form-input>
+                      <label class="label-cout">6.200.456 đ</label>
                     </b-col>
                   </div>
 
@@ -143,77 +204,6 @@
                   </b-card-footer>
 
                   <!-- Modal  -->
-                  <b-modal :id="infoModal.id" title="Thông tin nguyên liệu" ok-only>
-                    <pre></pre>
-                    <div>
-                      <h2 style="text-align: center">Sửa Thể Loại</h2>
-                      <div>
-                        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                          <b-form-group
-                            id="input-group-1"
-                            label="Tên nguyên liệu"
-                            label-for="input-1"
-                          >
-                            <b-form-input
-                              id="input-1"
-                              v-model="form.email"
-                              type="email"
-                              placeholder="Nhập tên nguyên liệu"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-
-                          <b-form-group
-                            id="input-group-2"
-                            label="Nhà Phân Phối"
-                            label-for="input-2"
-                          >
-                            <b-form-input
-                              id="input-2"
-                              v-model="form.name"
-                              placeholder="Nhập nhà phân phối"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-
-                          <b-form-group
-                            id="input-group-3"
-                            label="Số Lượng"
-                            label-for="input-3"
-                          >
-                            <b-form-input
-                              id="input-3"
-                              v-model="form.name"
-                              placeholder="Nhập số lượng"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-                          <b-form-group
-                            id="input-group-2"
-                            label="Ngày nhập"
-                            label-for="input-2"
-                          >
-                            <div class="">
-                              <input
-                                class="form-control"
-                                type="datetime-local"
-                                value="2011-08-19T13:45:00"
-                                id="example-datetime-local-input"
-                              />
-                            </div>
-                          </b-form-group>
-
-                          <!-- Show Modal Nguyên Liệu -->
-
-                          <!-- Button Click Submit -->
-                          <div class="link-btn">
-                            <b-button type="submit" variant="primary">Xác Nhận</b-button>
-                            <b-button type="reset" variant="danger">Reset</b-button>
-                          </div>
-                        </b-form>
-                      </div>
-                    </div>
-                  </b-modal>
                 </div>
               </b-col>
             </b-row>
@@ -241,6 +231,11 @@ export default {
   },
   data() {
     return {
+      apartment: {
+        price: "",
+        rooms: "",
+      },
+      apartments: [],
       projects,
       users,
       currentPage: 1,
@@ -250,6 +245,17 @@ export default {
         food: null,
         checked: [],
       },
+      meterial: {
+        tennl: "",
+        nhacc: "",
+        soluong: "",
+        ngaynhap: "",
+      },
+      meterials: [],
+      created() {
+        this.meterials = JSON.parse(this.$el.dataset.apartments);
+      },
+
       options: [
         { item: "A", name: "DNTN Sáng" },
         { item: "B", name: "TNHH ToanTen" },
@@ -260,36 +266,31 @@ export default {
         title: "",
         content: "",
       },
-      show: true,
+      // show: true,
       fields: [
         {
           key: "tên_nguyên_liệu",
-          sortable: false,
         },
         {
           key: "nhà_phân_phối",
 
-          sortable: true,
           // Variant applies to the whole column, including the header and footer
         },
         {
           key: "số_lượng",
 
-          sortable: true,
           // Variant applies to the whole column, including the header and footer
         },
         {
           key: "giá",
-          sortable: true,
         },
         {
           key: "ngày_nhập",
 
-          sortable: true,
           // Variant applies to the whole column, including the header and footer
         },
 
-        { key: "actions", label: "Hành động" },
+        // { key: "actions", label: "Hành động" },
       ],
       items: [
         {
@@ -322,7 +323,17 @@ export default {
       ],
     };
   },
+
   methods: {
+    addNewApartment() {
+      this.apartments.push(Vue.util.extend({}, this.apartment));
+    },
+    removeApartment(index) {
+      Vue.delete(this.apartments, index);
+    },
+    sumbitForm() {
+      console.log("Kane");
+    },
     onSubmit(event) {
       event.preventDefault();
       alert(JSON.stringify(this.form));
@@ -330,10 +341,11 @@ export default {
     onReset(event) {
       event.preventDefault();
       // Reset our form values
-      this.form.email = "";
-      this.form.name = "";
-      this.form.food = null;
-      this.form.checked = [];
+      this.form.tennl = "";
+      this.form.nhacc = "";
+      this.form.soluong = "";
+      this.form.ngaynhap = "";
+
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
@@ -423,5 +435,10 @@ export default {
   align-items: center;
   justify-content: flex-end;
   margin: 1rem 0;
+}
+.label-cout {
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 20px;
 }
 </style>

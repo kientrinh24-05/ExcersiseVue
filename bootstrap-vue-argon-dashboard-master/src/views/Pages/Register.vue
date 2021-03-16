@@ -81,9 +81,7 @@
                         Policy
                       >
                         <b-form-checkbox>
-                          <span class="text-muted"
-                            >Bạn đã đông ý vào những <a href="#!">điều khoản</a></span
-                          >
+                          <span class="text-muted">Staf </span>
                         </b-form-checkbox>
                       </base-input>
                     </b-col>
