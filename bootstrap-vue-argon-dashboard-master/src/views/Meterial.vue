@@ -66,7 +66,6 @@
                       ><i class="fa fa-search" aria-hidden="true"></i
                     ></b-button>
                   </div>
-
                   <div class="content-table">
                     <b-table
                       class="table-sc"
@@ -171,7 +170,6 @@ export default {
         food: null,
         checked: [],
       },
-
       infoModal: {
         id: "info-modal",
         title: "",
@@ -295,8 +293,7 @@ export default {
 .content-table {
   overflow-x: auto;
 }
-.input-date {
-}
+
 .fillter_date {
   max-width: 50%;
   margin: 1rem 0;
