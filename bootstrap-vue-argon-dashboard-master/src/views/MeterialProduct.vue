@@ -11,23 +11,38 @@
               <h3>Danh sách nguyên liệu</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    type="text"
+                    placeholder="Tìm kiếm..."
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button variant="primary"
+                  ><i class="fas fa-sync-alt"></i
+                ></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
 
-                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
+                <b-button v-b-modal.modal-1 variant="success"
+                  >Thêm mới</b-button
+                >
 
                 <b-modal id="modal-2" title="Filler">
                   <b-form @submit="onSubmit" @reset="onReset">
                     <b-form-group id="input-group-1" label="Thời gian">
                       <div class="fillter_date">
-                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <b-form-input
+                          class="input-date"
+                          type="date"
+                        ></b-form-input>
                         <span>__</span>
-                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <b-form-input
+                          class="input-date"
+                          type="date"
+                        ></b-form-input>
                       </div>
                     </b-form-group>
                   </b-form>
@@ -39,11 +54,17 @@
                       label="Tên nguyên liệu"
                       label-for="input-1"
                     >
-                      <b-form-select v-model="selected" :options="options" class="mb-3">
-                        <!-- These options will appear after the ones from 'options' prop -->
-                        <b-form-select-option value="C">Gạo nếp</b-form-select-option>
-                        <b-form-select-option value="D">Gạo tẻ </b-form-select-option>
-                      </b-form-select>
+                      <b-form-input
+                        id="input-3"
+                        v-model="form.material_id"
+                        placeholder="Nhập số lượng"
+                        required
+                      ></b-form-input>
+                      <!-- <b-form-select v-model="form.material_id" :options="options" class="mb-3" >
+                       
+                        <b-form-select-option  value="1">Gạo nếp</b-form-select-option>
+                        <b-form-select-option value="1">Gạo tẻ </b-form-select-option>
+                      </b-form-select> -->
                     </b-form-group>
 
                     <b-form-group
@@ -51,21 +72,43 @@
                       label="Nhà Phân Phối"
                       label-for="input-2"
                     >
-                      <b-form-select
-                        v-model="selected"
+                      <b-form-input
+                        id="input-3"
+                        v-model="form.supplier_id"
+                        placeholder="Nhập số lượng"
+                        required
+                      ></b-form-input>
+                      <!-- <b-form-select
+                        v-model="form.supplier_id"
                         :options="options"
                         class="mb-3"
                         value-field="item"
                         text-field="name"
                         disabled-field="notEnabled"
-                      ></b-form-select>
+                      ></b-form-select> -->
                     </b-form-group>
 
-                    <b-form-group id="input-group-3" label="Số Lượng" label-for="input-3">
+                    <b-form-group
+                      id="input-group-3"
+                      label="Số Lượng"
+                      label-for="input-3"
+                    >
                       <b-form-input
                         id="input-3"
-                        v-model="meterial.soluong"
+                        v-model="form.amount"
                         placeholder="Nhập số lượng"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                    <b-form-group
+                      id="input-group-3"
+                      label="Giá"
+                      label-for="input-3"
+                    >
+                      <b-form-input
+                        id="input-3"
+                        v-model="form.price"
+                        placeholder="Nhập Giá Cả"
                         required
                       ></b-form-input>
                     </b-form-group>
@@ -117,42 +160,45 @@
                               Rem -
                             </button>
                           </div>
-                          <div class="form-group">
-                            <b-form-input
-                              id="input-1"
-                              v-model="meterial.tennl"
-                              placeholder="Nhập tên nguyên liệu"
-                              name="meterials[][tennl]"
-                              required
-                            ></b-form-input>
-                          </div>
-                          <div class="form-group col-xs-5">
-                            <b-form-input
-                              v-model="meterial.nhacc"
-                              type="text"
-                              name="meterials[][nhacc]"
-                              class="form-control"
-                              placeholder="Nhập nhà phân phối"
-                            ></b-form-input>
-                          </div>
-                          <div class="form-group col-xs-5">
-                            <b-form-input
-                              v-model="meterial.soluong"
-                              type="text"
-                              name="meterials[][soluong]"
-                              class="form-control"
-                              placeholder="Nhập số lượng"
-                            ></b-form-input>
-                          </div>
-                          <div class="form-group col-xs-5">
-                            <input
-                              class="form-control"
-                              type="datetime-local"
-                              value="2011-08-19T13:45:00"
-                              name="meterials[][ngaynhap]"
-                              id="example-datetime-local-input"
-                              v-model="meterial.ngaynhap"
-                            />
+                        
+                          <div>
+                            <div class="form-group">
+                              <b-form-input
+                                id="input-1"
+                                v-model="meterial.tennl"
+                                placeholder="Nhập tên nguyên liệu"
+                                name="meterials[][tennl]"
+                                required
+                              ></b-form-input>
+                            </div>
+                            <div class="form-group col-xs-5">
+                              <b-form-input
+                                v-model="meterial.nhacc"
+                                type="text"
+                                name="meterials[][nhacc]"
+                                class="form-control"
+                                placeholder="Nhập nhà phân phối"
+                              ></b-form-input>
+                            </div>
+                            <div class="form-group col-xs-5">
+                              <b-form-input
+                                v-model="meterial.soluong"
+                                type="text"
+                                name="meterials[][soluong]"
+                                class="form-control"
+                                placeholder="Nhập số lượng"
+                              ></b-form-input>
+                            </div>
+                            <div class="form-group col-xs-5">
+                              <input
+                                class="form-control"
+                                type="datetime-local"
+                                value="2011-08-19T13:45:00"
+                                name="meterials[][ngaynhap]"
+                                id="example-datetime-local-input"
+                                v-model="meterial.ngaynhap"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -209,10 +255,18 @@
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
+import FormAdd from "./Pages/FormAdd.vue";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
+import axios from "axios";
 
 export default {
   components: {
@@ -222,6 +276,7 @@ export default {
     [DropdownMenu.name]: DropdownMenu,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
+    FormAdd
   },
   data() {
     return {
@@ -231,25 +286,27 @@ export default {
       },
       selected: "A",
       options: [
-        { item: "A", name: "Công Ty 1" },
-        { item: "B", name: "Công Ty 12" },
-        { item: "D", name: "OCông Ty 123" },
+        { item: "1", name: "Công Ty 1" },
+        { item: "1", name: "Công Ty 12" },
+        { item: "1", name: "OCông Ty 123" },
       ],
       apartments: [],
       projects,
       users,
       currentPage: 1,
+
       form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: [],
+        material_id: "",
+        supplier_id: "",
+        amount: "",
+        price: "",
       },
       meterial: {
-        tennl: "",
-        nhacc: "",
-        soluong: "",
-        ngaynhap: "",
+        material_id: "",
+        supplier_id: "",
+        amount: "",
+        price: "",
+        import_date: "",
       },
       meterials: [],
       created() {
@@ -287,38 +344,12 @@ export default {
 
         // { key: "actions", label: "Hành động" },
       ],
-      items: [
-        {
-          isActive: true,
-          mã_nguyên_liệu: 1,
-          tên_nguyên_liệu: "Gạo Tẻ",
-          nhà_phân_phối: "Gạo",
-          số_lượng: "200000",
-          giá: 252,
-          ngày_nhập: "02/05/2021 20.00PM",
-        },
-        {
-          isActive: true,
-          mã_nguyên_liệu: 2,
-          tên_nguyên_liệu: "Nước Suối",
-          nhà_phân_phối: "Nước",
-          số_lượng: "100000",
-          giá: 252,
-          ngày_nhập: "02/05/2021 20.00PM",
-        },
-        {
-          isActive: true,
-          mã_nguyên_liệu: 3,
-          tên_nguyên_liệu: "Cam Sành",
-          nhà_phân_phối: "Trái Cây",
-          số_lượng: "1122",
-          giá: 252,
-          ngày_nhập: "02/05/2021 20.00PM",
-        },
-      ],
+      items: [],
     };
   },
-
+  created() {
+    this.getMeterial();
+  },
   methods: {
     addNewApartment() {
       this.apartments.push(Vue.util.extend({}, this.apartment));
@@ -329,10 +360,46 @@ export default {
     sumbitForm() {
       console.log("Kane");
     },
+
+    getMeterial() {
+      fetch("http://127.0.0.1:8000/material/list_importmaterial/")
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items = json.data.map((meterial) => {
+              return {
+                tên_nguyên_liệu: meterial.material_id,
+                nhà_phân_phối: meterial.supplier_id,
+                số_lượng: meterial.amount,
+                giá: meterial.price,
+                ngày_nhập: meterial.import_date,
+              };
+            }))
+        );
+    },
+    addMeterial(payload) {
+      const path = "http://127.0.0.1:8000/material/list_importmaterial/";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getMeterial();
+        })
+        .catch((error) => {
+          this.getMeterial();
+          console.error(error);
+        });
+    },
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      const payload = {
+        material_id: this.form.material_id,
+        supplier_id: this.form.supplier_id,
+        amount: this.form.amount,
+        price: this.form.price,
+      };
+      this.addMeterial(payload);
     },
+
     onReset(event) {
       event.preventDefault();
       // Reset our form values

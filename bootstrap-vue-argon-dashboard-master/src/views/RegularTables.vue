@@ -257,8 +257,14 @@ export default {
     },
     //Update
     editSuplier(index) {
-      this.editform = index;
-      console.log(index);
+      axios.get(`http://127.0.0.1:8000/supplier/list_supplier/`+index).then(res =>{
+        this.editform.supplier_name  = res.data.supplier_name
+        this.editform.supplier_address  = res.data.supplier_address
+        this.editform.supplier_phone  = res.data.supplier_phone
+      })
+      .catch(() =>{
+        console.log("error");
+      })
     },
     onSubmitEdit(event) {
       event.preventDefault();
@@ -268,7 +274,7 @@ export default {
         supplier_address: this.editform.supplier_address,
         supplier_phone: this.editform.supplier_phone,
       };
-      this.updateSup(payload, this.editform.id);
+    
     },
     // Update
     updateSup(payload, Supid) {
