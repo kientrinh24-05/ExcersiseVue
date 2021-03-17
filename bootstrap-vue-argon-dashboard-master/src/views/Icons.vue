@@ -10,71 +10,51 @@
       <b-row class="justify-content-center">
         <b-col lg="12">
           <card header-classes="bg-transparent">
-            <!--  
-              <h3 slot="header" class="mb-0">Tất cả bàn ăn</h3>
-              <ul class="list_btn">
-                <li class="btn_click">
-                  <b-button v-b-modal="'my-modal'" variant="success"
-                    ><i class="fas fa-plus"></i>Thêm bàn ăn</b-button
-                  >
-                  <b-modal id="my-modal">
-                    <form action="">
-                      <label class="" style="display: flex" for="">Mã bàn ăn</label>
-                      <input
-                        type="text"
-                        placeholder="Nhập mã bàn ăn"
-                        style="width: 100%"
-                      />
-                      <hr />
-                      <div>
-                        <b-dropdown
-                          split
-                          split-href="#foo/bar"
-                          text="Trạng Thái"
-                          class="m-2"
-                        >
-                          <b-dropdown-item href="#">Có người</b-dropdown-item>
-                          <b-dropdown-item href="#">Trống</b-dropdown-item>
-                          <b-dropdown-item href="#">Tạm ngưng hoạt động</b-dropdown-item>
-                        </b-dropdown>
-                      </div>
-                    </form>
-                  </b-modal>
-                </li>
-              </ul>
-            </div> -->
-            <div class="content_search">
-              <b-form-input
-                id="input-1"
-                type="email"
-                placeholder="Nhập mã bàn"
-                required
-              ></b-form-input>
-              <b-dropdown
-                text="Trạng thái"
-                style="width: 90%"
-                block
-                split
-                split-variant="outline-primary"
-                variant="primary"
-                class="m-2"
-              >
-                <b-dropdown-item href="#">Đã có người</b-dropdown-item>
-                <b-dropdown-item href="#">Trống</b-dropdown-item>
-                <b-dropdown-item href="#">Tạm ngưng hoạt động</b-dropdown-item>
-              </b-dropdown>
-
-              <b-button class="btn-search" variant="outline-primary"
-                ><i class="fa fa-search" aria-hidden="true"></i
-              ></b-button>
+            <div class="items-click-add">
+              <h3>Tất cả bàn ăn</h3>
+              <div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-2 variant="info"
+                  ><i class="fas fa-filter"></i>
+                </b-button>
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới </b-button>
+              </div>
             </div>
-
+            <b-modal id="modal-2" ref="modal-2" title="Lọc">
+              <b-form>
+                <b-form-group id="input-group-1" label="Trạng thái">
+                  <b-form-select v-model="selected" :options="options"></b-form-select>
+                </b-form-group>
+                <div>
+                  <b-button variant="success" @click="hideModal1">Xác nhận</b-button>
+                  <b-button variant="secondary" @click="hideModal1">Hủy Bỏ</b-button>
+                </div>
+              </b-form>
+            </b-modal>
+            <b-modal id="modal-1" ref="modal-1" title="Thêm mới bàn">
+              <b-form>
+                <b-form-group id="input-group-1" label="Trạng thái">
+                  <b-form-select v-model="selected" :options="options"></b-form-select>
+                </b-form-group>
+                <b-form-group id="input-group-1" label="Số lượng">
+                  <b-form-input
+                    id="input-1"
+                    placeholder="Số lượng người"
+                    required
+                  ></b-form-input>
+                </b-form-group>
+                <div>
+                  <b-button variant="success" @click="hideModal">Xác nhận</b-button>
+                  <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
+                </div>
+              </b-form>
+            </b-modal>
             <b-row class="icon-examples">
               <b-col lg="3" md="6">
-                <b-button v-b-modal.modal-1 class="btn-icon-clipboard sucses"
+                <b-button v-b-modal.modal-3 class="btn-icon-clipboard sucses"
                   >101
                   <div>
-                    <b-modal id="modal-1" size="lg" title="Thông tin bàn  ">
+                    <b-modal id="modal-3" size="lg" title="Thông tin bàn  ">
                       <b-row>
                         <b-col lg="6" md="6">
                           <h3>Thông tin bàn</h3>
@@ -211,6 +191,12 @@ export default {
   name: "icons",
   data() {
     return {
+      selected: null,
+      options: [
+        { value: "a", text: "Đã có người" },
+        { value: "b", text: "Trống" },
+        { value: "c", text: "Đang sữa chửa" },
+      ],
       items: [
         { Mã_món: "M101", Tên_món: "Đậu hũ ba sa", Số_lượng: "1" },
         { Mã_món: "M102", Tên_món: "Cá kho tộ", Số_lượng: "2" },
@@ -230,6 +216,12 @@ export default {
         type: "info",
         message: "Copied to clipboard",
       });
+    },
+    hideModal() {
+      this.$refs["modal-1"].hide();
+    },
+    hideModal1() {
+      this.$refs["modal-2"].hide();
     },
   },
 };
@@ -289,5 +281,37 @@ ul li {
   border-radius: 50%;
   height: 40px;
   width: 40px;
+}
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+  margin-right: 0.5rem;
+}
+.pseudo-search input {
+  border: 0;
+  background-color: transparent;
+  width: 200px;
+}
+.pseudo-search button,
+i {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pseudo-search select {
+  border: none;
+}
+.items-click-add {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-footer {
+  display: none;
 }
 </style>

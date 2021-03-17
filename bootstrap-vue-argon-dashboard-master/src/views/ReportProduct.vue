@@ -7,23 +7,29 @@
       <b-row>
         <b-col lg="12">
           <card header-classes="bg-transparent">
-            <div class="content_title">
-              <b-col lg="3" md="6">
-                <b-form-select v-model="selected" :options="options"></b-form-select>
-              </b-col>
-              <b-col lg="4" md="6">
-                <input
-                  class="form-control"
-                  type="datetime-local"
-                  value="2011-08-19T13:45:00"
-                  id="example-datetime-local-input"
-                />
-              </b-col>
-              <b-col lg="2" md="6">
-                <b-button variant="outline-primary" class="btn-search"
-                  ><i class="fas fa-search"></i
-                ></b-button>
-              </b-col>
+            <div class="items-click-add">
+              <h2>Báo Cáo</h2>
+              <div>
+                <div class="pseudo-search">
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <button class="fa fa-search" type="submit"></button>
+                </div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-2 variant="info"
+                  ><i class="fas fa-filter"></i>
+                </b-button>
+                <b-modal id="modal-2">
+                  <b-form>
+                    <b-form-group id="input-group-1" label="Thời gian.">
+                      <div class="fillter_date">
+                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <span>__</span>
+                        <b-form-input class="input-date" type="date"></b-form-input>
+                      </div>
+                    </b-form-group>
+                  </b-form>
+                </b-modal>
+              </div>
 
               <!-- Table  -->
             </div>
@@ -117,5 +123,28 @@ export default {
   border-radius: 50%;
   height: 40px;
   width: 40px;
+}
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+  margin-right: 0.5rem;
+}
+.pseudo-search input {
+  border: 0;
+  background-color: transparent;
+  width: 200px;
+}
+.pseudo-search button,
+i {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pseudo-search select {
+  border: none;
 }
 </style>

@@ -48,8 +48,13 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/ViewSpeciesProduct.vue')
       },
       {
+        path: '/meterial',
+        name: 'Danh sách nguyên liệu',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Meterial.vue')
+      },
+      {
         path: '/meterial_product',
-        name: 'Quản Lý Nguyên Liệu',
+        name: 'Quản Lý Nhập Nguyên Liệu',
         component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue')
       },
       {

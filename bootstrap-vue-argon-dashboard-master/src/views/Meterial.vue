@@ -10,7 +10,12 @@
             <div class="items-click-add">
               <h3>Danh sách nguyên liệu</h3>
               <div>
-                <b-button v-b-modal.modal-1 variant="success">Tạo nguyên liệu</b-button>
+                <div class="pseudo-search">
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <button class="fa fa-search" type="submit"></button>
+                </div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <b-modal id="modal-1" title="Thêm nguyên liệu">
                   <div>
@@ -29,19 +34,6 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-form-group
-                        id="input-group-2"
-                        label="Số Lượng"
-                        label-for="input-2"
-                      >
-                        <b-form-input
-                          id="input-2"
-                          v-model="form.name"
-                          placeholder="Số lượng"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-
                       <b-button type="submit" variant="primary">Submit</b-button>
                       <b-button type="reset" variant="danger">Reset</b-button>
                     </b-form>
@@ -54,18 +46,6 @@
             <b-row>
               <b-col lg="12">
                 <div>
-                  <div class="content_search1">
-                    <b-form-input
-                      id="input-id-meterial"
-                      type="text"
-                      placeholder="Nhập mã nguyên liệu"
-                      required
-                    ></b-form-input>
-
-                    <b-button class="btn-search ml-4" variant="outline-primary"
-                      ><i class="fa fa-search" aria-hidden="true"></i
-                    ></b-button>
-                  </div>
                   <div class="content-table">
                     <b-table
                       class="table-sc"
@@ -106,19 +86,6 @@
                             <b-form-input
                               id="input-1"
                               placeholder="Nhập tên nguyên liệu"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-
-                          <b-form-group
-                            id="input-group-3"
-                            label="Số Lượng"
-                            label-for="input-3"
-                          >
-                            <b-form-input
-                              id="input-3"
-                              v-model="form.name"
-                              placeholder="Nhập số lượng"
                               required
                             ></b-form-input>
                           </b-form-group>
@@ -184,12 +151,6 @@ export default {
           key: "tên_nguyên_liệu",
         },
 
-        {
-          key: "số_lượng",
-
-          // Variant applies to the whole column, including the header and footer
-        },
-
         { key: "actions", label: "Hành động" },
       ],
       items: [
@@ -202,15 +163,11 @@ export default {
           isActive: true,
           mã_nguyên_liệu: 2,
           tên_nguyên_liệu: "Nước Suối",
-
-          số_lượng: "100000",
         },
         {
           isActive: true,
           mã_nguyên_liệu: 3,
           tên_nguyên_liệu: "Cam Sành",
-
-          số_lượng: "1122",
         },
       ],
     };
@@ -316,5 +273,33 @@ export default {
   justify-content: flex-end;
   margin: 1rem 0;
 }
-</style>
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+  margin-right: 0.5rem;
+}
+.pseudo-search input {
+  border: 0;
+  background-color: transparent;
+  width: 200px;
+}
+.pseudo-search button,
+i {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 
+.pseudo-search select {
+  border: none;
+}
+.items-click-add {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>

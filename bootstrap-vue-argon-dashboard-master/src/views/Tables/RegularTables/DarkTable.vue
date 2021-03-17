@@ -5,7 +5,7 @@
       <template #cell(count)="row">
         <input type="number" style="width: 50px" @click="info(row.index)" />
       </template>
-      
+
       <template #cell(actions)="row">
         <b-button
           size="sm"
@@ -28,27 +28,21 @@ export default {
       show: true,
       items: [
         {
-          idmiterial: 40,
           namemiterial: "Xoài Lắc",
+          count: "12",
         },
 
         {
-          idmiterial: 89,
           namemiterial: "Dâu Tây",
+          count: "12",
         },
-        { idmiterial: 38, namemiterial: "Dâu Lắc" },
+        { namemiterial: "Dâu Lắc", count: "12" },
         {
-          idmiterial: 27,
           namemiterial: "Bánh Tráng",
+          count: "12",
         },
       ],
       fields: [
-        {
-          key: "idmiterial",
-          label: "Mã Nguyên Liệu",
-          sortable: true,
-          sortDirection: "desc",
-        },
         {
           key: "namemiterial",
           label: "Tên Nguyên Liệu",

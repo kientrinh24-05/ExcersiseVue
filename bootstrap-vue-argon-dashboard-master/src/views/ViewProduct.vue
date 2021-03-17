@@ -10,9 +10,14 @@
             <div class="items-click-add">
               <h3>Danh sách món ăn</h3>
               <div>
-                <b-button v-b-modal.modal-1 variant="success">Tạo món ăn</b-button>
+                <div class="pseudo-search">
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <button class="fa fa-search" type="submit"></button>
+                </div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
-                <b-modal id="modal-1" title="Thêm món ăn">
+                <b-modal id="modal-1" title="Thêm món ăn" ref="modal-1">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <b-form-group
@@ -57,17 +62,7 @@
                           required
                         ></b-form-input>
                       </b-form-group>
-                      <b-form-group
-                        id="input-group-2"
-                        label="Trạng thái"
-                        label-for="input-2"
-                      >
-                        <b-form-input
-                          id="input-2"
-                          placeholder="Trạng thái"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
+
                       <b-form-group id="input-group-2" label="Hình Ảnh">
                         <b-form-file
                           v-model="file1"
@@ -78,26 +73,15 @@
                       </b-form-group>
 
                       <div class="btn_click">
-                        <b-button type="submit" variant="primary">Xác Nhận</b-button>
+                        <b-button type="submit" variant="primary" @click="hideModal"
+                          >Xác Nhận</b-button
+                        >
                         <b-button type="reset" variant="danger">Làm Mới</b-button>
                       </div>
                     </b-form>
                   </div>
                 </b-modal>
               </div>
-            </div>
-
-            <div class="content_search">
-              <b-form-input
-                id="input-1"
-                type="email"
-                placeholder="Nhập mã món ăn"
-                required
-              ></b-form-input>
-
-              <b-button class="btn-search" variant="outline-primary"
-                ><i class="fa fa-search" aria-hidden="true"></i
-              ></b-button>
             </div>
           </card>
           <div class="content_Table">
@@ -156,6 +140,9 @@ export default {
         this.show = true;
       });
     },
+    hideModal() {
+      this.$refs["modal-1"].hide();
+    },
   },
 };
 </script>
@@ -201,5 +188,28 @@ export default {
   border-radius: 50%;
   height: 40px;
   width: 40px;
+}
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+  margin-right: 0.5rem;
+}
+.pseudo-search input {
+  border: 0;
+  background-color: transparent;
+  width: 200px;
+}
+.pseudo-search button,
+i {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pseudo-search select {
+  border: none;
 }
 </style>

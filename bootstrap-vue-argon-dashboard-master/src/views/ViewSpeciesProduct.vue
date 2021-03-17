@@ -10,7 +10,12 @@
             <div class="items-click-add">
               <h3>Danh sách thể loại</h3>
               <div>
-                <b-button v-b-modal.modal-1 variant="success"> Tạo thể loại</b-button>
+                <div class="pseudo-search">
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <button class="fa fa-search" type="submit"></button>
+                </div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-1 variant="success"> Thêm mới</b-button>
 
                 <b-modal id="modal-1" title="Thêm thể loại">
                   <b-form @submit="onSubmit" @reset="onReset" v-if="show">
@@ -50,18 +55,6 @@
             </div>
             <!-- Table -->
             <div>
-              <div class="content_search">
-                <b-form-input
-                  id="input-1"
-                  type="email"
-                  placeholder="Nhập mã thể loại"
-                  required
-                ></b-form-input>
-
-                <b-button class="btn-search ml-3" variant="outline-primary"
-                  ><i class="fa fa-search" aria-hidden="true"></i
-                ></b-button>
-              </div>
               <b-card no-body>
                 <div>
                   <b-table class="table-sc" striped hover :items="items" :fields="fields">
@@ -285,5 +278,28 @@ export default {
   border-radius: 50%;
   height: 40px;
   width: 40px;
+}
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+  margin-right: 0.5rem;
+}
+.pseudo-search input {
+  border: 0;
+  background-color: transparent;
+  width: 200px;
+}
+.pseudo-search button,
+i {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pseudo-search select {
+  border: none;
 }
 </style>

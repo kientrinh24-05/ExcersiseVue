@@ -66,18 +66,6 @@
                   </b-form-group>
 
                   <!-- trạng_thái Product -->
-                  <b-form-group id="input-group-2" label="" label-for="input-2">
-                    <b-dropdown
-                      text="Trạng thái"
-                      block
-                      variant="primary"
-                      class="m-2"
-                      menu-class="w-100"
-                    >
-                      <b-dropdown-item href="#">Còn</b-dropdown-item>
-                      <b-dropdown-item href="#">Hết</b-dropdown-item>
-                    </b-dropdown>
-                  </b-form-group>
 
                   <b-form-group>
                     <div>
@@ -88,7 +76,7 @@
                       >
 
                       <!-- The modal -->
-                      <b-modal id="modal-lg" size="lg">
+                      <b-modal id="modal-lg">
                         <DarkTable />
                       </b-modal>
                     </div>
@@ -144,28 +132,18 @@ export default {
       fields: [
         {
           key: "mã_món_ăn",
-          sortable: true,
         },
         {
           key: "tên_món_ăn",
-          sortable: false,
         },
         {
           key: "phân_loại",
 
-          sortable: true,
           // Variant applies to the whole column, including the header and footer
         },
         {
           key: "giá_sản_phẩm",
 
-          sortable: true,
-          // Variant applies to the whole column, including the header and footer
-        },
-        {
-          key: "trạng_thái",
-
-          sortable: true,
           // Variant applies to the whole column, including the header and footer
         },
 
@@ -178,7 +156,6 @@ export default {
           tên_món_ăn: "Gạo Tẻ",
           phân_loại: "Gạo",
           giá_sản_phẩm: "200000",
-          trạng_thái: "Còn",
         },
         {
           isActive: true,
@@ -186,7 +163,6 @@ export default {
           tên_món_ăn: "Nước Suối",
           phân_loại: "Nước",
           giá_sản_phẩm: "100000",
-          trạng_thái: "Hết",
         },
         {
           isActive: true,
@@ -194,7 +170,6 @@ export default {
           tên_món_ăn: "Cam Sành",
           phân_loại: "Trái Cây",
           giá_sản_phẩm: "1122",
-          trạng_thái: "Còn",
         },
       ],
       form: {

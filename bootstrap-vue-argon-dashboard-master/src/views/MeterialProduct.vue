@@ -10,8 +10,28 @@
             <div class="items-click-add">
               <h3>Danh sách nguyên liệu</h3>
               <div>
-                <b-button v-b-modal.modal-1 variant="success">Tạo nguyên liệu</b-button>
+                <div class="pseudo-search">
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <button class="fa fa-search" type="submit"></button>
+                </div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-2 variant="info"
+                  ><i class="fas fa-filter"></i>
+                </b-button>
 
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
+
+                <b-modal id="modal-2" title="Filler">
+                  <b-form @submit="onSubmit" @reset="onReset">
+                    <b-form-group id="input-group-1" label="Thời gian">
+                      <div class="fillter_date">
+                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <span>__</span>
+                        <b-form-input class="input-date" type="date"></b-form-input>
+                      </div>
+                    </b-form-group>
+                  </b-form>
+                </b-modal>
                 <b-modal id="modal-1" title="Thêm nguyên liệu">
                   <b-form @submit="onSubmit" @reset="onReset">
                     <b-form-group
@@ -19,12 +39,11 @@
                       label="Tên nguyên liệu"
                       label-for="input-1"
                     >
-                      <b-form-input
-                        id="input-1"
-                        v-model="meterial.tennl"
-                        placeholder="Nhập tên nguyên liệu"
-                        required
-                      ></b-form-input>
+                      <b-form-select v-model="selected" :options="options" class="mb-3">
+                        <!-- These options will appear after the ones from 'options' prop -->
+                        <b-form-select-option value="C">Gạo nếp</b-form-select-option>
+                        <b-form-select-option value="D">Gạo tẻ </b-form-select-option>
+                      </b-form-select>
                     </b-form-group>
 
                     <b-form-group
@@ -32,12 +51,14 @@
                       label="Nhà Phân Phối"
                       label-for="input-2"
                     >
-                      <b-form-input
-                        id="input-2"
-                        v-model="meterial.nhacc"
-                        placeholder="Nhập nhà phân phối"
-                        required
-                      ></b-form-input>
+                      <b-form-select
+                        v-model="selected"
+                        :options="options"
+                        class="mb-3"
+                        value-field="item"
+                        text-field="name"
+                        disabled-field="notEnabled"
+                      ></b-form-select>
                     </b-form-group>
 
                     <b-form-group id="input-group-3" label="Số Lượng" label-for="input-3">
@@ -145,33 +166,6 @@
             <b-row>
               <b-col lg="12">
                 <div>
-                  <div class="content_search1">
-                    <b-form-input
-                      id="input-id-meterial"
-                      type="text"
-                      placeholder="Nhập mã nguyên liệu"
-                      required
-                    ></b-form-input>
-                    <b-form-select
-                      v-model="selected"
-                      :options="options"
-                      class="ml-3 mr"
-                      value-field="item"
-                      text-field="name"
-                    ></b-form-select>
-
-                    <b-button class="btn-search ml-4" variant="outline-primary"
-                      ><i class="fa fa-search" aria-hidden="true"></i
-                    ></b-button>
-                  </div>
-                  <div class="fillter_date">
-                    <span>Từ:</span>
-                    <b-form-input class="input-date" type="date"></b-form-input>
-                    <span>-</span>
-                    <b-form-input class="input-date" type="date"></b-form-input>
-                    <b-button>Tuần</b-button>
-                    <b-button>Tháng</b-button>
-                  </div>
                   <div class="content-table">
                     <b-table
                       class="table-sc"
@@ -235,6 +229,12 @@ export default {
         price: "",
         rooms: "",
       },
+      selected: "A",
+      options: [
+        { item: "A", name: "Công Ty 1" },
+        { item: "B", name: "Công Ty 12" },
+        { item: "D", name: "OCông Ty 123" },
+      ],
       apartments: [],
       projects,
       users,
@@ -256,11 +256,6 @@ export default {
         this.meterials = JSON.parse(this.$el.dataset.apartments);
       },
 
-      options: [
-        { item: "A", name: "DNTN Sáng" },
-        { item: "B", name: "TNHH ToanTen" },
-        { item: "D", name: "TNHH Pham" },
-      ],
       infoModal: {
         id: "info-modal",
         title: "",
@@ -440,5 +435,28 @@ export default {
   font-weight: bold;
   margin-left: 20px;
   font-size: 20px;
+}
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+  margin-right: 0.5rem;
+}
+.pseudo-search input {
+  border: 0;
+  background-color: transparent;
+  width: 200px;
+}
+.pseudo-search button,
+i {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pseudo-search select {
+  border: none;
 }
 </style>

@@ -11,7 +11,12 @@
             <div class="items-click-add">
               <h3>Danh sách nhà cung cấp</h3>
               <div>
-                <b-button v-b-modal.modal-1 variant="success">Tạo nhà cung cấp</b-button>
+                <div class="pseudo-search">
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <button class="fa fa-search" type="submit"></button>
+                </div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <!-- Modal Tạo nhà cc -->
                 <b-modal id="modal-1" title="Thêm nhà cung cấp" ref="addBookModal">
@@ -68,18 +73,6 @@
               </div>
             </div>
 
-            <div class="content_search">
-              <b-form-input
-                class="input-ncc"
-                type="text"
-                placeholder="Nhập tên nhà cung cấp"
-                required
-              ></b-form-input>
-
-              <b-button class="btn-search" variant="outline-primary"
-                ><i class="fa fa-search" aria-hidden="true"></i
-              ></b-button>
-            </div>
             <!-- Table  -->
             <div>
               <b-card no-body>
@@ -87,70 +80,14 @@
                   <b-table class="table-sc" striped hover :items="items" :fields="fields">
                     <template #cell(actions)="row">
                       <i @click="info(row.item, row.index, $event.target)"></i>
-                      <b-button v-b-modal.my-modal @click="editSuplier(sup)"
+                      <b-button v-b-modal.my-modal @click="editSuplier(index)"
                         ><i class="fas fa-pencil-alt"></i
                       ></b-button>
                     </template>
                   </b-table>
 
                   <!-- Modal  -->
-                  <!-- <b-modal
-                    :id="infoModal.id"
-                    title="Thông tin nhà cung cấp"
-                    ok-only
-                    ref="editSupModal"
-                  >
-                    <pre></pre>
-                    <div>
-                      <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
-                      <div>
-                        <div>
-                          <b-form @submit="onSubmitEdit" @reset="onReset" v-if="show">
-                            <b-form-group
-                              id="input-group-2"
-                              label="Tên nhà cung cấp"
-                              label-for="input-2"
-                            >
-                              <b-form-input
-                                id="input-2"
-                                v-model="editform.supplier_name"
-                                placeholder="Tên nhà cung cấp"
-                                required
-                              ></b-form-input>
-                            </b-form-group>
-                            <b-form-group
-                              id="input-group-3"
-                              label="Địa chỉ"
-                              label-for="input-3"
-                            >
-                              <b-form-input
-                                id="input-3"
-                                v-model="editform.supplier_address"
-                                type="text"
-                                placeholder="Địa chỉ"
-                                required
-                              ></b-form-input>
-                            </b-form-group>
-                            <b-form-group
-                              id="input-group-4"
-                              label="Số Điện Thoại"
-                              label-for="input-4"
-                            >
-                              <b-form-input
-                                id="input-4"
-                                v-model="editform.supplier_phone"
-                                type="text"
-                                placeholder="Số Điện Thoại"
-                                required
-                              ></b-form-input>
-                            </b-form-group>
-                            <b-button type="submit" variant="primary">Update</b-button>
-                      
-                          </b-form>
-                        </div>
-                      </div>
-                    </div>
-                  </b-modal> -->
+
                   <!-- --- Modal-- -->
                   <b-modal id="my-modal" ref="editSupModal">
                     <div>
@@ -306,6 +243,18 @@ export default {
           console.log(error);
         });
     },
+    onSubmit(event) {
+      event.preventDefault();
+
+      this.$refs.addBookModal.hide();
+      const payload = {
+        supplier_name: this.form.supplier_name,
+        supplier_address: this.form.supplier_address,
+        supplier_phone: this.form.supplier_phone,
+      };
+      this.addSuplier(payload);
+      console.log("kane");
+    },
     //Update
     editSuplier(index) {
       this.editform = index;
@@ -349,18 +298,7 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    onSubmit(event) {
-      event.preventDefault();
 
-      this.$refs.addBookModal.hide();
-      const payload = {
-        supplier_name: this.form.supplier_name,
-        supplier_address: this.form.supplier_address,
-        supplier_phone: this.form.supplier_phone,
-      };
-      this.addSuplier(payload);
-      console.log("kane");
-    },
     onReset(event) {
       event.preventDefault();
       // Reset our form values
@@ -419,5 +357,28 @@ export default {
   border-radius: 50%;
   height: 40px;
   width: 40px;
+}
+.pseudo-search {
+  display: inline;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px 15px;
+  transition: background-color 0.5 ease-in-out;
+  margin-right: 0.5rem;
+}
+.pseudo-search input {
+  border: 0;
+  background-color: transparent;
+  width: 200px;
+}
+.pseudo-search button,
+i {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pseudo-search select {
+  border: none;
 }
 </style>

@@ -7,6 +7,37 @@
       <b-row class="justify-content-center">
         <b-col lg="12">
           <card header-classes="bg-transparent">
+            <div class="items-click-add">
+              <h2>Danh sách bàn ăn</h2>
+              <div>
+                <div class="pseudo-search">
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <button class="fa fa-search" type="submit"></button>
+                </div>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-2 variant="info"
+                  ><i class="fas fa-filter"></i>
+                </b-button>
+                <b-modal id="modal-2" ref="modal-2">
+                  <b-form>
+                    <b-form-group id="input-group-1" label="Trạng thái">
+                      <b-form-select
+                        v-model="selected"
+                        :options="options"
+                        class="mb-3"
+                        value-field="item"
+                        text-field="name"
+                        disabled-field="notEnabled"
+                      ></b-form-select>
+                    </b-form-group>
+                    <div>
+                      <b-button variant="success" @click="hideModal">Xác nhận</b-button>
+                      <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
+                    </div>
+                  </b-form>
+                </b-modal>
+              </div>
+            </div>
             <b-row class="icon-examples">
               <b-col lg="3" md="6">
                 <b-button class="btn-icon-clipboard sucses">101 </b-button>
@@ -437,7 +468,12 @@ export default {
     return {
       projects,
       users,
-
+      selected: "A",
+      options: [
+        { item: "A", name: "Đã có người" },
+        { item: "B", name: "Còn trống" },
+        { item: "D", name: "Tạm ngưng hoạt động " },
+      ],
       rows: 100,
       currentPage: 1,
       form: {
@@ -488,6 +524,9 @@ export default {
   },
   methods: {
     info(item, index, button) {},
+    hideModal() {
+      this.$refs["modal-2"].hide();
+    },
   },
 };
 </script>
@@ -566,5 +605,11 @@ export default {
 }
 .change {
   background: yellow;
+}
+.items-click-add {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
