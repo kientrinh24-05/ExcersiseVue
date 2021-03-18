@@ -15,14 +15,27 @@
               <h3>Danh sách nhà cung cấp</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    type="text"
+                    placeholder="Tìm kiếm..."
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
-                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
+                <b-button variant="primary"
+                  ><i class="fas fa-sync-alt"></i
+                ></b-button>
+                <b-button v-b-modal.modal-1 variant="success"
+                  >Thêm mới</b-button
+                >
 
                 <!-- Modal Tạo nhà cc -->
-                <b-modal id="modal-1" title="Thêm nhà cung cấp" ref="addBookModal">
+                <b-modal
+                  id="modal-1"
+                  title="Thêm nhà cung cấp"
+                  ref="addBookModal"
+                >
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <h2 style="text-align: center">Thêm nhà cung cấp</h2>
@@ -65,7 +78,9 @@
                           required
                         ></b-form-input>
 
-                        <b-button type="submit" variant="primary">Submit</b-button>
+                        <b-button type="submit" variant="primary"
+                          >Submit</b-button
+                        >
                       </b-form-group>
 
                       <!-- <b-button type="submit" variant="primary">Submit</b-button>
@@ -80,11 +95,17 @@
             <div>
               <b-card no-body>
                 <div class="content_table">
-                  <b-table class="table-sc" striped hover :items="items" :fields="fields">
+                  <b-table
+                    class="table-sc"
+                    striped
+                    hover
+                    :items="items"
+                    :fields="fields"
+                  >
                     <template #cell(actions)="row">
                       <b-button
                         v-b-modal.my-modal
-                        @click="editSup(row.item.mã_nhà_cung_cấp)"
+                        @click="edit(row.item.mã_nhà_cung_cấp)"
                         ><i class="fas fa-pencil-alt"></i
                       ></b-button>
                       <i @click="info(row.item, row.index, $event.target)"></i>
@@ -99,7 +120,7 @@
                       <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
                       <div>
                         <div>
-                          <b-form @submit="onSubmitUpdate" @reset="onReset" v-if="show">
+                          <b-form @submit="update" @reset="onReset" v-if="show">
                             <b-form-group
                               id="input-group-2"
                               label="Tên nhà cung cấp"
@@ -138,7 +159,9 @@
                                 required
                               ></b-form-input>
                             </b-form-group>
-                            <b-button type="submit" variant="primary">Update</b-button>
+                            <b-button type="submit" variant="primary"
+                              >Update</b-button
+                            >
                           </b-form>
                         </div>
                       </div>
@@ -156,7 +179,13 @@
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -205,7 +234,7 @@ export default {
         { key: "actions", label: "Hành Động" },
       ],
       editform: {
-        id: "",
+        // id: "",
         supplier_name: "",
         supplier_address: "",
         supplier_phone: "",
@@ -265,9 +294,36 @@ export default {
       this.addSuplier(payload);
     },
     //Update
-    editSup(items) {
-      this.editform = items;
-      console.log(items, "Items");
+    edit(id) {
+      axios
+        .get(`http://127.0.0.1:8000/supplier/detail_supplier/` + id)
+        .then((res) => res.data)
+        .then(response => {
+  
+          const {data} = response;
+          
+          this.editform.supplier_name = data.supplier_name
+          this.editform.supplier_address = data.supplier_address
+          this.editform.supplier_phone = data.supplier_phone
+        })
+  
+    },
+    /// Loi cho nay , ngay mai fix lien
+    update(id) {
+      axios
+        .put(
+          `http://127.0.0.1:8000/supplier/detail_supplier/` + id,
+           this.editform
+          
+        )
+        .then((res) => {
+          console.log("Res", res.data.data);
+          this.getSuplier();
+
+        })
+        .catch((err) => {
+          console.log("Eroor", err.response);
+        });
     },
 
     updateSup(payload, SupID) {
