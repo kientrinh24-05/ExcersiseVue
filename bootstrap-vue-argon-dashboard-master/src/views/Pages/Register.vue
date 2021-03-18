@@ -82,7 +82,7 @@
                       >
                         <b-form-checkbox>
                           <span class="text-muted">Staf </span>
-                        </b-form-checkbox>
+                         </b-form-checkbox>
                       </base-input>
                     </b-col>
                   </b-row>

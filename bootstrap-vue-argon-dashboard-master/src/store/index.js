@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-   
+    user
   },
 
   getters:{
@@ -18,10 +18,11 @@ export default new Vuex.Store({
             console.log(response);
         })
     }
+    
    },
    mutations: {
-  
-    
+    com(state, dataa )
+
     
   },
   modules: {

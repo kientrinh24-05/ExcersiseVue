@@ -210,6 +210,7 @@ export default {
     BaseHeader,
     LightTable,
   },
+
   methods: {
     onCopy() {
       this.$notify({

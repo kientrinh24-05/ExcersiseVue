@@ -7,6 +7,9 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col lg="12">
+          <b-alert :show="dismissCountDown" dismissible fade variant="warning">
+            Đã thêm thành công trong {{ dismissCountDown }} seconds...
+          </b-alert>
           <card header-classes="bg-transparent">
             <div class="items-click-add">
               <h3>Danh sách nhà cung cấp</h3>
@@ -79,10 +82,12 @@
                 <div class="content_table">
                   <b-table class="table-sc" striped hover :items="items" :fields="fields">
                     <template #cell(actions)="row">
-                      <i @click="info(row.item, row.index, $event.target)"></i>
-                      <b-button v-b-modal.my-modal @click="editSuplier(index)"
+                      <b-button
+                        v-b-modal.my-modal
+                        @click="editSup(row.item.mã_nhà_cung_cấp)"
                         ><i class="fas fa-pencil-alt"></i
                       ></b-button>
+                      <i @click="info(row.item, row.index, $event.target)"></i>
                     </template>
                   </b-table>
 
@@ -94,7 +99,7 @@
                       <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
                       <div>
                         <div>
-                          <b-form @submit="onSubmitEdit" @reset="onReset" v-if="show">
+                          <b-form @submit="onSubmitUpdate" @reset="onReset" v-if="show">
                             <b-form-group
                               id="input-group-2"
                               label="Tên nhà cung cấp"
@@ -171,6 +176,10 @@ export default {
   },
   data() {
     return {
+      dismissSecs: 2,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
+
       projects,
       users,
       currentPage: 1,
@@ -195,18 +204,18 @@ export default {
         },
         { key: "actions", label: "Hành Động" },
       ],
-
-      form: {
-        supplier_name: "",
-        supplier_address: "",
-        supplier_phone: "",
-      },
       editform: {
         id: "",
         supplier_name: "",
         supplier_address: "",
         supplier_phone: "",
       },
+      form: {
+        supplier_name: "",
+        supplier_address: "",
+        supplier_phone: "",
+      },
+
       show: true,
     };
   },
@@ -252,43 +261,41 @@ export default {
         supplier_address: this.form.supplier_address,
         supplier_phone: this.form.supplier_phone,
       };
+      this.showAlert();
       this.addSuplier(payload);
-      console.log("kane");
     },
     //Update
-    editSuplier(index) {
-      axios.get(`http://127.0.0.1:8000/supplier/list_supplier/`+index).then(res =>{
-        this.editform.supplier_name  = res.data.supplier_name
-        this.editform.supplier_address  = res.data.supplier_address
-        this.editform.supplier_phone  = res.data.supplier_phone
-      })
-      .catch(() =>{
-        console.log("error");
-      })
+    editSup(items) {
+      this.editform = items;
+      console.log(items, "Items");
     },
-    onSubmitEdit(event) {
-      event.preventDefault();
-      this.$refs.editSupModal.hide();
-      const payload = {
-        supplier_name: this.editform.supplier_name,
-        supplier_address: this.editform.supplier_address,
-        supplier_phone: this.editform.supplier_phone,
-      };
-    
-    },
-    // Update
-    updateSup(payload, Supid) {
-      const path = `http://127.0.0.1:8000/supplier/detail_supplier/${Supid}`;
+
+    updateSup(payload, SupID) {
+      const path = `http://127.0.0.1:8000/supplier/detail_supplier/${SupID}`;
       axios
         .put(path, payload)
         .then(() => {
           this.getSuplier();
+          this.console.log("Da Update");
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          console.log("Fails");
           this.getSuplier();
         });
     },
+    onSubmitUpdate(event) {
+      event.preventDefault();
+      this.$refs.editSupModal.hide();
+
+      const payload = {
+        tên_nhà_cung_cấp: this.editform.supplier_name,
+        địa_chỉ: this.editform.supplier_address,
+        số_điện_thoại: this.editform.supplier_phone,
+      };
+      this.updateSup(payload, this.form.id);
+    },
+
+    // Update
 
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
@@ -317,6 +324,9 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
     },
   },
 };

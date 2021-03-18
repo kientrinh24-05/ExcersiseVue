@@ -11,38 +11,23 @@
               <h3>Danh sách nguyên liệu</h3>
               <div>
                 <div class="pseudo-search">
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm..."
-                    autofocus
-                    required
-                  />
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"
-                  ><i class="fas fa-sync-alt"></i
-                ></b-button>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
 
-                <b-button v-b-modal.modal-1 variant="success"
-                  >Thêm mới</b-button
-                >
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <b-modal id="modal-2" title="Filler">
                   <b-form @submit="onSubmit" @reset="onReset">
                     <b-form-group id="input-group-1" label="Thời gian">
                       <div class="fillter_date">
-                        <b-form-input
-                          class="input-date"
-                          type="date"
-                        ></b-form-input>
+                        <b-form-input class="input-date" type="date"></b-form-input>
                         <span>__</span>
-                        <b-form-input
-                          class="input-date"
-                          type="date"
-                        ></b-form-input>
+                        <b-form-input class="input-date" type="date"></b-form-input>
                       </div>
                     </b-form-group>
                   </b-form>
@@ -88,11 +73,7 @@
                       ></b-form-select> -->
                     </b-form-group>
 
-                    <b-form-group
-                      id="input-group-3"
-                      label="Số Lượng"
-                      label-for="input-3"
-                    >
+                    <b-form-group id="input-group-3" label="Số Lượng" label-for="input-3">
                       <b-form-input
                         id="input-3"
                         v-model="form.amount"
@@ -100,11 +81,7 @@
                         required
                       ></b-form-input>
                     </b-form-group>
-                    <b-form-group
-                      id="input-group-3"
-                      label="Giá"
-                      label-for="input-3"
-                    >
+                    <b-form-group id="input-group-3" label="Giá" label-for="input-3">
                       <b-form-input
                         id="input-3"
                         v-model="form.price"
@@ -160,7 +137,7 @@
                               Rem -
                             </button>
                           </div>
-                        
+
                           <div>
                             <div class="form-group">
                               <b-form-input
@@ -187,6 +164,15 @@
                                 name="meterials[][soluong]"
                                 class="form-control"
                                 placeholder="Nhập số lượng"
+                              ></b-form-input>
+                            </div>
+                            <div class="form-group col-xs-5">
+                              <b-form-input
+                                v-model="meterial.gia"
+                                type="text"
+                                name="meterials[][gia]"
+                                class="form-control"
+                                placeholder="Nhập giá cả"
                               ></b-form-input>
                             </div>
                             <div class="form-group col-xs-5">
@@ -255,13 +241,7 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import FormAdd from "./Pages/FormAdd.vue";
 import users from "./Tables/users";
@@ -276,7 +256,7 @@ export default {
     [DropdownMenu.name]: DropdownMenu,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    FormAdd
+    FormAdd,
   },
   data() {
     return {
