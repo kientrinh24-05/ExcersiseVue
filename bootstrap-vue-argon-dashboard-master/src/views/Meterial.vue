@@ -17,7 +17,7 @@
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
-                <b-modal id="modal-1" title="Thêm nguyên liệu">
+                <b-modal id="modal-1" title="Thêm nguyên liệu" ref="ModalAdd">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <b-form-group
@@ -27,8 +27,7 @@
                       >
                         <b-form-input
                           id="input-1"
-                          v-model="form.email"
-                          type="email"
+                          v-model="form.material_name"
                           placeholder="Nhập tên nguyên liệu"
                           required
                         ></b-form-input>
@@ -51,33 +50,44 @@
                       class="table-sc"
                       striped
                       hover
+                      id="my-table"
                       :items="items"
+                      :per-page="perPage"
+                      :current-page="currentPage"
                       :fields="fields"
                     >
                       <template #cell(actions)="row">
+                        <span @click="info(row.item, row.index, $event.target)"></span>
+
                         <i
-                          @click="info(row.item, row.index, $event.target)"
+                          v-b-modal.my-modal
+                          @click="edit(row.item.mã_nguyên_liệu)"
                           class="fas fa-pencil-alt"
                         ></i>
                       </template>
                     </b-table>
+                    <b-card-footer class="py-4 d-flex justify-content-start">
+                      <b-pagination
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        aria-controls="my-table"
+                      ></b-pagination>
+                    </b-card-footer>
                   </div>
 
-                  <b-card-footer class="py-4 d-flex justify-content-end">
-                    <base-pagination
-                      v-model="currentPage"
-                      :per-page="10"
-                      :total="40"
-                    ></base-pagination>
-                  </b-card-footer>
-
                   <!-- Modal  -->
-                  <b-modal :id="infoModal.id" title="Thông tin nguyên liệu" ok-only>
+                  <b-modal
+                    id="my-modal"
+                    ref="editSupModal"
+                    title="Thông tin nguyên liệu"
+                    ok-only
+                  >
                     <pre></pre>
                     <div>
                       <h2 style="text-align: center">Sửa Thể Loại</h2>
                       <div>
-                        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                        <b-form @submit="update" @reset="onReset" v-if="show">
                           <b-form-group
                             id="input-group-1"
                             label="Tên nguyên liệu"
@@ -86,6 +96,7 @@
                             <b-form-input
                               id="input-1"
                               placeholder="Nhập tên nguyên liệu"
+                              v-model="editform.material_name"
                               required
                             ></b-form-input>
                           </b-form-group>
@@ -112,6 +123,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
@@ -128,14 +140,17 @@ export default {
   },
   data() {
     return {
+      isEdit: null,
       projects,
       users,
+      perPage: 5,
       currentPage: 1,
       form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: [],
+        material_name: "",
+      },
+      editform: {
+        id: "",
+        material_name: "",
       },
       infoModal: {
         id: "info-modal",
@@ -153,29 +168,79 @@ export default {
 
         { key: "actions", label: "Hành động" },
       ],
-      items: [
-        {
-          isActive: true,
-          mã_nguyên_liệu: 1,
-          tên_nguyên_liệu: "Gạo Tẻ",
-        },
-        {
-          isActive: true,
-          mã_nguyên_liệu: 2,
-          tên_nguyên_liệu: "Nước Suối",
-        },
-        {
-          isActive: true,
-          mã_nguyên_liệu: 3,
-          tên_nguyên_liệu: "Cam Sành",
-        },
-      ],
+      items: [],
     };
   },
+  created() {
+    this.getMeterial();
+  },
+  computed: {
+    rows() {
+      return this.items.length;
+    },
+  },
   methods: {
+    getMeterial() {
+      fetch("http://127.0.0.1:8000/material/list_material/")
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items = json.data.map((meterial) => {
+              return {
+                mã_nguyên_liệu: meterial.id,
+                tên_nguyên_liệu: meterial.material_name,
+              };
+            }))
+        );
+    },
+    addMeterial(payload) {
+      const path = "http://127.0.0.1:8000/material/list_material/";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getMeterial();
+        })
+        .catch((error) => {
+          this.getMeterial();
+          console.log(error);
+        });
+    },
+
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      this.$refs.ModalAdd.hide();
+      const payload = {
+        material_name: this.form.material_name,
+      };
+      this.addMeterial(payload);
+    },
+    edit(id) {
+      this.isEdit = id;
+      console.log(id);
+      axios
+        .get(`http://127.0.0.1:8000/material/detail_material/` + id)
+        .then((res) => res.data)
+        .then((response) => {
+          const { data } = response;
+
+          this.editform.material_name = data.material_name;
+        });
+    },
+    update() {
+      axios
+        .put(
+          `http://127.0.0.1:8000/material/detail_material/` + this.isEdit,
+          this.editform,
+          {}
+        )
+        .then((res) => {
+          console.log(res.data);
+          this.getMeterial();
+          this.$refs.editSupModal.hide();
+        })
+        .catch((err) => {
+          this.$refs.editSupModal.hide();
+        });
     },
     onReset(event) {
       event.preventDefault();
@@ -301,5 +366,11 @@ i {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.fa-pencil-alt {
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  color: red;
 }
 </style>

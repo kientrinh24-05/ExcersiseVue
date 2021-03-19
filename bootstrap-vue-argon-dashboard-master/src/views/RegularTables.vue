@@ -10,6 +10,7 @@
           <b-alert :show="dismissCountDown" dismissible fade variant="warning">
             Đã thêm thành công trong {{ dismissCountDown }} seconds...
           </b-alert>
+
           <card header-classes="bg-transparent">
             <div class="items-click-add">
               <h3>Danh sách nhà cung cấp</h3>
@@ -20,22 +21,15 @@
                     placeholder="Tìm kiếm..."
                     autofocus
                     required
+                    @keyup="search()"
                   />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"
-                  ><i class="fas fa-sync-alt"></i
-                ></b-button>
-                <b-button v-b-modal.modal-1 variant="success"
-                  >Thêm mới</b-button
-                >
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <!-- Modal Tạo nhà cc -->
-                <b-modal
-                  id="modal-1"
-                  title="Thêm nhà cung cấp"
-                  ref="addBookModal"
-                >
+                <b-modal id="modal-1" title="Thêm nhà cung cấp" ref="addBookModal">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <h2 style="text-align: center">Thêm nhà cung cấp</h2>
@@ -78,9 +72,7 @@
                           required
                         ></b-form-input>
 
-                        <b-button type="submit" variant="primary"
-                          >Submit</b-button
-                        >
+                        <b-button type="submit" variant="primary">Submit</b-button>
                       </b-form-group>
 
                       <!-- <b-button type="submit" variant="primary">Submit</b-button>
@@ -99,18 +91,29 @@
                     class="table-sc"
                     striped
                     hover
+                    id="my-table"
                     :items="items"
+                    :per-page="perPage"
+                    :current-page="currentPage"
                     :fields="fields"
                   >
                     <template #cell(actions)="row">
-                      <b-button
+                      <i
                         v-b-modal.my-modal
                         @click="edit(row.item.mã_nhà_cung_cấp)"
-                        ><i class="fas fa-pencil-alt"></i
-                      ></b-button>
-                      <i @click="info(row.item, row.index, $event.target)"></i>
+                        class="fas fa-pencil-alt"
+                      ></i>
                     </template>
                   </b-table>
+                  <b-card-footer class="py-4 d-flex justify-content-start">
+                    <b-pagination
+                      v-model="currentPage"
+                      :total-rows="rows"
+                      :per-page="perPage"
+                      first-number
+                      last-number
+                    ></b-pagination>
+                  </b-card-footer>
 
                   <!-- Modal  -->
 
@@ -120,7 +123,7 @@
                       <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
                       <div>
                         <div>
-                          <b-form @submit="update" @reset="onReset" v-if="show">
+                          <b-form @submit.prevent="update" @reset="onReset" v-if="show">
                             <b-form-group
                               id="input-group-2"
                               label="Tên nhà cung cấp"
@@ -159,9 +162,7 @@
                                 required
                               ></b-form-input>
                             </b-form-group>
-                            <b-button type="submit" variant="primary"
-                              >Update</b-button
-                            >
+                            <b-button type="submit" variant="primary">Update</b-button>
                           </b-form>
                         </div>
                       </div>
@@ -179,13 +180,7 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -205,12 +200,14 @@ export default {
   },
   data() {
     return {
+      isEdit: null,
       dismissSecs: 2,
       dismissCountDown: 0,
       showDismissibleAlert: false,
 
       projects,
       users,
+      perPage: 5,
       currentPage: 1,
       infoModal: {
         id: "info-modal",
@@ -234,7 +231,7 @@ export default {
         { key: "actions", label: "Hành Động" },
       ],
       editform: {
-        // id: "",
+        id: "",
         supplier_name: "",
         supplier_address: "",
         supplier_phone: "",
@@ -250,6 +247,11 @@ export default {
   },
   created() {
     this.getSuplier();
+  },
+  computed: {
+    rows() {
+      return this.items.length;
+    },
   },
   methods: {
     // Get All
@@ -295,63 +297,46 @@ export default {
     },
     //Update
     edit(id) {
+      this.isEdit = id;
       axios
         .get(`http://127.0.0.1:8000/supplier/detail_supplier/` + id)
         .then((res) => res.data)
-        .then(response => {
-  
-          const {data} = response;
-          
-          this.editform.supplier_name = data.supplier_name
-          this.editform.supplier_address = data.supplier_address
-          this.editform.supplier_phone = data.supplier_phone
-        })
-  
+        .then((response) => {
+          const { data } = response;
+
+          this.editform.supplier_name = data.supplier_name;
+          this.editform.supplier_address = data.supplier_address;
+          this.editform.supplier_phone = data.supplier_phone;
+        });
     },
     /// Loi cho nay , ngay mai fix lien
-    update(id) {
+    update() {
       axios
         .put(
-          `http://127.0.0.1:8000/supplier/detail_supplier/` + id,
-           this.editform
-          
+          `http://127.0.0.1:8000/supplier/detail_supplier/` + this.isEdit,
+          this.editform,
+          {}
         )
         .then((res) => {
-          console.log("Res", res.data.data);
+          console.log(res.data);
           this.getSuplier();
-
+          this.$refs.editSupModal.hide();
         })
         .catch((err) => {
-          console.log("Eroor", err.response);
+          this.$refs.editSupModal.hide();
         });
     },
-
-    updateSup(payload, SupID) {
-      const path = `http://127.0.0.1:8000/supplier/detail_supplier/${SupID}`;
+    // Searc
+    search(value) {
       axios
-        .put(path, payload)
-        .then(() => {
-          this.getSuplier();
-          this.console.log("Da Update");
+        .get(`http://127.0.0.1:8000/supplier/search_supplier/` + this.search)
+        .then((response) => {
+          this.form = response.data;
         })
-        .catch(() => {
-          console.log("Fails");
-          this.getSuplier();
+        .catch((e) => {
+          console.log(e);
         });
     },
-    onSubmitUpdate(event) {
-      event.preventDefault();
-      this.$refs.editSupModal.hide();
-
-      const payload = {
-        tên_nhà_cung_cấp: this.editform.supplier_name,
-        địa_chỉ: this.editform.supplier_address,
-        số_điện_thoại: this.editform.supplier_phone,
-      };
-      this.updateSup(payload, this.form.id);
-    },
-
-    // Update
 
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
