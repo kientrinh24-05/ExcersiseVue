@@ -59,6 +59,7 @@
                       <template #cell(actions)="row">
                         <span @click="info(row.item, row.index, $event.target)"></span>
 
+
                         <i
                           v-b-modal.my-modal
                           @click="edit(row.item.mã_nguyên_liệu)"
