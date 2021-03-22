@@ -21,7 +21,7 @@
                     placeholder="Tìm kiếm..."
                     autofocus
                     required
-                    @keyup="search()"
+                    v-model="search"
                   />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
@@ -89,7 +89,7 @@
                 <div class="content_table">
                   <b-table
                     class="table-sc"
-                    striped
+            
                     hover
                     id="my-table"
                     :items="items"
@@ -209,6 +209,7 @@ export default {
       users,
       perPage: 5,
       currentPage: 1,
+      search:"",
       infoModal: {
         id: "info-modal",
         title: "",
@@ -247,6 +248,11 @@ export default {
   },
   created() {
     this.getSuplier();
+  },
+  watch:{
+    search(value) {
+      this.Dosearch(value);
+    }
   },
   computed: {
     rows() {
@@ -326,12 +332,14 @@ export default {
           this.$refs.editSupModal.hide();
         });
     },
-    // Searc
-    search(value) {
+    // Search
+    
+    Dosearch(value) {
       axios
-        .get(`http://127.0.0.1:8000/supplier/search_supplier/` + this.search)
+        .get(`http://127.0.0.1:8000/supplier/search_supplier/`)
         .then((response) => {
           this.form = response.data;
+        console.log(response.data);
         })
         .catch((e) => {
           console.log(e);

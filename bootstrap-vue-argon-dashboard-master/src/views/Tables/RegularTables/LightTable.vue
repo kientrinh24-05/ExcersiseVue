@@ -48,42 +48,21 @@
                     drop-placeholder="Drop file here..."
                   ></b-form-file>
                 </b-form-group>
-
-                <div class="item-group">
-                  <b-form-group id="input-group-2" label-for="input-2">
-                    <b-dropdown
-                      text="Loại s.phẩm"
-                      block
-                      variant="primary"
-                      class="m-2"
-                      menu-class="w-100"
-                    >
-                      <b-dropdown-item href="#">Tất cả</b-dropdown-item>
-                      <b-dropdown-item href="#">Gạo</b-dropdown-item>
-                      <b-dropdown-item href="#">Trái cây</b-dropdown-item>
-                      <b-dropdown-item href="#">Ăn nhanh</b-dropdown-item>
-                    </b-dropdown>
-                  </b-form-group>
-
-                  <!-- trạng_thái Product -->
-
-                  <b-form-group>
-                    <div>
-                      <!-- Using modifiers -->
-
-                      <b-button v-b-modal.modal-lg variant="primary"
-                        >Xem Ng.Liệu</b-button
+                <b-form-group
+                        id="input-group-3"
+                        label="Phân Loại"
+                        label-for="input-3"
                       >
+                        <b-form-select
+                          id="input-3"
+                          :options="foods"
+                          required
+                        ></b-form-select>
+                      </b-form-group>
 
-                      <!-- The modal -->
-                      <b-modal id="modal-lg">
-                        <DarkTable />
-                      </b-modal>
-                    </div>
-                  </b-form-group>
-                </div>
+              
 
-                <!-- Show Modal Nguyên Liệu -->
+            
 
                 <!-- Button Click Submit -->
                 <div class="link-btn">
@@ -129,6 +108,7 @@ export default {
         title: "",
         content: "",
       },
+        foods: [{ text: "", value: null }, "Tất cả", "Gạo", "Ăn Nhanh"],
       fields: [
         {
           key: "mã_món_ăn",

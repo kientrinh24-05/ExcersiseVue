@@ -47,19 +47,16 @@
                 <div>
                   <div class="content-table">
                     <b-table
-                      class="table-sc"
-                      striped
-                      hover
-                      id="my-table"
-                      :items="items"
-                      :per-page="perPage"
-                      :current-page="currentPage"
-                      :fields="fields"
+                    class="table-sc"
+              
+                    hover
+                    id="my-table"
+                    :items="items"
+                    :per-page="perPage"
+                    :current-page="currentPage"
+                    :fields="fields"
                     >
                       <template #cell(actions)="row">
-                        <span @click="info(row.item, row.index, $event.target)"></span>
-
-
                         <i
                           v-b-modal.my-modal
                           @click="edit(row.item.mã_nguyên_liệu)"
@@ -68,13 +65,14 @@
                       </template>
                     </b-table>
                     <b-card-footer class="py-4 d-flex justify-content-start">
-                      <b-pagination
-                        v-model="currentPage"
-                        :total-rows="rows"
-                        :per-page="perPage"
-                        aria-controls="my-table"
-                      ></b-pagination>
-                    </b-card-footer>
+                    <b-pagination
+                      v-model="currentPage"
+                      :total-rows="rows"
+                      :per-page="perPage"
+                      first-number
+                      last-number
+                    ></b-pagination>
+                  </b-card-footer>
                   </div>
 
                   <!-- Modal  -->
@@ -144,8 +142,7 @@ export default {
       isEdit: null,
       projects,
       users,
-      perPage: 5,
-      currentPage: 1,
+    
       form: {
         material_name: "",
       },
@@ -153,6 +150,8 @@ export default {
         id: "",
         material_name: "",
       },
+        perPage: 5,
+      currentPage: 1,
       infoModal: {
         id: "info-modal",
         title: "",
@@ -217,11 +216,11 @@ export default {
     },
     edit(id) {
       this.isEdit = id;
-      console.log(id);
       axios
         .get(`http://127.0.0.1:8000/material/detail_material/` + id)
         .then((res) => res.data)
         .then((response) => {
+          
           const { data } = response;
 
           this.editform.material_name = data.material_name;
