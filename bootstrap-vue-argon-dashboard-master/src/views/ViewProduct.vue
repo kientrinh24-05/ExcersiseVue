@@ -17,7 +17,7 @@
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
-                <b-modal id="modal-1" title="Thêm món ăn" size="lg"    ref="modal-1">
+                <b-modal id="modal-1" title="Thêm món ăn" size="lg" ref="modal-1">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <b-form-group
@@ -52,20 +52,18 @@
 
                       <b-form-group id="input-group-2" label="Hình Ảnh">
                         <b-form-file
-                          v-model="file1"
-                          :state="Boolean(file1)"
+                          v-model="file"
+                          :state="Boolean(file)"
                           placeholder="Chọn địa chỉ hình ảnh..."
                           drop-placeholder="Drop file here..."
                         ></b-form-file>
-                        </b-form-group>
+                      </b-form-group>
 
-                        <b-form-group>
-                        <b-button variant="primary" class="mb-2">
-                            Thêm Ng.Liệu
-                        </b-button>
+                      <b-form-group>
+                        <b-button variant="primary" class="mb-2"> Thêm Ng.Liệu </b-button>
 
-                            <dark-table/>
-                        </b-form-group>
+                        <dark-table />
+                      </b-form-group>
 
                       <div class="btn_click">
                         <b-button type="submit" variant="primary" @click="hideModal"
@@ -74,8 +72,6 @@
                         <b-button type="reset" variant="danger">Làm Mới</b-button>
                       </div>
                     </b-form>
-        
-                    
                   </div>
                 </b-modal>
               </div>
@@ -95,12 +91,12 @@ import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "elemen
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
-import DarkTable from './Tables/RegularTables/DarkTable.vue';
+import DarkTable from "./Tables/RegularTables/DarkTable.vue";
 
 export default {
   components: {
     LightTable,
-   DarkTable,
+    DarkTable,
     [Dropdown.name]: Dropdown,
     [DropdownItem.name]: DropdownItem,
     [DropdownMenu.name]: DropdownMenu,
@@ -122,6 +118,8 @@ export default {
     };
   },
   methods: {
+
+
     onSubmit(event) {
       event.preventDefault();
       alert(JSON.stringify(this.form));

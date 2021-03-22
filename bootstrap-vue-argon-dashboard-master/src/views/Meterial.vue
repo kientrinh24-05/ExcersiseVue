@@ -47,14 +47,13 @@
                 <div>
                   <div class="content-table">
                     <b-table
-                    class="table-sc"
-              
-                    hover
-                    id="my-table"
-                    :items="items"
-                    :per-page="perPage"
-                    :current-page="currentPage"
-                    :fields="fields"
+                      class="table-sc"
+                      hover
+                      id="my-table"
+                      :items="items"
+                      :per-page="perPage"
+                      :current-page="currentPage"
+                      :fields="fields"
                     >
                       <template #cell(actions)="row">
                         <i
@@ -65,14 +64,14 @@
                       </template>
                     </b-table>
                     <b-card-footer class="py-4 d-flex justify-content-start">
-                    <b-pagination
-                      v-model="currentPage"
-                      :total-rows="rows"
-                      :per-page="perPage"
-                      first-number
-                      last-number
-                    ></b-pagination>
-                  </b-card-footer>
+                      <b-pagination
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        first-number
+                        last-number
+                      ></b-pagination>
+                    </b-card-footer>
                   </div>
 
                   <!-- Modal  -->
@@ -142,7 +141,7 @@ export default {
       isEdit: null,
       projects,
       users,
-    
+
       form: {
         material_name: "",
       },
@@ -150,7 +149,7 @@ export default {
         id: "",
         material_name: "",
       },
-        perPage: 5,
+      perPage: 5,
       currentPage: 1,
       infoModal: {
         id: "info-modal",
@@ -161,6 +160,7 @@ export default {
       fields: [
         {
           key: "mã_nguyên_liệu",
+          label: "#",
         },
         {
           key: "tên_nguyên_liệu",
@@ -220,7 +220,6 @@ export default {
         .get(`http://127.0.0.1:8000/material/detail_material/` + id)
         .then((res) => res.data)
         .then((response) => {
-          
           const { data } = response;
 
           this.editform.material_name = data.material_name;

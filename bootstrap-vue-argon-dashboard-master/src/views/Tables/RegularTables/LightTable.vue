@@ -42,27 +42,15 @@
                 </b-form-group>
                 <b-form-group id="input-group-2" label="Hình Ảnh">
                   <b-form-file
-                    v-model="file1"
-                    :state="Boolean(file1)"
+                    v-model="file"
+                    :state="Boolean(file)"
                     placeholder="Chọn địa chỉ hình ảnh..."
                     drop-placeholder="Drop file here..."
                   ></b-form-file>
                 </b-form-group>
-                <b-form-group
-                        id="input-group-3"
-                        label="Phân Loại"
-                        label-for="input-3"
-                      >
-                        <b-form-select
-                          id="input-3"
-                          :options="foods"
-                          required
-                        ></b-form-select>
-                      </b-form-group>
-
-              
-
-            
+                <b-form-group id="input-group-3" label="Phân Loại" label-for="input-3">
+                  <b-form-select id="input-3" :options="foods" required></b-form-select>
+                </b-form-group>
 
                 <!-- Button Click Submit -->
                 <div class="link-btn">
@@ -72,7 +60,7 @@
               </b-form>
             </div>
           </div>
-        </b-modal>
+        </b-modal>  
       </div>
 
       <b-card-footer class="py-4 d-flex justify-content-end">
@@ -108,7 +96,7 @@ export default {
         title: "",
         content: "",
       },
-        foods: [{ text: "", value: null }, "Tất cả", "Gạo", "Ăn Nhanh"],
+      foods: [{ text: "", value: null }, "Tất cả", "Gạo", "Ăn Nhanh"],
       fields: [
         {
           key: "mã_món_ăn",

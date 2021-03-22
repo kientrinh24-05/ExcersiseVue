@@ -3,6 +3,11 @@
 </template>
 
 <script>
-export default {
-}
+export default {};
 </script>
+
+<style>
+.modal-footer {
+  display: none;
+}
+</style>

@@ -31,7 +31,7 @@
             </template>
           </stats-card>
         </b-col>
-        <b-col xl="4" md="2">
+        <b-col xl="4" md="6">
           <stats-card
             title="Khách Hàng"
             type="gradient-green"

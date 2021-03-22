@@ -89,7 +89,6 @@
                 <div class="content_table">
                   <b-table
                     class="table-sc"
-            
                     hover
                     id="my-table"
                     :items="items"
@@ -201,7 +200,7 @@ export default {
   data() {
     return {
       isEdit: null,
-      dismissSecs: 2,
+      dismissSecs: 20,
       dismissCountDown: 0,
       showDismissibleAlert: false,
 
@@ -209,7 +208,7 @@ export default {
       users,
       perPage: 5,
       currentPage: 1,
-      search:"",
+      search: "",
       infoModal: {
         id: "info-modal",
         title: "",
@@ -219,6 +218,8 @@ export default {
       fields: [
         {
           key: "mã_nhà_cung_cấp",
+          sortable: true,
+          label: "#",
         },
         {
           key: "tên_nhà_cung_cấp",
@@ -249,10 +250,10 @@ export default {
   created() {
     this.getSuplier();
   },
-  watch:{
+  watch: {
     search(value) {
       this.Dosearch(value);
-    }
+    },
   },
   computed: {
     rows() {
@@ -333,13 +334,13 @@ export default {
         });
     },
     // Search
-    
+
     Dosearch(value) {
       axios
         .get(`http://127.0.0.1:8000/supplier/search_supplier/`)
         .then((response) => {
           this.form = response.data;
-        console.log(response.data);
+          console.log(response.data);
         })
         .catch((e) => {
           console.log(e);

@@ -17,22 +17,8 @@
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-1 variant="success"> Thêm mới</b-button>
 
-                <b-modal id="modal-1" title="Thêm thể loại">
+                <b-modal id="modal-1" ok-only ref="addCategoryModal">
                   <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                    <b-form-group
-                      id="input-group-1"
-                      label="Mã thể loại"
-                      label-for="input-1"
-                    >
-                      <b-form-input
-                        id="input-1"
-                        v-model="form.email"
-                        type="text"
-                        placeholder="Mã thể loại"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-
                     <b-form-group
                       id="input-group-2"
                       label="Tên thể loại:"
@@ -40,7 +26,7 @@
                     >
                       <b-form-input
                         id="input-2"
-                        v-model="form.name"
+                        v-model="form.category_name"
                         placeholder="Tên thể loại"
                         required
                       ></b-form-input>
@@ -49,6 +35,8 @@
                     <!-- Show Modal Nguyên Liệu -->
 
                     <!-- Button Click Submit -->
+
+                    <b-button type="submit" variant="danger">Add</b-button>
                   </b-form>
                 </b-modal>
               </div>
@@ -60,33 +48,20 @@
                   <b-table class="table-sc" striped hover :items="items" :fields="fields">
                     <template #cell(actions)="row">
                       <i
-                        @click="info(row.item, row.index, $event.target)"
+                        v-b-modal.myModal
+                        @click="edit(row.item.Mã_thể_loại)"
                         class="fas fa-pencil-alt"
                       ></i>
                     </template>
                   </b-table>
 
                   <!-- Modal  -->
-                  <b-modal :id="infoModal.id" ok-only>
+                  <b-modal id="myModal" ok-only ref="editCategoryModal">
                     <pre></pre>
                     <div>
                       <h2 style="text-align: center">Sửa Thể Loại</h2>
                       <div>
-                        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                          <b-form-group
-                            id="input-group-1"
-                            label="Mã thể loại"
-                            label-for="input-1"
-                          >
-                            <b-form-input
-                              id="input-1"
-                              v-model="form.email"
-                              type="text"
-                              placeholder="Mã thể loại"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-
+                        <b-form @submit="update" @reset="onReset" v-if="show">
                           <b-form-group
                             id="input-group-2"
                             label="Tên thể loại:"
@@ -94,7 +69,7 @@
                           >
                             <b-form-input
                               id="input-2"
-                              v-model="form.name"
+                              v-model="formedit.category_name"
                               placeholder="Tên thể loại"
                               required
                             ></b-form-input>
@@ -105,7 +80,6 @@
                           <!-- Button Click Submit -->
                           <div class="link-btn">
                             <b-button type="submit" variant="primary">Xác Nhận</b-button>
-                            <b-button type="reset" variant="danger">Reset</b-button>
                           </div>
                         </b-form>
                       </div>
@@ -135,7 +109,7 @@ import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "elemen
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
-
+import axios from "axios";
 export default {
   components: {
     LightTable,
@@ -147,6 +121,7 @@ export default {
   },
   data() {
     return {
+      isEdit: null,
       projects,
       users,
       currentPage: 1,
@@ -158,39 +133,27 @@ export default {
       fields: [
         {
           key: "Mã_thể_loại",
+          label: "#",
           sortable: true,
         },
         {
           key: "tên_thể_loại",
-          sortable: false,
+          sortable: true,
         },
         { key: "actions", label: "Hành động" },
       ],
-      items: [
-        {
-          isActive: true,
-          Mã_thể_loại: 1,
-          tên_thể_loại: "Trái Cây",
-        },
-        {
-          isActive: true,
-          Mã_thể_loại: 2,
-          tên_thể_loại: "Ăn Nhanh",
-        },
-        {
-          isActive: true,
-          Mã_thể_loại: 3,
-          tên_thể_loại: "Gạo",
-        },
-      ],
+      items: [],
       form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: [],
+        category_name: "",
+      },
+      formedit: {
+        category_name: "",
       },
       show: true,
     };
+  },
+  created() {
+    this.getCategory();
   },
   computed: {
     sortOptions() {
@@ -207,6 +170,70 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
+    //Get All
+    getCategory() {
+      fetch("http://127.0.0.1:8000/food_tabel/list_category/")
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items = json.data.map((category) => {
+              return {
+                Mã_thể_loại: category.id,
+                tên_thể_loại: category.category_name,
+              };
+            }))
+        );
+    },
+    // Add Category
+    addMeterial(payload) {
+      const path = "http://127.0.0.1:8000/food_tabel/create_category/";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getCategory();
+        })
+        .catch((error) => {
+          this.getCategory();
+          console.log(error);
+        });
+    },
+    onSubmit(event) {
+      event.preventDefault();
+      this.$refs.addCategoryModal.hide();
+      const payload = {
+        category_name: this.form.category_name,
+      };
+      this.addMeterial(payload);
+    },
+    //Update
+    edit(id) {
+      this.isEdit = id;
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/detail_category/` + id)
+        .then((res) => res.data)
+        .then((response) => {
+          const { data } = response;
+
+          this.formedit.category_name = data.category_name;
+        });
+    },
+    update() {
+      axios
+        .put(
+          `http://127.0.0.1:8000/food_tabel/detail_category/` + this.isEdit,
+          this.formedit,
+          {}
+        )
+        .then((res) => {
+          console.log(res.data);
+          this.getCategory();
+          this.$refs.editCategoryModal.hide();
+        })
+        .catch((err) => {
+          this.$refs.editCategoryModal.hide();
+        });
+    },
+
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.content = JSON.stringify(item, null, 2);
@@ -221,10 +248,7 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    onSubmit(event) {
-      event.preventDefault();
-      // alert(JSON.stringify(this.form));
-    },
+
     onReset(event) {
       event.preventDefault();
       // Reset our form values

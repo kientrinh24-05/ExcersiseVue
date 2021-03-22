@@ -49,12 +49,13 @@
                 </div>
               </b-form>
             </b-modal>
+
             <b-row class="icon-examples">
-              <b-col lg="3" md="6">
-                <b-button v-b-modal.modal-3 class="btn-icon-clipboard sucses"
-                  >101
+              <b-col lg="3" md="6" v-for="table in tables" :key="table.id">
+                <b-button v-b-modal.modal-3 class="btn-icon-clipboard">
+                  {{ table.id }}
                   <div>
-                    <b-modal id="modal-3" size="lg" title="Thông tin bàn  ">
+                    <!-- <b-modal id="modal-3" size="lg" title="Thông tin bàn  ">
                       <b-row>
                         <b-col lg="6" md="6">
                           <h3>Thông tin bàn</h3>
@@ -119,42 +120,9 @@
                         </b-col>
                         <hr />
                       </b-row>
-                    </b-modal>
+                    </b-modal> -->
                   </div>
                 </b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">102 </b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses"> 103 </b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard sucses">104</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard sucses">105</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">106</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">107</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">108</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">109</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">110</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">111</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">112</b-button>
               </b-col>
             </b-row>
           </card>
@@ -185,12 +153,14 @@ import Vue from "vue";
 import VueClipboard from "vue-clipboard2";
 import BaseHeader from "@/components/BaseHeader";
 import LightTable from "./Tables/RegularTables/LightTable";
+import axios from "axios";
 
 Vue.use(VueClipboard);
 export default {
   name: "icons",
   data() {
     return {
+      tables: null,
       selected: null,
       options: [
         { value: "a", text: "Đã có người" },
@@ -199,10 +169,10 @@ export default {
       ],
       items: [
         { Mã_món: "M101", Tên_món: "Đậu hũ ba sa", Số_lượng: "1" },
-        { Mã_món: "M102", Tên_món: "Cá kho tộ", Số_lượng: "2" },
+        { Mã_món: "M102", Tên_món: "Cá kho tộ", Số_lượng: "21" },
         { Mã_món: "M103", Tên_món: "Cá lóc canh chua", Số_lượng: "344" },
         { Mã_món: "M104", Tên_món: "Đậu hũ ba sa", Số_lượng: "5" },
-        { Mã_món: "M105", Tên_món: "Đậu hũ ba sa", Số_lượng: "12312" },
+        { Mã_món: "M105", Tên_món: "Đậu  hũ ba sa", Số_lượng: "12312" },
       ],
     };
   },
@@ -210,8 +180,21 @@ export default {
     BaseHeader,
     LightTable,
   },
-
+  created() {
+    this.getTable();
+  },
   methods: {
+    getTable() {
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
+        .then((response) => {
+          this.tables = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     onCopy() {
       this.$notify({
         type: "info",
