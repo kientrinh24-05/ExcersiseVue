@@ -14,37 +14,42 @@
               <h3>Tất cả bàn ăn</h3>
               <div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
-                <b-button v-b-modal.modal-2 variant="info"
-                  ><i class="fas fa-filter"></i>
-                </b-button>
+
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới </b-button>
               </div>
             </div>
             <b-modal id="modal-2" ref="modal-2" title="Lọc">
-              <b-form>
+              <b-form @submit="SubmitSearch">
                 <b-form-group id="input-group-1" label="Trạng thái">
-                  <b-form-select v-model="selected" :options="options"></b-form-select>
+                  <b-form-select
+                    v-model="FormSearch.status"
+                    :options="options"
+                  ></b-form-select>
                 </b-form-group>
                 <div>
-                  <b-button variant="success" @click="hideModal1">Xác nhận</b-button>
+                  <b-button type="submit" variant="success">Xác nhận</b-button>
                   <b-button variant="secondary" @click="hideModal1">Hủy Bỏ</b-button>
                 </div>
               </b-form>
             </b-modal>
-            <b-modal id="modal-1" ref="modal-1" title="Thêm mới bàn">
-              <b-form>
-                <b-form-group id="input-group-1" label="Trạng thái">
-                  <b-form-select v-model="selected" :options="options"></b-form-select>
-                </b-form-group>
-                <b-form-group id="input-group-1" label="Số lượng">
+            <b-modal id="modal-1" ref="modalAddTable" title="Thêm mới bàn">
+              <b-form @submit="onSubmit">
+                <!-- <b-form-group id="input-group-1" label="Trạng thái">
+                  <b-form-select
+                    v-model="FormAdd.status"
+                    :options="options"
+                  ></b-form-select>
+                </b-form-group> -->
+                <b-form-group id="input-group-1" label="Tên bàn">
                   <b-form-input
                     id="input-1"
-                    placeholder="Số lượng người"
+                    v-model="FormAdd.person"
+                    placeholder="Tên bàn"
                     required
                   ></b-form-input>
                 </b-form-group>
                 <div>
-                  <b-button variant="success" @click="hideModal">Xác nhận</b-button>
+                  <b-button variant="success" type="submit">Xác nhận</b-button>
                   <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
                 </div>
               </b-form>
@@ -52,97 +57,61 @@
 
             <b-row class="icon-examples">
               <b-col lg="3" md="6" v-for="table in tables" :key="table.id">
-                <b-button v-b-modal.modal-3 class="btn-icon-clipboard">
-                  {{ table.id }}
-                  <div>
-                    <!-- <b-modal id="modal-3" size="lg" title="Thông tin bàn  ">
-                      <b-row>
-                        <b-col lg="6" md="6">
-                          <h3>Thông tin bàn</h3>
-                          <b-form-group>
-                            <b-form-input
-                              id="input-1"
-                              type="text"
-                              placeholder="Mã bàn"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-
-                          <b-form-group>
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Tình trạng bàn"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-                        </b-col>
-                        <b-col lg="6" md="6">
-                          <h3>Thông tin đặt bàn</h3>
-                          <b-form-group>
-                            <b-form-input
-                              id="input-1"
-                              type="text"
-                              placeholder="Tên Người Đặt"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-
-                          <b-form-group>
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Số ĐT"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-                          <b-form-group>
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Số Lượng"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-                          <b-form-group>
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Ngày Đặt"
-                              required
-                              type="date"
-                            ></b-form-input>
-                          </b-form-group>
-                          <b-form-group>
-                            <b-form-input
-                              id="input-2"
-                              placeholder="Tiền Đặt"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
-                          <b-button variant="success">Đặt Bàn</b-button>
-                        </b-col>
-                        <hr />
-                      </b-row>
-                    </b-modal> -->
-                  </div>
+                <b-button v-b-modal="'myModal'" class="btn-icon-clipboard">
+                   {{ table.id }}
                 </b-button>
+
+                <b-modal id="myModal" title="Thông tin bàn  ">
+                  <b-row>
+                    <b-col lg="12" md="6">
+                      <h3>Thông tin đặt bàn</h3>
+                      <b-form-group>
+                        <b-form-input
+                          id="input-1"
+                          type="text"
+                          placeholder="Tên Người Đặt"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+
+                      <b-form-group>
+                        <b-form-input
+                          id="input-2"
+                          placeholder="Số ĐT"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+                      <b-form-group>
+                        <b-form-input
+                          id="input-2"
+                          placeholder="Số Lượng"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+                      <b-form-group>
+                        <b-form-input
+                          id="input-2"
+                          placeholder="Ngày Đặt"
+                          required
+                          type="date"
+                        ></b-form-input>
+                      </b-form-group>
+                      <b-form-group>
+                        <b-form-input
+                          id="input-2"
+                          placeholder="Tiền Đặt"
+                          required
+                        ></b-form-input>
+                      </b-form-group>
+                      <b-button variant="success">Đặt Bàn</b-button>
+                    </b-col>
+                    <hr />
+                  </b-row>
+                </b-modal>
               </b-col>
             </b-row>
           </card>
         </b-col>
-        <div class="action-f">
-          <ul>
-            <li>
-              <div class="bg-span sucses"></div>
-              Đã có người
-            </li>
-            <li>
-              <div class="bg-span no-sucses"></div>
-              Bàn Trống
-            </li>
-            <li>
-              <div class="bg-span change"></div>
-              Tạm ngưng hoạt động
-            </li>
-          </ul>
-        </div>
       </b-row>
     </b-container>
   </div>
@@ -163,17 +132,19 @@ export default {
       tables: null,
       selected: null,
       options: [
-        { value: "a", text: "Đã có người" },
-        { value: "b", text: "Trống" },
-        { value: "c", text: "Đang sữa chửa" },
+        { value: "Có người", text: "Có người" },
+        { value: "Trống", text: "Trống" },
+        { value: "Tạm ngưng hoạt động", text: "Tạm ngưng hoạt động" },
       ],
-      items: [
-        { Mã_món: "M101", Tên_món: "Đậu hũ ba sa", Số_lượng: "1" },
-        { Mã_món: "M102", Tên_món: "Cá kho tộ", Số_lượng: "21" },
-        { Mã_món: "M103", Tên_món: "Cá lóc canh chua", Số_lượng: "344" },
-        { Mã_món: "M104", Tên_món: "Đậu hũ ba sa", Số_lượng: "5" },
-        { Mã_món: "M105", Tên_món: "Đậu  hũ ba sa", Số_lượng: "12312" },
-      ],
+      items: [],
+
+      FormAdd: {
+        status: null,
+        person: null,
+      },
+      FormSearch: {
+        status: null,
+      },
     };
   },
   components: {
@@ -194,6 +165,53 @@ export default {
           console.log(err);
         });
     },
+    onSubmit(event) {
+      event.preventDefault();
+
+      this.$refs.modalAddTable.hide();
+      const payload = {
+        status: this.FormAdd.status,
+        person: this.FormAdd.person,
+      };
+      console.log(payload);
+
+      this.addTable(payload);
+    },
+    //ADD Table
+    addTable(payload) {
+      const path = "http://127.0.0.1:8000/food_tabel/create_table/";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.getTable();
+        })
+        .catch((error) => {
+          this.getTable();
+          console.log(error);
+        });
+    },
+    Search(payload) {
+      const path = "http://127.0.0.1:8000/food_tabel/create_table/";
+      axios
+        .get(path, payload)
+        .then((response) => {
+          this.tables = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    SubmitSearch(event) {
+      event.preventDefault();
+
+      this.$refs.modalAddTable.hide();
+      const payload = {
+        status: this.FormSearch.status,
+      };
+      console.log(payload);
+
+      this.Search(payload);
+    },
 
     onCopy() {
       this.$notify({
@@ -207,6 +225,7 @@ export default {
     hideModal1() {
       this.$refs["modal-2"].hide();
     },
+    select(index) {},
   },
 };
 </script>

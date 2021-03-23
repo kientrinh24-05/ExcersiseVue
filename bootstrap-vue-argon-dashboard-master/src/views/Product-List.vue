@@ -40,40 +40,16 @@
             </div>
             <b-row class="icon-examples">
               <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard sucses">101 </b-button>
+                <b-button class="btn-icon-clipboard">101 </b-button>
               </b-col>
               <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">102 </b-button>
+                <b-button class="btn-icon-clipboard">102 </b-button>
               </b-col>
               <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses"> 103 </b-button>
+                <b-button class="btn-icon-clipboard"> 103 </b-button>
               </b-col>
               <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard sucses">104</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard sucses">105</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">106</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard no-sucses">107</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">108</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">109</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">110</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">111</b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard change">112</b-button>
+                <b-button class="btn-icon-clipboard">104</b-button>
               </b-col>
             </b-row>
           </card>
@@ -82,7 +58,7 @@
       <b-row>
         <b-col lg="12">
           <card header-classes="bg-transparent">
-            <b-card no-body>
+            <b-card body>
               <b-row>
                 <b-col lg="6 " md="12">
                   <b-tabs pills card>
@@ -431,11 +407,7 @@
                     </b-form>
                     <hr />
                     <span>Chọn bàn</span>
-                    <b-form-select
-                      id="ratio"
-                      v-model="aspect"
-                      :options="aspects"
-                    ></b-form-select>
+                    <b-form-select id="ratio"></b-form-select>
                     <b-button class="btn_table" variant="primary">Chuyển bàn</b-button>
                   </div>
                 </b-col>
@@ -597,12 +569,7 @@ export default {
   text-align: center;
   font-weight: bold;
 }
-.sucses {
-  background: red;
-}
-.no-sucses {
-  background: green;
-}
+
 .change {
   background: yellow;
 }

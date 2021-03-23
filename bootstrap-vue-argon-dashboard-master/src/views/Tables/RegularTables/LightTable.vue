@@ -42,8 +42,6 @@
                 </b-form-group>
                 <b-form-group id="input-group-2" label="Hình Ảnh">
                   <b-form-file
-                    v-model="file"
-                    :state="Boolean(file)"
                     placeholder="Chọn địa chỉ hình ảnh..."
                     drop-placeholder="Drop file here..."
                   ></b-form-file>
@@ -60,7 +58,7 @@
               </b-form>
             </div>
           </div>
-        </b-modal>  
+        </b-modal>
       </div>
 
       <b-card-footer class="py-4 d-flex justify-content-end">
