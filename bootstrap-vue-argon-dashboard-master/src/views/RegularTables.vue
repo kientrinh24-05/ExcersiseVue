@@ -26,19 +26,11 @@
                   />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"
-                  ><i class="fas fa-sync-alt"></i
-                ></b-button>
-                <b-button v-b-modal.modal-1 variant="success"
-                  >Thêm mới</b-button
-                >
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <!-- Modal Tạo nhà cc -->
-                <b-modal
-                  id="modal-1"
-                  title="Thêm nhà cung cấp"
-                  ref="addBookModal"
-                >
+                <b-modal id="modal-1" title="Thêm nhà cung cấp" ref="addBookModal">
                   <div>
                     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                       <h2 style="text-align: center">Thêm nhà cung cấp</h2>
@@ -81,9 +73,7 @@
                           required
                         ></b-form-input>
 
-                        <b-button type="submit" variant="primary"
-                          >Submit</b-button
-                        >
+                        <b-button type="submit" variant="primary">Submit</b-button>
                       </b-form-group>
 
                       <!-- <b-button type="submit" variant="primary">Submit</b-button>
@@ -133,11 +123,7 @@
                       <h2 style="text-align: center">Sửa Nhà Cung Cấp</h2>
                       <div>
                         <div>
-                          <b-form
-                            @submit.prevent="update"
-                            @reset="onReset"
-                            v-if="show"
-                          >
+                          <b-form @submit.prevent="update" @reset="onReset" v-if="show">
                             <b-form-group
                               id="input-group-2"
                               label="Tên nhà cung cấp"
@@ -176,9 +162,7 @@
                                 required
                               ></b-form-input>
                             </b-form-group>
-                            <b-button type="submit" variant="primary"
-                              >Update</b-button
-                            >
+                            <b-button type="submit" variant="primary">Update</b-button>
                           </b-form>
                         </div>
                       </div>
@@ -196,13 +180,7 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";

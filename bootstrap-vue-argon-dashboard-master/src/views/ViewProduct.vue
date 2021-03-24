@@ -11,35 +11,17 @@
               <h3>Danh sách món ăn</h3>
               <div>
                 <div class="pseudo-search">
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm..."
-                    autofocus
-                    required
-                  />
+                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"
-                  ><i class="fas fa-sync-alt"></i
-                ></b-button>
-                <b-button v-b-modal.modal-1 variant="success"
-                  >Thêm mới</b-button
-                >
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
-                <b-modal
-                  id="modal-1"
-                  title="Thêm món ăn"
-                  size="lg"
-                  ref="modal-1"
-                >
+                <b-modal id="modal-1" title="Thêm món ăn" size="lg" ref="modal-1">
                   <div>
                     <b-row>
                       <b-col lg="6" md="12">
-                        <b-form
-                          @submit="onSubmitProduct"
-                          @reset="onReset"
-                          v-if="show"
-                        >
+                        <b-form @submit="onSubmitProduct" @reset="onReset" v-if="show">
                           <b-form-group
                             id="input-group-2"
                             label="Tên món ăn"
@@ -57,11 +39,12 @@
                             label="Phân Loại"
                             label-for="input-3"
                           >
-                            <select
-                              class="custom-select"
-                              v-model="form.category_name"
-                            >
-                              <option v-for="food in foods" :key="food.id" :value="food.id">
+                            <select class="custom-select" v-model="form.category_name">
+                              <option
+                                v-for="food in foods"
+                                :key="food.id"
+                                :value="food.id"
+                              >
                                 {{ food.category_name }}
                               </option>
                             </select>
@@ -89,17 +72,62 @@
                           </b-form-group>
 
                           <div class="btn_click">
-                            <b-button type="submit" variant="primary"
-                              >Thêm Món</b-button
-                            >
-                            <b-button type="reset" variant="danger"
-                              >Hủy Bỏ</b-button
-                            >
+                            <b-button type="submit" variant="primary">Thêm Món</b-button>
+                            <b-button type="reset" variant="danger">Hủy Bỏ</b-button>
                           </div>
                         </b-form>
                       </b-col>
                       <b-col lg="6">
-                        <dark-table />
+                        <div>
+                          <b-form>
+                            <b-form-group
+                              id="input-group-3"
+                              label="Tên nguyên liệu"
+                              label-for="input-3"
+                            >
+                              <select class="custom-select" v-model="form.material_id">
+                                <option
+                                  v-for="meterial in meterials"
+                                  :key="meterial.id"
+                                  :value="meterial.id"
+                                >
+                                  {{ meterial.material_name }}
+                                </option>
+                              </select>
+                            </b-form-group>
+                            <b-button @click="onChange()"> + </b-button>
+                          </b-form>
+                          <div>
+                            <b-table
+                              :items="items1"
+                              :fields="fields1"
+                              stacked="md"
+                              show-empty
+                              small
+                            >
+                              <template #cell(name)="row">
+                                {{ row }}
+                              </template>
+                              <template #cell(count)="row">
+                                <input
+                                  type="number"
+                                  style="width: 50px"
+                                  @click="info(row.index)"
+                                />
+                              </template>
+
+                              <template #cell(actions)="row">
+                                <b-button
+                                  size="sm"
+                                  @click="info(row.item, row.index, $event.target)"
+                                  class="mr-1"
+                                >
+                                  X
+                                </b-button>
+                              </template>
+                            </b-table>
+                          </div>
+                        </div>
                       </b-col>
                     </b-row>
                   </div>
@@ -111,28 +139,53 @@
             <div>
               <b-card no-body>
                 <div>
-                  <b-table
-                    class="table-sc"
-                    striped
-                    hover
-                    :items="items"
-                    :fields="fields"
-                  >
+                  <b-table class="table-sc" striped hover :items="items" :fields="fields">
                     <template #cell(actions)="row">
                       <i
-                        @click="info(row.item, row.index, $event.target)"
+                        @click="watchMeterial(row.item.mã_món_ăn)"
+                        v-b-modal.myModal1
+                        class="fas fa-eye"
+                      ></i>
+                      <i
+                        @click="edit(row.item.mã_món_ăn)"
+                        v-b-modal.myModal
                         class="fas fa-pencil-alt"
                       ></i>
                     </template>
                   </b-table>
 
                   <!-- Modal  -->
-                  <b-modal :id="infoModal.id" title="Thông tin món ăn" ok-only>
-                    <pre></pre>
+                  <b-modal
+                    id="myModal1"
+                    title="Nguyên liệu món ăn"
+                    ok-only
+                    ref="watchMeterial"
+                  >
                     <div>
-                      <h2 style="text-align: center">Sửa Món Ăn</h2>
-                      <div>
-                        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                      <b-table
+                        :items="items2"
+                        :fields="fields2"
+                        stacked="md"
+                        show-empty
+                        small
+                      >
+                      </b-table>
+                    </div>
+                  </b-modal>
+
+                  <b-modal
+                    id="myModal"
+                    title="Thông tin món ăn"
+                    ok-only
+                    size="lg"
+                    ref="editFood"
+                  >
+                    <pre></pre>
+                    <b-row>
+                      <b-col lg="6">
+                        <h2 style="text-align: center">Sửa Món Ăn</h2>
+
+                        <b-form @submit="update" @reset="onReset" v-if="show">
                           <b-form-group
                             id="input-group-1"
                             label="Tên Sản Phẩm"
@@ -140,13 +193,27 @@
                           >
                             <b-form-input
                               id="input-1"
-                              v-model="form.email"
+                              v-model="editform.food_name"
                               type="text"
                               placeholder="Tên Sản Phẩm"
                               required
                             ></b-form-input>
                           </b-form-group>
-
+                          <b-form-group
+                            id="input-group-3"
+                            label="Phân Loại"
+                            label-for="input-3"
+                          >
+                            <select class="custom-select" v-model="editform.category">
+                              <option
+                                v-for="food in foods"
+                                :key="food.id"
+                                :value="food.id"
+                              >
+                                {{ food.category_name }}
+                              </option>
+                            </select>
+                          </b-form-group>
                           <b-form-group
                             id="input-group-2"
                             label="Giá Sản Phẩm:"
@@ -154,7 +221,7 @@
                           >
                             <b-form-input
                               id="input-2"
-                              v-model="form.name"
+                              v-model="editform.food_price"
                               placeholder="Giá Sản Phẩm"
                               required
                             ></b-form-input>
@@ -163,33 +230,68 @@
                             <b-form-file
                               placeholder="Chọn địa chỉ hình ảnh..."
                               drop-placeholder="Drop file here..."
-                              @change="onChangeFileUpload()"
+                              v-model="editform.food_image"
                             ></b-form-file>
-                          </b-form-group>
-                          <b-form-group
-                            id="input-group-3"
-                            label="Phân Loại"
-                            label-for="input-3"
-                          >
-                            <b-form-select
-                              id="input-3"
-                              :options="foods"
-                              required
-                            ></b-form-select>
                           </b-form-group>
 
                           <!-- Button Click Submit -->
                           <div class="link-btn">
-                            <b-button type="submit" variant="primary"
-                              >Xác Nhận</b-button
-                            >
-                            <b-button type="reset" variant="danger"
-                              >Làm Mới</b-button
-                            >
+                            <b-button type="submit" variant="primary">Xác Nhận</b-button>
+                            <b-button type="reset" variant="danger">Làm Mới</b-button>
                           </div>
                         </b-form>
-                      </div>
-                    </div>
+                      </b-col>
+
+                      <b-col lg="6">
+                        <div>
+                          <b-form>
+                            <b-form-group
+                              id="input-group-1"
+                              label="Tên nguyên liệu:"
+                              label-for="input-1"
+                            >
+                              <b-form-input
+                                id="input-1"
+                                type="text"
+                                change="onChange($event)"
+                                placeholder="Nhap ten nguyen lieu"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                          </b-form>
+                          <div>
+                            <b-table
+                              :items="items1"
+                              :fields="fields1"
+                              stacked="md"
+                              show-empty
+                              small
+                            >
+                              <template #cell(name)="row">
+                                {{ row }}
+                              </template>
+                              <template #cell(count)="row">
+                                <input
+                                  type="number"
+                                  style="width: 50px"
+                                  @click="info(row.index)"
+                                />
+                              </template>
+
+                              <template #cell(actions)="row">
+                                <b-button
+                                  size="sm"
+                                  @click="info(row.item, row.index, $event.target)"
+                                  class="mr-1"
+                                >
+                                  X
+                                </b-button>
+                              </template>
+                            </b-table>
+                          </div>
+                        </div>
+                      </b-col>
+                    </b-row>
                   </b-modal>
                 </div>
 
@@ -211,13 +313,7 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -236,6 +332,7 @@ export default {
   },
   data() {
     return {
+      isEdit: null,
       projects,
       currentPage: 1,
       infoModal: {
@@ -243,7 +340,26 @@ export default {
         title: "",
         content: "",
       },
-      foods: [{ text: "", value: null }, "Tất cả", "Gạo", "Ăn Nhanh"],
+      meterials: [{ text: "", value: "" }],
+      foods: [{ text: "", value: "" }],
+      items1: [{}],
+      items2: [{}],
+      fields1: [
+        {
+          key: "namemiterial",
+          label: "Tên Nguyên Liệu",
+        },
+        { key: "count", label: "Số Lượng" },
+
+        { key: "actions", label: "Hành Động" },
+      ],
+      fields2: [
+        {
+          key: "namemiterial",
+          label: "Tên Nguyên Liệu",
+        },
+        { key: "count", label: "Số Lượng" },
+      ],
       fields: [
         {
           key: "mã_món_ăn",
@@ -272,6 +388,14 @@ export default {
         food_price: "",
         food_image: "",
       },
+      editform: {
+        id: "",
+        food_name: "",
+        category: "",
+        food_price: "",
+        food_image: "",
+      },
+      formmeterial: {},
       show: true,
     };
   },
@@ -279,8 +403,55 @@ export default {
   created() {
     this.getTable();
     this.Getproduct();
+    this.getMeterial();
   },
   methods: {
+    AddMeterial() {
+      const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getSuplier();
+        })
+        .catch((error) => {
+          this.getSuplier();
+          console.log(error);
+        });
+    },
+    onSubmitMeterial(event) {
+      event.preventDefault();
+      const payload = {
+        supplier_name: this.form.supplier_name,
+        supplier_address: this.form.supplier_address,
+        supplier_phone: this.form.supplier_phone,
+      };
+
+      this.AddMeterial(payload);
+    },
+
+    watchMeterial(id) {
+      fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items2 = json.data.map((meterial) => {
+              return {
+                namemiterial: meterial.material_name,
+                count: meterial.amount_material,
+              };
+            }))
+        );
+    },
+    getMeterial() {
+      axios
+        .get(`http://127.0.0.1:8000/material/list_material/`)
+        .then((response) => {
+          this.meterials = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     onChangeFileUpload() {
       this.file = this.$refs.file.files[0];
     },
@@ -290,7 +461,6 @@ export default {
         .get(`http://127.0.0.1:8000/food_tabel/list_category/`)
         .then((response) => {
           this.foods = response.data.data;
-          console.log(this.foods);
         })
         .catch((err) => {
           console.log(err);
@@ -326,12 +496,11 @@ export default {
         });
     },
     onSubmitProduct(event) {
-
       let formData = new FormData();
-      formData.append('food_name', this.form.food_name);
-      formData.append('category', this.form.category_name);
-      formData.append('food_price', this.form.food_price);
-      formData.append('food_image', this.form.food_image);
+      formData.append("food_name", this.form.food_name);
+      formData.append("category", this.form.category_name);
+      formData.append("food_price", this.form.food_price);
+      formData.append("food_image", this.form.food_image);
 
       event.preventDefault();
 
@@ -347,6 +516,50 @@ export default {
 
       this.addProduct(payload);
     },
+    //Update
+    edit(id) {
+      this.isEdit = id;
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/detail_food/` + id)
+        .then((res) => res.data)
+        .then((response) => {
+          const { data } = response;
+          console.log(this.editform.food_name);
+          // let formData = new FormData();
+
+          let formData = new FormData();
+
+          formData.append("food_name", (this.editform.food_name = data.food_name));
+          formData.append("category", (this.editform.category = data.category));
+          formData.append("food_price", (this.editform.food_price = data.food_price));
+          formData.append("food_image", (this.editform.food_image = data.food_image));
+
+          // this.editform.food_name = data.food_name;
+          // this.editform.category = data.category;
+          // this.editform.food_price = data.food_price;
+          // this.editform.food_image = data.food_image;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    update() {
+      axios
+        .put(
+          `http://127.0.0.1:8000/food_tabel/detail_food/` + this.isEdit,
+          this.editform,
+          {}
+        )
+        .then((res) => {
+          console.log(res.data);
+          this.Getproduct();
+          this.$refs.editFood.hide();
+        })
+        .catch((err) => {
+          this.$refs.editFood.hide();
+        });
+    },
+
     // Upload IMG
     onFileChange(e) {
       let files = e.target.files || e.dataTransfer.files;
@@ -395,6 +608,10 @@ export default {
 };
 </script>
 <style>
+i {
+  font-size: 1rem;
+  margin: 0 0.2rem;
+}
 .el-table.table-dark {
   background-color: #172b4d;
   color: #f8f9fe;

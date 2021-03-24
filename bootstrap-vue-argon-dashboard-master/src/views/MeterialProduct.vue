@@ -35,42 +35,35 @@
                 <b-modal id="modal-1" title="Thêm nguyên liệu">
                   <b-form @submit="onSubmit" @reset="onReset">
                     <b-form-group
-                      id="input-group-1"
+                      id="input-group-3"
                       label="Tên nguyên liệu"
-                      label-for="input-1"
+                      label-for="input-3"
                     >
-                      <b-form-input
-                        id="input-3"
-                        v-model="form.material_id"
-                        placeholder="Nhập số lượng"
-                        required
-                      ></b-form-input>
-                      <!-- <b-form-select v-model="form.material_id" :options="options" class="mb-3" >
-                       
-                        <b-form-select-option  value="1">Gạo nếp</b-form-select-option>
-                        <b-form-select-option value="1">Gạo tẻ </b-form-select-option>
-                      </b-form-select> -->
+                      <select class="custom-select" v-model="form.material_id">
+                        <option
+                          v-for="meterial in meterials"
+                          :key="meterial.id"
+                          :value="meterial.id"
+                        >
+                          {{ meterial.material_name }}
+                        </option>
+                      </select>
                     </b-form-group>
 
                     <b-form-group
-                      id="input-group-2"
-                      label="Nhà Phân Phối"
-                      label-for="input-2"
+                      id="input-group-3"
+                      label="Nhà cung cáp"
+                      label-for="input-3"
                     >
-                      <b-form-input
-                        id="input-3"
-                        v-model="form.supplier_id"
-                        placeholder="Nhập số lượng"
-                        required
-                      ></b-form-input>
-                      <!-- <b-form-select
-                        v-model="form.supplier_id"
-                        :options="options"
-                        class="mb-3"
-                        value-field="item"
-                        text-field="name"
-                        disabled-field="notEnabled"
-                      ></b-form-select> -->
+                      <select class="custom-select" v-model="form.supplier_id">
+                        <option
+                          v-for="supplier in supplierls"
+                          :key="supplier.id"
+                          :value="supplier.id"
+                        >
+                          {{ supplier.supplier_name }}
+                        </option>
+                      </select>
                     </b-form-group>
 
                     <b-form-group id="input-group-3" label="Số Lượng" label-for="input-3">
@@ -100,7 +93,7 @@
                           type="datetime-local"
                           value="2011-08-19T13:45:00"
                           id="example-datetime-local-input"
-                          v-model="meterial.ngaynhap"
+                          v-model="form.import_date"
                         />
                       </div>
                     </b-form-group>
@@ -142,7 +135,6 @@
                             <div class="form-group">
                               <b-form-input
                                 id="input-1"
-                                v-model="meterial.tennl"
                                 placeholder="Nhập tên nguyên liệu"
                                 name="meterials[][tennl]"
                                 required
@@ -150,7 +142,6 @@
                             </div>
                             <div class="form-group col-xs-5">
                               <b-form-input
-                                v-model="meterial.nhacc"
                                 type="text"
                                 name="meterials[][nhacc]"
                                 class="form-control"
@@ -159,7 +150,6 @@
                             </div>
                             <div class="form-group col-xs-5">
                               <b-form-input
-                                v-model="meterial.soluong"
                                 type="text"
                                 name="meterials[][soluong]"
                                 class="form-control"
@@ -168,7 +158,6 @@
                             </div>
                             <div class="form-group col-xs-5">
                               <b-form-input
-                                v-model="meterial.gia"
                                 type="text"
                                 name="meterials[][gia]"
                                 class="form-control"
@@ -182,7 +171,6 @@
                                 value="2011-08-19T13:45:00"
                                 name="meterials[][ngaynhap]"
                                 id="example-datetime-local-input"
-                                v-model="meterial.ngaynhap"
                               />
                             </div>
                           </div>
@@ -264,33 +252,19 @@ export default {
         price: "",
         rooms: "",
       },
-      selected: "A",
-      options: [
-        { item: "1", name: "Công Ty 1" },
-        { item: "1", name: "Công Ty 12" },
-        { item: "1", name: "OCông Ty 123" },
-      ],
+      meterials: [{ text: "", value: null }],
+      supplierls: [{ text: "", value: null }],
       apartments: [],
       projects,
       users,
       currentPage: 1,
 
       form: {
-        material_id: "",
         supplier_id: "",
-        amount: "",
-        price: "",
-      },
-      meterial: {
         material_id: "",
-        supplier_id: "",
         amount: "",
         price: "",
         import_date: "",
-      },
-      meterials: [],
-      created() {
-        this.meterials = JSON.parse(this.$el.dataset.apartments);
       },
 
       infoModal: {
@@ -328,7 +302,9 @@ export default {
     };
   },
   created() {
+    this.getImportMeterial();
     this.getMeterial();
+    this.getSupplier();
   },
   methods: {
     addNewApartment() {
@@ -340,16 +316,41 @@ export default {
     sumbitForm() {
       console.log("Kane");
     },
-
+    //Get Meterial
     getMeterial() {
-      fetch("http://127.0.0.1:8000/material/list_importmaterial/")
+      axios
+        .get(`http://127.0.0.1:8000/material/list_material/`)
+        .then((response) => {
+          this.meterials = response.data.data;
+          console.log(this.meterials);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    //Get Supplier
+    getSupplier() {
+      axios
+        .get(`http://127.0.0.1:8000/supplier/list_supplier/`)
+        .then((response) => {
+          this.supplierls = response.data.data;
+          console.log(this.supplierls);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    //Get iimportMeterial
+    getImportMeterial() {
+      fetch("http://127.0.0.1:8000/material/get_importmaterial/")
         .then((response) => response.json())
         .then(
           (json) =>
             (this.items = json.data.map((meterial) => {
               return {
-                tên_nguyên_liệu: meterial.material_id,
-                nhà_phân_phối: meterial.supplier_id,
+                tên_nguyên_liệu: meterial.material_name,
+                nhà_phân_phối: meterial.supplier_name,
                 số_lượng: meterial.amount,
                 giá: meterial.price,
                 ngày_nhập: meterial.import_date,
@@ -372,11 +373,13 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       const payload = {
-        material_id: this.form.material_id,
         supplier_id: this.form.supplier_id,
+        material_id: this.form.material_id,
         amount: this.form.amount,
         price: this.form.price,
+        import_date: this.form.import_date,
       };
+      console.log(payload);
       this.addMeterial(payload);
     },
 

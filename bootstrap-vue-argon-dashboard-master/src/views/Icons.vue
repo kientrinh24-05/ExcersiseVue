@@ -34,16 +34,10 @@
             </b-modal>
             <b-modal id="modal-1" ref="modalAddTable" title="Thêm mới bàn">
               <b-form @submit="onSubmit">
-                <!-- <b-form-group id="input-group-1" label="Trạng thái">
-                  <b-form-select
-                    v-model="FormAdd.status"
-                    :options="options"
-                  ></b-form-select>
-                </b-form-group> -->
                 <b-form-group id="input-group-1" label="Tên bàn">
                   <b-form-input
                     id="input-1"
-                    v-model="FormAdd.person"
+                    v-model="FormAdd.name"
                     placeholder="Tên bàn"
                     required
                   ></b-form-input>
@@ -58,7 +52,7 @@
             <b-row class="icon-examples">
               <b-col lg="3" md="6" v-for="table in tables" :key="table.id">
                 <b-button v-b-modal="'myModal'" class="btn-icon-clipboard">
-                   {{ table.id }}
+                  {{ table.name }}
                 </b-button>
 
                 <b-modal id="myModal" title="Thông tin bàn  ">
@@ -130,17 +124,11 @@ export default {
   data() {
     return {
       tables: null,
-      selected: null,
-      options: [
-        { value: "Có người", text: "Có người" },
-        { value: "Trống", text: "Trống" },
-        { value: "Tạm ngưng hoạt động", text: "Tạm ngưng hoạt động" },
-      ],
+
       items: [],
 
       FormAdd: {
-        status: null,
-        person: null,
+        name: null,
       },
       FormSearch: {
         status: null,
@@ -170,8 +158,7 @@ export default {
 
       this.$refs.modalAddTable.hide();
       const payload = {
-        status: this.FormAdd.status,
-        person: this.FormAdd.person,
+        name: this.FormAdd.name,
       };
       console.log(payload);
 
