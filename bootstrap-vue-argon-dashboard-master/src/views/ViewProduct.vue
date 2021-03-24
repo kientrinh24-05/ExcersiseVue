@@ -11,17 +11,35 @@
               <h3>Danh sách món ăn</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    type="text"
+                    placeholder="Tìm kiếm..."
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
-                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
+                <b-button variant="primary"
+                  ><i class="fas fa-sync-alt"></i
+                ></b-button>
+                <b-button v-b-modal.modal-1 variant="success"
+                  >Thêm mới</b-button
+                >
 
-                <b-modal id="modal-1" title="Thêm món ăn" size="lg" ref="modal-1">
+                <b-modal
+                  id="modal-1"
+                  title="Thêm món ăn"
+                  size="lg"
+                  ref="modal-1"
+                >
                   <div>
                     <b-row>
                       <b-col lg="6" md="12">
-                        <b-form @submit="onSubmitProduct" @reset="onReset" v-if="show">
+                        <b-form
+                          @submit="onSubmitProduct"
+                          @reset="onReset"
+                          v-if="show"
+                        >
                           <b-form-group
                             id="input-group-2"
                             label="Tên món ăn"
@@ -39,8 +57,11 @@
                             label="Phân Loại"
                             label-for="input-3"
                           >
-                            <select class="custom-select" v-model="form.category_name">
-                              <option v-for="food in foods" :key="food.id">
+                            <select
+                              class="custom-select"
+                              v-model="form.category_name"
+                            >
+                              <option v-for="food in foods" :key="food.id" :value="food.id">
                                 {{ food.category_name }}
                               </option>
                             </select>
@@ -68,8 +89,12 @@
                           </b-form-group>
 
                           <div class="btn_click">
-                            <b-button type="submit" variant="primary">Thêm Món</b-button>
-                            <b-button type="reset" variant="danger">Hủy Bỏ</b-button>
+                            <b-button type="submit" variant="primary"
+                              >Thêm Món</b-button
+                            >
+                            <b-button type="reset" variant="danger"
+                              >Hủy Bỏ</b-button
+                            >
                           </div>
                         </b-form>
                       </b-col>
@@ -86,7 +111,13 @@
             <div>
               <b-card no-body>
                 <div>
-                  <b-table class="table-sc" striped hover :items="items" :fields="fields">
+                  <b-table
+                    class="table-sc"
+                    striped
+                    hover
+                    :items="items"
+                    :fields="fields"
+                  >
                     <template #cell(actions)="row">
                       <i
                         @click="info(row.item, row.index, $event.target)"
@@ -132,6 +163,7 @@
                             <b-form-file
                               placeholder="Chọn địa chỉ hình ảnh..."
                               drop-placeholder="Drop file here..."
+                              @change="onChangeFileUpload()"
                             ></b-form-file>
                           </b-form-group>
                           <b-form-group
@@ -148,8 +180,12 @@
 
                           <!-- Button Click Submit -->
                           <div class="link-btn">
-                            <b-button type="submit" variant="primary">Xác Nhận</b-button>
-                            <b-button type="reset" variant="danger">Làm Mới</b-button>
+                            <b-button type="submit" variant="primary"
+                              >Xác Nhận</b-button
+                            >
+                            <b-button type="reset" variant="danger"
+                              >Làm Mới</b-button
+                            >
                           </div>
                         </b-form>
                       </div>
@@ -175,7 +211,13 @@
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -223,6 +265,7 @@ export default {
         { key: "actions", label: "Hành động" },
       ],
       items: [],
+
       form: {
         food_name: "",
         category_name: "",
@@ -238,6 +281,9 @@ export default {
     this.Getproduct();
   },
   methods: {
+    onChangeFileUpload() {
+      this.file = this.$refs.file.files[0];
+    },
     //Get All Category
     getTable() {
       axios
@@ -268,7 +314,7 @@ export default {
     },
     //add Food
     addProduct(payload) {
-      const path = "http://127.0.0.1:8000/food_tabel/create_table/";
+      const path = "http://127.0.0.1:8000/food_tabel/create_food/";
       axios
         .post(path, payload)
         .then(() => {
@@ -280,14 +326,23 @@ export default {
         });
     },
     onSubmitProduct(event) {
+
+      let formData = new FormData();
+      formData.append('food_name', this.form.food_name);
+      formData.append('category', this.form.category_name);
+      formData.append('food_price', this.form.food_price);
+      formData.append('food_image', this.form.food_image);
+
       event.preventDefault();
 
-      const payload = {
-        food_name: this.form.food_name,
-        category_name: this.form.category_name,
-        food_price: this.form.food_price,
-        food_image: this.form.food_image,
-      };
+      // const payload = {
+      //   food_name: this.form.food_name,
+      //   category_name: this.form.category_name,
+      //   food_price: this.form.food_price,
+      //   food_image: this.form.food_image,
+      // };
+
+      const payload = formData;
       console.log(payload);
 
       this.addProduct(payload);
