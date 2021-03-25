@@ -528,12 +528,12 @@ export default {
           console.log(this.editform.food_name);
           // let formData = new FormData();
 
-          let formData = new FormData();
+          console.log('data', data);
 
-          formData.append("food_name", (this.editform.food_name = data.food_name));
-          formData.append("category", (this.editform.category = data.category));
-          formData.append("food_price", (this.editform.food_price = data.food_price));
-          formData.append("food_image", (this.editform.food_image = data.food_image));
+          this.editform.food_name = data.food_name;
+          this.editform.category = data.category;
+          this.editform.food_price = data.food_price;
+          this.editform.food_image = data.food_image;
 
           // this.editform.food_name = data.food_name;
           // this.editform.category = data.category;
@@ -545,10 +545,16 @@ export default {
         });
     },
     update() {
+
+        let formData = new FormData();
+        formData.append("food_name", (this.editform.food_name));
+        formData.append("category", (this.editform.category));
+        formData.append("food_price", (this.editform.food_price));
+        formData.append("food_image", (this.editform.food_image));
       axios
         .put(
           `http://127.0.0.1:8000/food_tabel/detail_food/` + this.isEdit,
-          this.editform,
+          formData,
           {}
         )
         .then((res) => {

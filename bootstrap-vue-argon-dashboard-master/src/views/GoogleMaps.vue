@@ -9,40 +9,42 @@
           <div>
             <div>
               <b-card no-body>
-                <b-tabs pills card>
-                  <b-tab title="Tab 1" active
-                    ><b-card-text>Tab contents 1</b-card-text></b-tab
-                  >
-                  <b-tab title="Tab 2"><b-card-text>Tab contents 2</b-card-text></b-tab>
+                <b-tabs pills card >
+                 <b-tab
+                    title="Tất Cả"
+                    >
+                    
+                    <b-card-text>
+                      <b-row>
+                        <b-col
+                          lg="4"
+                          md="4"
+                          mb="6"
+                          v-for="product in products"
+                          :key="product.id"
+                        >
+                          <img :src="product.food_image" />
+
+                          <p>{{ product.food_name }}</p>
+                          <strong>{{ product.food_price }}.VND</strong>
+                        </b-col>
+                      </b-row></b-card-text>
+                    </b-tab>
+                  <b-tab
+                  style="margin: .5rem 0;"
+                    v-for="category in categorys"
+                    :key="category.id"
+                    :title="category.category_name"
+                    active
+                    >
+                    
+                    </b-tab>
+                   
+                
+                  
                 </b-tabs>
               </b-card>
             </div>
-            <b-card no-body>
-              <div>
-                <ul class="list_category">
-                  <li v-for="category in categorys" :key="category.id">
-                    {{ category.category_name }}
-                  </li>
-                  <li @click="getAllProducts">All Link</li>
-                </ul>
-              </div>
-              <div>
-                <b-row>
-                  <b-col
-                    lg="3"
-                    md="4"
-                    mb="6"
-                    v-for="product in products"
-                    :key="product.id"
-                  >
-                    <img :src='https://tintaynguyen.com/wp-content/uploads/2020/03/1583688591-8584-to-1-15792449059781593332846.jpg" />
-
-                    <p>{{ product.food_name }}</p>
-                    <strong>{{ product.food_price }}.VND</strong>
-                  </b-col>
-                </b-row>
-              </div>
-            </b-card>
           </div>
         </b-col>
 
@@ -57,7 +59,13 @@
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -128,6 +136,7 @@ export default {
 };
 </script>
 <style>
+
 .el-table.table-dark {
   background-color: #172b4d;
   color: #f8f9fe;
