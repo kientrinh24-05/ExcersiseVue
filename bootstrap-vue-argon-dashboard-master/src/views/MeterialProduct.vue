@@ -372,13 +372,15 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault();
-      const payload = {
-        supplier_id: this.form.supplier_id,
-        material_id: this.form.material_id,
-        amount: this.form.amount,
-        price: this.form.price,
-        import_date: this.form.import_date,
-      };
+      const payload = [
+        {
+          supplier_id: this.form.supplier_id,
+          material_id: this.form.material_id,
+          amount: this.form.amount,
+          price: this.form.price,
+          import_date: this.form.import_date,
+        },
+      ];
       console.log(payload);
       this.addMeterial(payload);
     },

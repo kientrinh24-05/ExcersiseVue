@@ -235,6 +235,7 @@
                           </b-form-group>
 
                           <!-- Button Click Submit -->
+
                           <div class="link-btn">
                             <b-button type="submit" variant="primary">Xác Nhận</b-button>
                             <b-button type="reset" variant="danger">Làm Mới</b-button>
@@ -391,7 +392,7 @@ export default {
       editform: {
         id: "",
         food_name: "",
-        category: "",
+        category: [],
         food_price: "",
         food_image: "",
       },

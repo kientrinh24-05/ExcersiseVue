@@ -5,371 +5,47 @@
     </base-header>
     <b-container fluid class="mt--7">
       <b-row>
-        <div>
-          <b-card no-body>
-            <b-tabs pills card>
-              <b-tab title="Tất cả" active
-                ><b-card-text>
-                  <div>
-                    <b-card-group deck>
-                      <b-row class="icon-examples">
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                      </b-row>
-                    </b-card-group>
-                  </div>
-                </b-card-text></b-tab
-              >
-              <b-tab title="Gạo" active
-                ><b-card-text>
-                  <div>
-                    <b-card-group deck>
-                      <b-row class="icon-examples">
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                      </b-row>
-                    </b-card-group>
-                  </div>
-                </b-card-text></b-tab
-              >
-              <b-tab title="Trái Cây" active
-                ><b-card-text>
-                  <div>
-                    <b-card-group deck>
-                      <b-row class="icon-examples">
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                      </b-row>
-                    </b-card-group>
-                  </div>
-                </b-card-text></b-tab
-              >
-              <b-tab title="Ăn Nhanh" active
-                ><b-card-text>
-                  <div>
-                    <b-card-group deck>
-                      <b-row class="icon-examples">
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-
-                        <b-col lg="3" md="6">
-                          <b-card
-                            img-src="https://picsum.photos/600/300/?image=25"
-                            img-alt="Image"
-                            img-top
-                            tag="article"
-                            style="max-width: 10rem"
-                            class="mb-2"
-                          >
-                            <b class="price">2.000.000đ</b>
-                            <p>Trà Tắc Xí Muội</p>
-                          </b-card>
-                        </b-col>
-                      </b-row>
-                    </b-card-group>
-                  </div>
-                </b-card-text></b-tab
-              >
-            </b-tabs>
-            <div class="mt-3 panigation_tab">
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-              ></b-pagination>
+        <b-col lg="12">
+          <div>
+            <div>
+              <b-card no-body>
+                <b-tabs pills card>
+                  <b-tab title="Tab 1" active
+                    ><b-card-text>Tab contents 1</b-card-text></b-tab
+                  >
+                  <b-tab title="Tab 2"><b-card-text>Tab contents 2</b-card-text></b-tab>
+                </b-tabs>
+              </b-card>
             </div>
-          </b-card>
-        </div>
+            <b-card no-body>
+              <div>
+                <ul class="list_category">
+                  <li v-for="category in categorys" :key="category.id">
+                    {{ category.category_name }}
+                  </li>
+                  <li @click="getAllProducts">All Link</li>
+                </ul>
+              </div>
+              <div>
+                <b-row>
+                  <b-col
+                    lg="3"
+                    md="4"
+                    mb="6"
+                    v-for="product in products"
+                    :key="product.id"
+                  >
+                    <img :src='https://tintaynguyen.com/wp-content/uploads/2020/03/1583688591-8584-to-1-15792449059781593332846.jpg" />
+
+                    <p>{{ product.food_name }}</p>
+                    <strong>{{ product.food_price }}.VND</strong>
+                  </b-col>
+                </b-row>
+              </div>
+            </b-card>
+          </div>
+        </b-col>
+
         <!-- <b-col>
           <h3>Danh sách món ăn</h3>
           <light-table />
@@ -381,16 +57,11 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
+import axios from "axios";
 
 export default {
   components: {
@@ -408,7 +79,51 @@ export default {
 
       rows: 100,
       currentPage: 1,
+
+      categorys: [],
+      products: [],
+      selectcategoryname: null,
+      categoryitem: [],
     };
+  },
+  created() {
+    this.getAllCategory();
+    this.getAllProducts();
+  },
+  methods: {
+    getAllCategory() {
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_category/`)
+        .then((response) => {
+          this.categorys = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getAllProducts() {
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_food/`)
+        .then((response) => {
+          this.products = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    showNameCategory(categoryname) {
+      console.log(categoryname);
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_category_food/`)
+        .then((response) => {
+          this.products = response.data.data;
+          console.log(this.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
@@ -427,7 +142,20 @@ export default {
 .el-table.table-dark th.is-leaf {
   border-bottom: none;
 }
-.panigation_tab{
-  margin: 0 au;
+
+.list_category {
+  list-style: none;
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+}
+.list_category li {
+  margin: 0 0.5rem;
+  background: cornflowerblue;
+  padding: 0.2rem;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
 }
 </style>
