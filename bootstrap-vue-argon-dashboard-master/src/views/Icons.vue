@@ -51,11 +51,14 @@
 
             <b-row class="icon-examples">
               <b-col lg="3" md="6" v-for="table in tables" :key="table.id">
-                <b-button v-b-modal="'myModal'" class="btn-icon-clipboard">
+                <b-button
+                  @click="info(table.item, table.id, $event.target)"
+                  class="btn-icon-clipboard"
+                >
                   {{ table.name }}
                 </b-button>
 
-                <b-modal id="myModal" title="Thông tin bàn  ">
+                <b-modal :id="infoModal.id" title="Thông tin bàn  ">
                   <b-row>
                     <b-col lg="12" md="6">
                       <h3>Thông tin đặt bàn</h3>
@@ -133,6 +136,11 @@ export default {
       FormSearch: {
         status: null,
       },
+      infoModal: {
+        id: "info-modal",
+        title: "",
+        content: "",
+      },
     };
   },
   components: {
@@ -143,6 +151,12 @@ export default {
     this.getTable();
   },
   methods: {
+    info(item, index, button) {
+      this.infoModal.title = `Row index: ${index}`;
+      this.infoModal.content = JSON.stringify(item, null, 2);
+      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+    },
+
     getTable() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_table/`)

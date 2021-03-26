@@ -149,7 +149,7 @@ export default {
         id: "",
         material_name: "",
       },
-      perPage: 5,
+      perPage: 10,
       currentPage: 1,
       infoModal: {
         id: "info-modal",

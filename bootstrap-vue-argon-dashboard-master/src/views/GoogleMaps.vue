@@ -9,15 +9,12 @@
           <div>
             <div>
               <b-card no-body>
-                <b-tabs pills card >
-                 <b-tab
-                    title="Tất Cả"
-                    >
-                    
+                <b-tabs pills card>
+                  <b-tab title="Tất Cả">
                     <b-card-text>
                       <b-row>
                         <b-col
-                          lg="4"
+                          lg="3"
                           md="4"
                           mb="6"
                           v-for="product in products"
@@ -28,20 +25,27 @@
                           <p>{{ product.food_name }}</p>
                           <strong>{{ product.food_price }}.VND</strong>
                         </b-col>
-                      </b-row></b-card-text>
-                    </b-tab>
+                      </b-row></b-card-text
+                    >
+                  </b-tab>
                   <b-tab
-                  style="margin: .5rem 0;"
+                    style="margin: 0.5rem 0"
                     v-for="category in categorys"
                     :key="category.id"
                     :title="category.category_name"
-                    active
-                    >
-                    
-                    </b-tab>
-                   
-                
-                  
+                    v-model="category_name"
+                    @click="showNameCategory(category.category_name)"
+                  >
+                    <b-card-text>
+                      <b-row>
+                        <b-col lg="3" md="4" mb="6" v-for="food in foods" :key="food.id">
+                          <img :src="food.food_image" />
+                          <p>{{ food.food_name }}</p>
+                          <strong>{{ food.food_price }}.VND</strong>
+                        </b-col>
+                      </b-row>
+                    </b-card-text>
+                  </b-tab>
                 </b-tabs>
               </b-card>
             </div>
@@ -59,13 +63,7 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -87,11 +85,12 @@ export default {
 
       rows: 100,
       currentPage: 1,
-
+      foods: [],
       categorys: [],
       products: [],
       selectcategoryname: null,
       categoryitem: [],
+      category_name: "12312",
     };
   },
   created() {
@@ -120,13 +119,14 @@ export default {
         });
     },
 
-    showNameCategory(categoryname) {
-      console.log(categoryname);
+    showNameCategory(name) {
+      console.log(name);
       axios
-        .get(`http://127.0.0.1:8000/food_tabel/list_category_food/`)
+        .get(`http://127.0.0.1:8000/food_tabel/list_category_food/` + name)
+
         .then((response) => {
-          this.products = response.data.data;
-          console.log(this.products);
+          this.foods = response.data.data;
+          console.log(this.foods);
         })
         .catch((err) => {
           console.log(err);
@@ -136,7 +136,6 @@ export default {
 };
 </script>
 <style>
-
 .el-table.table-dark {
   background-color: #172b4d;
   color: #f8f9fe;

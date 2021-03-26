@@ -11,7 +11,13 @@
               <h3>Danh sách thể loại</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    v-model="titlesearch"
+                    type="text"
+                    placeholder="Tìm kiếm..."
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
@@ -125,6 +131,7 @@ export default {
       projects,
       users,
       currentPage: 1,
+      titlesearch: "",
       infoModal: {
         id: "info-modal",
         title: "",
@@ -170,6 +177,23 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
+    searchTitle() {
+      axios
+        .get(`http://127.0.0.1:8000/material/search_material/`, {
+          params: {
+            matertial_name: this.titlesearch,
+          },
+        })
+        .then((response) => (this.items = response.data))
+
+        // .then((response) => {
+        //   this.products = response.data.data;
+        //   console.log(this.products);
+        // })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     //Get All
     getCategory() {
       fetch("http://127.0.0.1:8000/food_tabel/list_category/")

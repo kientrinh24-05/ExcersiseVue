@@ -132,47 +132,77 @@
                           </div>
 
                           <div>
-                            <div class="form-group">
+                            <b-form-group
+                              id="input-group-3"
+                              label="Tên nguyên liệu"
+                              label-for="input-3"
+                            >
+                              <select class="custom-select" v-model="form.material_id">
+                                <option
+                                  v-for="meterial in meterials"
+                                  :key="meterial.id"
+                                  :value="meterial.id"
+                                >
+                                  {{ meterial.material_name }}
+                                </option>
+                              </select>
+                            </b-form-group>
+
+                            <b-form-group
+                              id="input-group-3"
+                              label="Nhà cung cáp"
+                              label-for="input-3"
+                            >
+                              <select class="custom-select" v-model="form.supplier_id">
+                                <option
+                                  v-for="supplier in supplierls"
+                                  :key="supplier.id"
+                                  :value="supplier.id"
+                                >
+                                  {{ supplier.supplier_name }}
+                                </option>
+                              </select>
+                            </b-form-group>
+
+                            <b-form-group
+                              id="input-group-3"
+                              label="Số Lượng"
+                              label-for="input-3"
+                            >
                               <b-form-input
-                                id="input-1"
-                                placeholder="Nhập tên nguyên liệu"
-                                name="meterials[][tennl]"
+                                id="input-3"
+                                v-model="form.amount"
+                                placeholder="Nhập số lượng"
                                 required
                               ></b-form-input>
-                            </div>
-                            <div class="form-group col-xs-5">
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-3"
+                              label="Giá"
+                              label-for="input-3"
+                            >
                               <b-form-input
-                                type="text"
-                                name="meterials[][nhacc]"
-                                class="form-control"
-                                placeholder="Nhập nhà phân phối"
+                                id="input-3"
+                                v-model="form.price"
+                                placeholder="Nhập Giá Cả"
+                                required
                               ></b-form-input>
-                            </div>
-                            <div class="form-group col-xs-5">
-                              <b-form-input
-                                type="text"
-                                name="meterials[][soluong]"
-                                class="form-control"
-                                placeholder="Nhập số lượng"
-                              ></b-form-input>
-                            </div>
-                            <div class="form-group col-xs-5">
-                              <b-form-input
-                                type="text"
-                                name="meterials[][gia]"
-                                class="form-control"
-                                placeholder="Nhập giá cả"
-                              ></b-form-input>
-                            </div>
-                            <div class="form-group col-xs-5">
-                              <input
-                                class="form-control"
-                                type="datetime-local"
-                                value="2011-08-19T13:45:00"
-                                name="meterials[][ngaynhap]"
-                                id="example-datetime-local-input"
-                              />
-                            </div>
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-2"
+                              label="Ngày nhập"
+                              label-for="input-2"
+                            >
+                              <div class="">
+                                <input
+                                  class="form-control"
+                                  type="datetime-local"
+                                  value="2011-08-19T13:45:00"
+                                  id="example-datetime-local-input"
+                                  v-model="form.import_date"
+                                />
+                              </div>
+                            </b-form-group>
                           </div>
                         </div>
                       </div>
@@ -248,6 +278,7 @@ export default {
   },
   data() {
     return {
+      payload: [],
       apartment: {
         price: "",
         rooms: "",
@@ -381,7 +412,12 @@ export default {
           import_date: this.form.import_date,
         },
       ];
+
+      this.payload.forEach((payload) => {
+        this.addMeterial(payload);
+      });
       console.log(payload);
+      // this.addMeterial(payload);
       this.addMeterial(payload);
     },
 
