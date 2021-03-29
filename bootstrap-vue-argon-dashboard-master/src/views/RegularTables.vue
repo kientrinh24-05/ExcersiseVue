@@ -284,8 +284,9 @@ export default {
       const path = "http://127.0.0.1:8000/supplier/search_supplier/";
       axios
         .post(path, payload)
-        .then(() => {
-          this.getSuplier();
+        .then((rss) => {
+          this.items  = rss.data;
+          console.log(items);
         })  
         .catch((error) => {
           this.getSuplier();
