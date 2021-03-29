@@ -21,7 +21,7 @@
                     placeholder="Tìm kiếm..."
                     autofocus
                     required
-                    @keyup.enter="Dosearch(searchit_form.supplier_name)"
+                    @keyup.enter="onSeach()"
                     v-model="searchit_form.supplier_name"
                   />
                   <button class="fa fa-search" type="submit"></button>
@@ -233,6 +233,7 @@ export default {
         },
         { key: "actions", label: "Hành Động" },
       ],
+      sumprice:"",
       editform: {
         id: "",
         supplier_name: "",
@@ -253,6 +254,7 @@ export default {
   },
   created() {
     this.getSuplier();
+    this.Sumprice();
   },
   watch: {},
   computed: {
@@ -261,18 +263,7 @@ export default {
     },
   },
   methods: {
-    Dosearch(value) {
-      axios
-        .get(`http://127.0.0.1:8000/supplier/search_supplier/` + value)
-        .then((response) => {
-          this.searchit_form = response.data.data;
-          this.getSuplier();
-          console.log(form);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
+    
     // Get All
     getSuplier() {
       fetch("http://127.0.0.1:8000/supplier/list_supplier/")
@@ -288,6 +279,25 @@ export default {
               };
             }))
         );
+    },
+    searchItem(payload){
+      const path = "http://127.0.0.1:8000/supplier/search_supplier/";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getSuplier();
+        })  
+        .catch((error) => {
+          this.getSuplier();
+          console.log(error);
+        });
+    },
+    onSeach(){
+      const payload = {
+        supplier_name: this.searchit_form.supplier_name
+      };
+      console.log(payload);
+      this.searchItem(payload)
     },
     // Add Suplier
     addSuplier(payload) {

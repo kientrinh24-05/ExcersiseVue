@@ -39,7 +39,7 @@
                     <b-card-text>
                       <b-row>
                         <b-col lg="3" md="4" mb="6" v-for="food in foods" :key="food.id">
-                          <img :src="food.food_image" />
+                          <img :src="food.food_image.url"/>
                           <p>{{ food.food_name }}</p>
                           <strong>{{ food.food_price }}.VND</strong>
                         </b-col>

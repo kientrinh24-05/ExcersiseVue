@@ -11,30 +11,45 @@
               <h3>Danh sách nguyên liệu</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    type="text"
+                    placeholder="Tìm kiếm..."
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button variant="primary"
+                  ><i class="fas fa-sync-alt"></i
+                ></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
 
-                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
+                <b-button v-b-modal.modal-1 variant="success"
+                  >Thêm mới</b-button
+                >
 
                 <b-modal id="modal-2" title="Filler">
                   <b-form @submit="onSubmit" @reset="onReset">
                     <b-form-group id="input-group-1" label="Thời gian">
                       <div class="fillter_date">
-                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <b-form-input
+                          class="input-date"
+                          type="date"
+                        ></b-form-input>
                         <span>__</span>
-                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <b-form-input
+                          class="input-date"
+                          type="date"
+                        ></b-form-input>
                       </div>
                     </b-form-group>
                   </b-form>
                 </b-modal>
                 <b-modal id="modal-1" title="Thêm nguyên liệu">
                   <b-form @submit="onSubmit" @reset="onReset">
-                    <b-form-group
+                   <!-- <b-form-group
                       id="input-group-3"
                       label="Tên nguyên liệu"
                       label-for="input-3"
@@ -66,7 +81,11 @@
                       </select>
                     </b-form-group>
 
-                    <b-form-group id="input-group-3" label="Số Lượng" label-for="input-3">
+                    <b-form-group
+                      id="input-group-3"
+                      label="Số Lượng"
+                      label-for="input-3"
+                    >
                       <b-form-input
                         id="input-3"
                         v-model="form.amount"
@@ -74,7 +93,11 @@
                         required
                       ></b-form-input>
                     </b-form-group>
-                    <b-form-group id="input-group-3" label="Giá" label-for="input-3">
+                    <b-form-group
+                      id="input-group-3"
+                      label="Giá"
+                      label-for="input-3"
+                    >
                       <b-form-input
                         id="input-3"
                         v-model="form.price"
@@ -96,32 +119,16 @@
                           v-model="form.import_date"
                         />
                       </div>
-                    </b-form-group>
+                    </b-form-group> -->
 
-                    <b-button type="submit" variant="primary">Submit</b-button>
-                    <b-button type="reset" variant="danger">Reset</b-button>
-                    <b-button
-                      type="button"
-                      v-on:click="addNewApartment"
-                      class="btn btn-success"
-                    >
-                      Add +
-                    </b-button>
-                  </b-form>
-
-                  <main class="container">
-                    <form id="app" data-apartments="[]">
-                      <hr />
-                      <div class="row">
-                        <div class="col-xs-2"></div>
-                      </div>
-                      <div
+                    <div
                         v-for="(apartment, index) in apartments"
-                        :key="apartment.index"
+                        :key="`apartment - ${index}`"
                       >
                         <div class="">
                           <div class="col-xs-2">
-                            <button
+                          <button
+                          
                               type="button"
                               v-on:click="removeApartment(index)"
                               class="btn btn-danger"
@@ -129,15 +136,22 @@
                             >
                               Rem -
                             </button>
+
+                            
+                            
                           </div>
 
                           <div>
-                            <b-form-group
+                          <b-form-group
                               id="input-group-3"
                               label="Tên nguyên liệu"
                               label-for="input-3"
                             >
-                              <select class="custom-select" v-model="form.material_id">
+                              <select
+                                class="custom-select"
+                                v-model="apartment.material_id"
+                                :name="`apartments[${index}][material_id]`"
+                              >
                                 <option
                                   v-for="meterial in meterials"
                                   :key="meterial.id"
@@ -153,7 +167,131 @@
                               label="Nhà cung cáp"
                               label-for="input-3"
                             >
-                              <select class="custom-select" v-model="form.supplier_id">
+                              <select
+                                class="custom-select"
+                                v-model="apartment.supplier_id"
+                                :name="`apartments[${index}][supplier_id]`"
+                              >
+                                <option
+                                  v-for="supplier in supplierls"
+                                  :key="supplier.id"
+                                  :value="supplier.id"
+                                >
+                                  {{ supplier.supplier_name }}
+                                </option>
+                              </select>
+                            </b-form-group>
+
+                            <b-form-group
+                              id="input-group-3"
+                              label="Số Lượng"
+                              label-for="input-3"
+                            >
+                              <b-form-input
+                                :name="`apartments[${index}][amount]`"
+                                id="input-3"
+                                v-model="apartment.amount"
+                                placeholder="Nhập số lượng"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-3"
+                              label="Giá"
+                              label-for="input-3"
+                            >
+                              <b-form-input
+                                :name="`apartments[${index}][price]`"
+                                id="input-3"
+                                v-model="apartment.price"
+                                placeholder="Nhập Giá Cả"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                              id="input-group-2"
+                              label="Ngày nhập"
+                              label-for="input-2"
+                            >
+                              <div class="">
+                                <input
+                                  :name="`apartments[${index}][import_date]`"
+                                  class="form-control"
+                                  type="datetime-local"
+                                  value="2011-08-19T13:45:00"
+                                  id="example-datetime-local-input"
+                                  v-model="apartment.import_date"
+                                />
+                              </div>
+                            </b-form-group>
+                          </div>
+                        </div>
+                      </div>
+
+                    <b-button
+                      type="button"
+                      v-on:click="addNewApartment"
+                      class="btn btn-success"
+                    >
+                      Add +
+                    </b-button>
+                    <br />
+                    <b-button @click="onSubmit" variant="primary">Submit</b-button>
+                    <b-button type="reset" variant="danger">Reset</b-button>
+                  </b-form>
+
+               <!--    <main class="container">
+                    <form id="app" data-apartments="[]">
+                      <hr />
+                      <div class="row">
+                        <div class="col-xs-2"></div>
+                      </div>
+                      <div
+                        v-for="(apartment, index) in apartments"
+                        :key="`apartment.${index}`"
+                      >
+                        <div class="">
+                          <div class="col-xs-2">
+                            <button
+                              type="button"
+                              v-on:click="removeApartment(index)"
+                              class="btn btn-danger"
+                              style="margin: 10px 0"
+                            >
+                              Rem - {{ JSON.stringify(apartment) }}
+                            </button>
+                          </div>
+
+                          <div>
+                          <b-form-group
+                              id="input-group-3"
+                              label="Tên nguyên liệu"
+                              label-for="input-3"
+                            >
+
+                              <select
+                                class="custom-select"
+                                v-model="form.material_id1"
+                              >
+                                <option
+                                  v-for="meterial in meterials"
+                                  :key="meterial.id"
+                                  :value="meterial.id"
+                                >
+                                  {{ meterial.material_name }}
+                                </option>
+                              </select>
+                            </b-form-group>
+
+                            <b-form-group
+                              id="input-group-3"
+                              label="Nhà cung cáp"
+                              label-for="input-3"
+                            >
+                              <select
+                                class="custom-select"
+                                v-model="form.supplier_id1"
+                              >
                                 <option
                                   v-for="supplier in supplierls"
                                   :key="supplier.id"
@@ -171,7 +309,7 @@
                             >
                               <b-form-input
                                 id="input-3"
-                                v-model="form.amount"
+                                v-model="form.amount1"
                                 placeholder="Nhập số lượng"
                                 required
                               ></b-form-input>
@@ -183,7 +321,7 @@
                             >
                               <b-form-input
                                 id="input-3"
-                                v-model="form.price"
+                                v-model="form.price1"
                                 placeholder="Nhập Giá Cả"
                                 required
                               ></b-form-input>
@@ -199,7 +337,7 @@
                                   type="datetime-local"
                                   value="2011-08-19T13:45:00"
                                   id="example-datetime-local-input"
-                                  v-model="form.import_date"
+                                  v-model="form.import_date1"
                                 />
                               </div>
                             </b-form-group>
@@ -207,7 +345,9 @@
                         </div>
                       </div>
                     </form>
-                  </main>
+                    <b-button @click="onSubmit" variant="primary">Submit</b-button>
+                    <b-button type="reset" variant="danger">Reset</b-button>
+                  </main> -->
                 </b-modal>
               </div>
             </div>
@@ -235,7 +375,7 @@
                   <div class="count_price">
                     <b-col lg="4">
                       <span>Tổng tiền</span>
-                      <label class="label-cout">6.200.456 đ</label>
+                      <label class="label-cout">{{sumprice}}vnđ</label>
                     </b-col>
                   </div>
 
@@ -259,7 +399,13 @@
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
 import FormAdd from "./Pages/FormAdd.vue";
 import users from "./Tables/users";
@@ -280,23 +426,43 @@ export default {
     return {
       payload: [],
       apartment: {
-        price: "",
-        rooms: "",
-      },
-      meterials: [{ text: "", value: null }],
-      supplierls: [{ text: "", value: null }],
-      apartments: [],
-      projects,
-      users,
-      currentPage: 1,
-
-      form: {
         supplier_id: "",
         material_id: "",
         amount: "",
         price: "",
-        import_date: "",
+        import_date: ""
       },
+      meterials: [{ text: "", value: null }],
+      supplierls: [{ text: "", value: null }],
+      apartments: [
+        {
+        supplier_id: "",
+        material_id: "",
+        amount: "",
+        price: "",
+        import_date: ""
+      }
+      ],
+      projects,
+      users,
+      currentPage: 1,
+        
+      form: [
+        // {
+        //   supplier_id: "",
+        //   material_id: "",
+        //   amount: "",
+        //   price: "",
+        //   import_date: "",
+        // },
+        // {
+        //   supplier_id1: "",
+        //   material_id1: "",
+        //   amount1: "",
+        //   price1: "",
+        //   import_date1: "",
+        // },
+      ],
 
       infoModal: {
         id: "info-modal",
@@ -330,30 +496,42 @@ export default {
         // { key: "actions", label: "Hành động" },
       ],
       items: [],
+      sumprice:"",
     };
   },
   created() {
     this.getImportMeterial();
     this.getMeterial();
     this.getSupplier();
+    this.Sumprice();
   },
   methods: {
+    Sumprice(){
+        axios
+      .get('http://127.0.0.1:8000/material/sum_price/')
+      .then(response => (this.sumprice = response.data.price))
+    },
     addNewApartment() {
-      this.apartments.push(Vue.util.extend({}, this.apartment));
+      // this.apartments.push(Vue.util.extend({}, this.apartment));
+      this.apartments.push({
+        supplier_id: "",
+        material_id: "",
+        amount: "",
+        price: "",
+        import_date: ""
+      });
     },
     removeApartment(index) {
       Vue.delete(this.apartments, index);
     },
-    sumbitForm() {
-      console.log("Kane");
-    },
+   
     //Get Meterial
     getMeterial() {
       axios
         .get(`http://127.0.0.1:8000/material/list_material/`)
         .then((response) => {
           this.meterials = response.data.data;
-          console.log(this.meterials);
+          
         })
         .catch((err) => {
           console.log(err);
@@ -361,11 +539,11 @@ export default {
     },
     //Get Supplier
     getSupplier() {
-      axios
+      axios   
         .get(`http://127.0.0.1:8000/supplier/list_supplier/`)
         .then((response) => {
           this.supplierls = response.data.data;
-          console.log(this.supplierls);
+         
         })
         .catch((err) => {
           console.log(err);
@@ -403,22 +581,34 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault();
-      const payload = [
-        {
-          supplier_id: this.form.supplier_id,
-          material_id: this.form.material_id,
-          amount: this.form.amount,
-          price: this.form.price,
-          import_date: this.form.import_date,
-        },
-      ];
+      console.log('apartment', this.apartments);
+      const payload = this.apartments;
+      // const payload = [
+      //   {
+      //     supplier_id: this.form.supplier_id,
+      //     material_id: this.form.material_id,
+      //     amount: this.form.amount,
+      //     price: this.form.price,
+      //     import_date: this.form.import_date,
+      //   },
+      //   {
+      //     supplier_id: this.form.supplier_id1,
+      //     material_id: this.form.material_id1,
+      //     amount: this.form.amount1,
+      //     price: this.form.price1,
+      //     import_date: this.form.import_date1,
+      //   }
+      // ];
 
-      this.payload.forEach((payload) => {
-        this.addMeterial(payload);
-      });
-      console.log(payload);
+      // this.payload.forEach((payload) => {
+      //   this.addMeterial(payload);
+      // });
+      // console.log({payload});
       // this.addMeterial(payload);
-      this.addMeterial(payload);
+      // this.addMeterial(payload);
+      this.addMeterial({
+        data: payload
+      });
     },
 
     onReset(event) {
