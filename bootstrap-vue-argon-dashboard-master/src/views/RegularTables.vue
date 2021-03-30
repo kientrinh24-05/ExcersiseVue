@@ -254,7 +254,7 @@ export default {
   },
   created() {
     this.getSuplier();
-    this.Sumprice();
+    // this.Sumprice();
   },
   watch: {},
   computed: {
@@ -284,12 +284,19 @@ export default {
       const path = "http://127.0.0.1:8000/supplier/search_supplier/";
       axios
         .post(path, payload)
-        .then((rss) => {
-          this.items  = rss.data;
-          console.log(items);
-        })  
+        .then((res) => {
+          this.items  = res.data.data.map((supplier) => {
+              return {
+                mã_nhà_cung_cấp: supplier.id,
+                tên_nhà_cung_cấp: supplier.supplier_name,
+                địa_chỉ: supplier.supplier_address,
+                số_điện_thoại: supplier.supplier_phone,
+              };
+            })        
+          })  
+        
         .catch((error) => {
-          this.getSuplier();
+          // this.getSuplier();
           console.log(error);
         });
     },

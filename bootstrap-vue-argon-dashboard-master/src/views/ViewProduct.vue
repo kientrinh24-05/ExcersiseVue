@@ -245,7 +245,7 @@
 
                       <b-col lg="6">
                         <div>
-                          <b-form>
+                         
                             <b-form-group
                               id="input-group-1"
                               label="Tên nguyên liệu:"
@@ -254,29 +254,48 @@
                               <b-form-input
                                 id="input-1"
                                 type="text"
-                                change="onChange($event)"
+                                v-model="selected.ten"
                                 placeholder="Nhap ten nguyen lieu"
                                 required
                               ></b-form-input>
                             </b-form-group>
-                          </b-form>
+                            
+                            <b-form-group
+                              id="input-group-1"
+                              label="So luong:"
+                              label-for="input-1"
+                            >
+                              <b-form-input
+                                id="input-1"
+                                type="text"
+                                v-model="selected.sl"
+                                placeholder="Nhap so luong"
+                                required
+                              ></b-form-input>
+                            </b-form-group>
+                            <b-button @click="createNguyenLieu">add</b-button>
                           <div>
                             <b-table
-                              :items="items1"
+                              :items="nguyenlieu"
                               :fields="fields1"
                               stacked="md"
+                              select-mode="single"
+                              selectable
+                              @row-selected="onRowSelected"
                               show-empty
                               small
                             >
                               <template #cell(name)="row">
                                 {{ row }}
+                                />
                               </template>
                               <template #cell(count)="row">
-                                <input
+                                <!-- <b-form-input
                                   type="number"
-                                  style="width: 50px"
-                                  @click="info(row.index)"
-                                />
+                                  style="width: 80px"
+                                  v-model=""
+                                /> -->
+                                {{row.item.count}}
                               </template>
 
                               <template #cell(actions)="row">
@@ -320,6 +339,7 @@ import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import DarkTable from "./Tables/RegularTables/DarkTable.vue";
 import axios from "axios";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   components: {
@@ -398,6 +418,11 @@ export default {
       },
       formmeterial: {},
       show: true,
+      selected: {
+      ten: '',
+      sl: 0,
+      },
+      items3: []
     };
   },
 
@@ -405,8 +430,31 @@ export default {
     this.getTable();
     this.Getproduct();
     this.getMeterial();
+    console.log(this.nguyenlieu, 'nguyenlieu');
   },
+  computed: {
+  // mix this into the outer object with the object spread operator
+  ...mapState(['nguyenlieu'])
+},
   methods: {
+      ...mapActions({
+      addnguyenlieu: 'addnguyenlieu' // map `this.add()` to `this.$store.dispatch('increment')`
+    }),
+    onRowSelected(items){
+     items.map(res=>{
+       console.log(res);
+       this.selected.ten = res.namemiterial;
+       this.selected.sl = res.count;
+      })
+    },
+    createNguyenLieu(){
+      const nguyenlieu = {
+        namemiterial: this.selected.ten,
+        count: this.selected.sl
+      };
+      console.log(nguyenlieu,'nguyenlieus ');
+      this.addnguyenlieu(nguyenlieu);
+    },
     AddMeterial() {
       const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
       axios
@@ -534,6 +582,18 @@ export default {
           this.editform.category = data.category;
           this.editform.food_price = data.food_price;
           this.editform.food_image = data.food_image;
+          fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items3 = json.data.map((meterial) => {
+                let nguyenlieu = {
+                   namemiterial: meterial.material_name,
+                    count: meterial.amount_material
+                };
+               this.addnguyenlieu(nguyenlieu)
+            }))
+        );
 
           // this.editform.food_name = data.food_name;
           // this.editform.category = data.category;
