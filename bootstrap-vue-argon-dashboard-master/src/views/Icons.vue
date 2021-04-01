@@ -18,20 +18,7 @@
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới </b-button>
               </div>
             </div>
-            <b-modal id="modal-2" ref="modal-2" title="Lọc">
-              <b-form @submit="SubmitSearch">
-                <b-form-group id="input-group-1" label="Trạng thái">
-                  <b-form-select
-                    v-model="FormSearch.status"
-                    :options="options"
-                  ></b-form-select>
-                </b-form-group>
-                <div>
-                  <b-button type="submit" variant="success">Xác nhận</b-button>
-                  <b-button variant="secondary" @click="hideModal1">Hủy Bỏ</b-button>
-                </div>
-              </b-form>
-            </b-modal>
+
             <b-modal id="modal-1" ref="modalAddTable" title="Thêm mới bàn">
               <b-form @submit="onSubmit">
                 <b-form-group id="input-group-1" label="Tên bàn">
@@ -50,63 +37,71 @@
             </b-modal>
 
             <b-row class="icon-examples">
-              <b-col lg="3" md="6" v-for="table in tables" :key="table.id">
-                <b-button
-                  @click="info(table.item, table.id, $event.target)"
-                  class="btn-icon-clipboard"
-                >
+              <b-col
+                @click="BookTable(table.id, table.status)"
+                lg="3"
+                md="6"
+                class="table"
+                v-for="table in tables"
+                :key="table.id"
+              >
+                <b-button @click="initTable()" class="btn-icon-clipboard">
                   {{ table.name }}
                 </b-button>
-
-                <b-modal :id="infoModal.id" title="Thông tin bàn  ">
-                  <b-row>
-                    <b-col lg="12" md="6">
-                      <h3>Thông tin đặt bàn</h3>
-                      <b-form-group>
-                        <b-form-input
-                          id="input-1"
-                          type="text"
-                          placeholder="Tên Người Đặt"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-
-                      <b-form-group>
-                        <b-form-input
-                          id="input-2"
-                          placeholder="Số ĐT"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-                      <b-form-group>
-                        <b-form-input
-                          id="input-2"
-                          placeholder="Số Lượng"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-                      <b-form-group>
-                        <b-form-input
-                          id="input-2"
-                          placeholder="Ngày Đặt"
-                          required
-                          type="date"
-                        ></b-form-input>
-                      </b-form-group>
-                      <b-form-group>
-                        <b-form-input
-                          id="input-2"
-                          placeholder="Tiền Đặt"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-                      <b-button variant="success">Đặt Bàn</b-button>
-                    </b-col>
-                    <hr />
-                  </b-row>
-                </b-modal>
               </b-col>
             </b-row>
+            <b-modal :id="infoModal.id" title="Thông tin bàn  ">
+              <b-row>
+                <b-col lg="12" md="6">
+                  <h3>Thông tin đặt bàn</h3>
+                  <b-form-group>
+                    <b-form-input
+                      id="input-1"
+                      type="text"
+                      placeholder="Tên Người Đặt"
+                      v-model="booktables.namebook"
+                      required
+                    ></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group>
+                    <b-form-input
+                      id="input-2"
+                      v-model="booktables.phonebook"
+                      placeholder="Số ĐT"
+                      required
+                    ></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                    <b-form-input
+                      id="input-2"
+                      v-model="booktables.countbook"
+                      placeholder="Số Lượng"
+                      required
+                    ></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                    <b-form-input
+                      id="input-2"
+                      v-model="booktables.datebook"
+                      placeholder="Ngày Đặt"
+                      required
+                      type="date"
+                    ></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                    <b-form-input
+                      id="input-2"
+                      v-model="booktables.moneybook"
+                      placeholder="Tiền Đặt"
+                      required
+                    ></b-form-input>
+                  </b-form-group>
+                  <b-button variant="success">Đặt Bàn</b-button>
+                </b-col>
+                <hr />
+              </b-row>
+            </b-modal>
           </card>
         </b-col>
       </b-row>
@@ -127,7 +122,13 @@ export default {
   data() {
     return {
       tables: null,
-
+      booktables: {
+        namebook: "",
+        phonebook: "",
+        countbook: "",
+        moneybook: "",
+        datebook: "",
+      },
       items: [],
 
       FormAdd: {
@@ -149,11 +150,30 @@ export default {
   },
   created() {
     this.getTable();
+    // const table = document.querySelector("tavke")
+    // const tables1 = document.querySelector("table");
+    // if (table.status == "Bàn đã đặt") {
+    //   tables1.classList(".sucses");
+    // } else {
+    //   console.log("lỗi");
+    // }
   },
   methods: {
+    /// Fixxxxxxxxxxxxx
+    initTable(id) {
+      let c = 6;
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
+        .then((response) => {
+          let abc = response.filter((e) => e);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
+      // this.infoModal.content = JSON.stringify(item, null, 2);
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
 
@@ -191,29 +211,23 @@ export default {
           console.log(error);
         });
     },
-    Search(payload) {
-      const path = "http://127.0.0.1:8000/food_tabel/create_table/";
-      axios
-        .get(path, payload)
-        .then((response) => {
-          this.tables = response.data.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // Nếu trạng thái bàn trống thì post , còn bàn đã đặt thì update vs get
+    BookTable(id, status) {
+      if (status == "Bàn đã đặt") {
+        axios
+          .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
+          .then((res) => res.data)
+          .then((response) => {
+            const { data } = response;
+
+            this.booktables.namebook = data.name_book;
+            this.booktables.phonebook = data.phone_book;
+            this.booktables.countbook = data.number_of_people;
+            this.booktables.moneybook = data.money_book;
+            this.booktables.datebook = data.time_book;
+          });
+      }
     },
-    SubmitSearch(event) {
-      event.preventDefault();
-
-      this.$refs.modalAddTable.hide();
-      const payload = {
-        status: this.FormSearch.status,
-      };
-      console.log(payload);
-
-      this.Search(payload);
-    },
-
     onCopy() {
       this.$notify({
         type: "info",
@@ -226,7 +240,6 @@ export default {
     hideModal1() {
       this.$refs["modal-2"].hide();
     },
-    select(index) {},
   },
 };
 </script>

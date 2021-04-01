@@ -72,50 +72,61 @@
                           </b-form-group>
 
                           <div class="btn_click">
-                            <b-button type="submit" variant="primary">Thêm Món</b-button>
+                            <b-button
+                              type="submit"
+                              variant="primary"
+                              @click="show1 = !show1"
+                              >Thêm Món</b-button
+                            >
                             <b-button type="reset" variant="danger">Hủy Bỏ</b-button>
                           </div>
                         </b-form>
                       </b-col>
-                      <b-col lg="6">
+                      <b-col lg="6" v-if="show1">
                         <div>
-                          <b-form>
-                            <b-form-group
-                              id="input-group-3"
-                              label="Tên nguyên liệu"
-                              label-for="input-3"
-                            >
-                              <select class="custom-select" v-model="form.material_id">
-                                <option
-                                  v-for="meterial in meterials"
-                                  :key="meterial.id"
-                                  :value="meterial.id"
+                          <b-form @submit="SubmitMeterialFood">
+                            <b-row>
+                              <b-col lg="7">
+                                <b-form-group
+                                  id="input-group-3"
+                                  label="Tên nguyên liệu"
+                                  label-for="input-3"
                                 >
-                                  {{ meterial.material_name }}
-                                </option>
-                              </select>
-                            </b-form-group>
-                            <b-button @click="onChange()"> + </b-button>
+                                  <select
+                                    class="custom-select"
+                                    v-model="formadd.material_id"
+                                  >
+                                    <option
+                                      v-for="meterial in meterials"
+                                      :key="meterial.id"
+                                      :value="meterial.id"
+                                    >
+                                      {{ meterial.material_name }}
+                                    </option>
+                                  </select>
+                                </b-form-group>
+                              </b-col>
+                              <b-col lg="4">
+                                <b-form-group
+                                  id="input-group-3"
+                                  label="Số lượng"
+                                  label-for="input-3"
+                                >
+                                  <b-input type="text" v-model="formadd.sl"></b-input>
+                                </b-form-group>
+                              </b-col>
+                            </b-row>
+
+                            <b-button type="submit"> Thêm</b-button>
                           </b-form>
                           <div>
                             <b-table
-                              :items="items1"
+                              :items="items3"
                               :fields="fields1"
                               stacked="md"
                               show-empty
                               small
                             >
-                              <template #cell(name)="row">
-                                {{ row }}
-                              </template>
-                              <template #cell(count)="row">
-                                <input
-                                  type="number"
-                                  style="width: 50px"
-                                  @click="info(row.index)"
-                                />
-                              </template>
-
                               <template #cell(actions)="row">
                                 <b-button
                                   size="sm"
@@ -245,38 +256,42 @@
 
                       <b-col lg="6">
                         <div>
-                         
-                            <b-form-group
-                              id="input-group-1"
-                              label="Tên nguyên liệu:"
-                              label-for="input-1"
+                          <b-form-group
+                            id="input-group-3"
+                            label="Tên nguyên liệu"
+                            label-for="input-3"
+                          >
+                            <select
+                              class="custom-select"
+                              v-model="meterialdetail.material"
                             >
-                              <b-form-input
-                                id="input-1"
-                                type="text"
-                                v-model="selected.ten"
-                                placeholder="Nhap ten nguyen lieu"
-                                required
-                              ></b-form-input>
-                            </b-form-group>
-                            
-                            <b-form-group
-                              id="input-group-1"
-                              label="So luong:"
-                              label-for="input-1"
-                            >
-                              <b-form-input
-                                id="input-1"
-                                type="text"
-                                v-model="selected.sl"
-                                placeholder="Nhap so luong"
-                                required
-                              ></b-form-input>
-                            </b-form-group>
-                            <b-button @click="createNguyenLieu">add</b-button>
+                              <option
+                                v-for="meterial in meterials"
+                                :key="meterial.id"
+                                :value="meterial.id"
+                              >
+                                {{ meterial.material_name }}
+                              </option>
+                            </select>
+                          </b-form-group>
+
+                          <b-form-group
+                            id="input-group-1"
+                            label="So luong:"
+                            label-for="input-1"
+                          >
+                            <b-form-input
+                              id="input-1"
+                              type="text"
+                              v-model="meterialdetail.amount_material"
+                              placeholder="Nhap so luong"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-button @click="onsubmitDetail()">add</b-button>
                           <div>
                             <b-table
-                              :items="nguyenlieu"
+                              :items="items1"
                               :fields="fields1"
                               stacked="md"
                               select-mode="single"
@@ -290,12 +305,7 @@
                                 />
                               </template>
                               <template #cell(count)="row">
-                                <!-- <b-form-input
-                                  type="number"
-                                  style="width: 80px"
-                                  v-model=""
-                                /> -->
-                                {{row.item.count}}
+                                {{ row.item.count }}
                               </template>
 
                               <template #cell(actions)="row">
@@ -354,6 +364,7 @@ export default {
   data() {
     return {
       isEdit: null,
+      show1: false,
       projects,
       currentPage: 1,
       infoModal: {
@@ -409,6 +420,10 @@ export default {
         food_price: "",
         food_image: "",
       },
+      formadd: {
+        material_id: "",
+        sl: 1,
+      },
       editform: {
         id: "",
         food_name: "",
@@ -418,11 +433,12 @@ export default {
       },
       formmeterial: {},
       show: true,
-      selected: {
-      ten: '',
-      sl: 0,
+
+      meterialdetail: {
+        material: "",
+        amount_material: "",
       },
-      items3: []
+      items3: [],
     };
   },
 
@@ -430,31 +446,97 @@ export default {
     this.getTable();
     this.Getproduct();
     this.getMeterial();
-    console.log(this.nguyenlieu, 'nguyenlieu');
+    // console.log(this.nguyenlieu, 'nguyenlieu');
   },
   computed: {
-  // mix this into the outer object with the object spread operator
-  ...mapState(['nguyenlieu'])
-},
+    // mix this into the outer object with the object spread operator
+    // ...mapState(['nguyenlieu'])
+  },
   methods: {
-      ...mapActions({
-      addnguyenlieu: 'addnguyenlieu' // map `this.add()` to `this.$store.dispatch('increment')`
-    }),
-    onRowSelected(items){
-     items.map(res=>{
-       console.log(res);
-       this.selected.ten = res.namemiterial;
-       this.selected.sl = res.count;
-      })
+    //   ...mapActions({
+    //   addnguyenlieu: 'addnguyenlieu' // map `this.add()` to `this.$store.dispatch('increment')`
+    // }),
+    // onRowSelected(items){
+    //  items.map(res=>{
+    //    console.log(res);
+    //    this.selected.ten = res.namemiterial;
+    //    this.selected.sl = res.count;
+    //   })
+    // },
+
+    GetMeterialFood() {
+      fetch(`http://127.0.0.1:8000/food_tabel/create_detailfood/`)
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items3 = json.data.map((meterial) => {
+              return {
+                namemiterial: meterial.material_name,
+                count: meterial.amount_material,
+              };
+            }))
+        );
     },
-    createNguyenLieu(){
-      const nguyenlieu = {
-        namemiterial: this.selected.ten,
-        count: this.selected.sl
+    AddMeterialFood(payload) {
+      const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.GetMeterialFood();
+        })
+        .catch((error) => {
+          this.GetMeterialFood();
+          console.log(error);
+        });
+    },
+    SubmitMeterialFood(event) {
+      event.preventDefault();
+
+      const payload = {
+        material: this.formadd.material_id,
+        amount_material: this.formadd.sl,
       };
-      console.log(nguyenlieu,'nguyenlieus ');
-      this.addnguyenlieu(nguyenlieu);
+
+      this.AddMeterialFood(payload);
+      console.log(payload);
     },
+
+    addDetaiFood(id, payload) {
+      this.isEdit = id;
+      const path = `http://127.0.0.1:8000/food_tabel/get_detailfood/` + id;
+      console.log(id);
+      console.log(payload);
+      axios
+        .post(path, payload)
+        .then(() => {
+          fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+            .then((response) => response.json())
+            .then(
+              (json) =>
+                (this.items3 = json.data.map((meterial) => {
+                  return {
+                    namemiterial: meterial.material_name,
+                    count: meterial.amount_material,
+                  };
+                }))
+            );
+        })
+        .catch((error) => {
+          this.watchMeterial(id);
+          console.log(error);
+        });
+    },
+    onsubmitDetail() {
+      const payload = [
+        {
+          material: this.meterialdetail.material,
+          amount_material: this.meterialdetail.amount_material,
+        },
+      ];
+      this.addDetaiFood(this.isEdit, { data: payload });
+      console.log(payload);
+    },
+
     AddMeterial() {
       const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
       axios
@@ -501,9 +583,7 @@ export default {
           console.log(err);
         });
     },
-    onChangeFileUpload() {
-      this.file = this.$refs.file.files[0];
-    },
+
     //Get All Category
     getTable() {
       axios
@@ -576,47 +656,37 @@ export default {
           console.log(this.editform.food_name);
           // let formData = new FormData();
 
-          console.log('data', data);
+          console.log("data", data);
 
           this.editform.food_name = data.food_name;
           this.editform.category = data.category;
           this.editform.food_price = data.food_price;
           this.editform.food_image = data.food_image;
-          fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items3 = json.data.map((meterial) => {
-                let nguyenlieu = {
-                   namemiterial: meterial.material_name,
-                    count: meterial.amount_material
-                };
-               this.addnguyenlieu(nguyenlieu)
-            }))
-        );
 
-          // this.editform.food_name = data.food_name;
-          // this.editform.category = data.category;
-          // this.editform.food_price = data.food_price;
-          // this.editform.food_image = data.food_image;
+          fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+            .then((response) => response.json())
+            .then(
+              (json) =>
+                (this.items3 = json.data.map((meterial) => {
+                  return {
+                    namemiterial: meterial.material_name,
+                    count: meterial.amount_material,
+                  };
+                }))
+            );
         })
         .catch((err) => {
           console.log(err);
         });
     },
     update() {
-
-        let formData = new FormData();
-        formData.append("food_name", (this.editform.food_name));
-        formData.append("category", (this.editform.category));
-        formData.append("food_price", (this.editform.food_price));
-        formData.append("food_image", (this.editform.food_image));
+      let formData = new FormData();
+      formData.append("food_name", this.editform.food_name);
+      formData.append("category", this.editform.category);
+      formData.append("food_price", this.editform.food_price);
+      formData.append("food_image", this.editform.food_image);
       axios
-        .put(
-          `http://127.0.0.1:8000/food_tabel/detail_food/` + this.isEdit,
-          formData,
-          {}
-        )
+        .put(`http://127.0.0.1:8000/food_tabel/detail_food/` + this.isEdit, formData, {})
         .then((res) => {
           console.log(res.data);
           this.Getproduct();
@@ -627,18 +697,6 @@ export default {
         });
     },
 
-    // Upload IMG
-    onFileChange(e) {
-      let files = e.target.files || e.dataTransfer.files;
-      this.createImage(files[0]);
-    },
-    createImage(file) {
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        this.uploadedImage = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
     // UpLoadIMG
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;

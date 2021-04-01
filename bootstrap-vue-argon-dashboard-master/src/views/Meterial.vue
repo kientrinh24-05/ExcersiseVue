@@ -11,7 +11,13 @@
               <h3>Danh sách nguyên liệu</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    type="text"
+                    v-model="searchit_form.material_name"
+                    placeholder="Tìm kiếm..."
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
@@ -33,8 +39,8 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-button type="submit" variant="primary">Submit</b-button>
-                      <b-button type="reset" variant="danger">Reset</b-button>
+                      <b-button type="submit" variant="success">Xác Nhận</b-button>
+                      <b-button type="reset" variant="light">Đóng</b-button>
                     </b-form>
                   </div>
                 </b-modal>
@@ -103,8 +109,8 @@
 
                           <!-- Button Click Submit -->
                           <div class="link-btn">
-                            <b-button type="submit" variant="primary">Xác Nhận</b-button>
-                            <b-button type="reset" variant="danger">Reset</b-button>
+                            <b-button type="submit" variant="success">Xác Nhận</b-button>
+                            <b-button type="reset" variant="light">Đóng</b-button>
                           </div>
                         </b-form>
                       </div>
@@ -168,11 +174,17 @@ export default {
 
         { key: "actions", label: "Hành động" },
       ],
+      searchit_form: {
+        material_name: "",
+      },
       items: [],
     };
   },
   created() {
     this.getMeterial();
+    setInterval(() => {
+      this.onSeach();
+    }, 300);
   },
   computed: {
     rows() {
@@ -180,6 +192,32 @@ export default {
     },
   },
   methods: {
+    searchItem(payload) {
+      const path = "http://127.0.0.1:8000/material/search_material/";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.items = res.data.data.map((material) => {
+            return {
+              mã_nguyên_liệu: material.id,
+              tên_nguyên_liệu: material.material_name,
+            };
+          });
+        })
+
+        .catch((error) => {
+          // this.getSuplier();
+          console.log(error);
+        });
+    },
+
+    onSeach() {
+      const payload = {
+        material_name: this.searchit_form.material_name,
+      };
+      console.log(payload);
+      this.searchItem(payload);
+    },
     getMeterial() {
       fetch("http://127.0.0.1:8000/material/list_material/")
         .then((response) => response.json())

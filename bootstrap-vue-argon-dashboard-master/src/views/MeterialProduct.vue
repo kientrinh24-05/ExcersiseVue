@@ -11,7 +11,13 @@
               <h3>Danh sách nguyên liệu</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    v-model="searchit_form1.material_name"
+                    type="text"
+                    placeholder="Tìm kiếm..."
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
@@ -21,15 +27,26 @@
 
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
-                <b-modal id="modal-2" title="Filler">
-                  <b-form @submit="onSubmit" @reset="onReset">
+                <b-modal id="modal-2" title="Lọc" ref="modalLoc">
+                  <b-form @submit="onSeach" @reset="onReset">
                     <b-form-group id="input-group-1" label="Thời gian">
                       <div class="fillter_date">
-                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <b-form-input
+                          v-model="searchit_form.from_date"
+                          type="datetime-local"
+                          value="2011-08-19T13:45:00"
+                          id="example-datetime-local-input"
+                        ></b-form-input>
                         <span>__</span>
-                        <b-form-input class="input-date" type="date"></b-form-input>
+                        <b-form-input
+                          v-model="searchit_form.to_date"
+                          type="datetime-local"
+                          value="2011-08-19T13:45:00"
+                          id="example-datetime-local-input"
+                        ></b-form-input>
                       </div>
                     </b-form-group>
+                    <b-button variant="success" type="submit">Xác Nhận</b-button>
                   </b-form>
                 </b-modal>
                 <b-modal id="modal-1" title="Thêm nguyên liệu">
@@ -46,7 +63,7 @@
                             class="btn btn-danger"
                             style="margin: 10px 0"
                           >
-                            Rem -
+                            Xóa
                           </button>
                         </div>
 
@@ -142,11 +159,13 @@
                       v-on:click="addNewApartment"
                       class="btn btn-success"
                     >
-                      Add +
+                      Thêm
                     </b-button>
                     <br />
-                    <b-button @click="onSubmit" variant="primary">Submit</b-button>
-                    <b-button type="reset" variant="danger">Reset</b-button>
+                    <div class="link-btn" style="margin: 1rem 0">
+                      <b-button @click="onSubmit" variant="success">Xác Nhận</b-button>
+                      <b-button type="reset" variant="light">Đóng</b-button>
+                    </div>
                   </b-form>
                 </b-modal>
               </div>
@@ -226,6 +245,14 @@ export default {
         price: "",
         import_date: "",
       },
+      searchit_form: {
+        fromdate: "",
+        todate: "",
+      },
+      searchit_form1: {
+        material_name: "",
+      },
+
       meterials: [{ text: "", value: null }],
       supplierls: [{ text: "", value: null }],
       apartments: [
@@ -298,8 +325,72 @@ export default {
     this.getMeterial();
     this.getSupplier();
     this.Sumprice();
+    setInterval(() => {
+      this.onSeachName();
+    }, 500);
   },
   methods: {
+    searchItem(payload) {
+      const path = "http://127.0.0.1:8000/material/search_date_importmaterial/";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.items = res.data.data.map((meterial) => {
+            return {
+              tên_nguyên_liệu: meterial.material_name,
+              nhà_phân_phối: meterial.supplier_name,
+              số_lượng: meterial.amount,
+              giá: meterial.price,
+              ngày_nhập: meterial.import_date,
+            };
+          });
+        })
+
+        .catch((error) => {
+          // this.getSuplier();
+          console.log(error);
+        });
+    },
+    searchItemName(payload) {
+      const path = "http://127.0.0.1:8000/material/search_name_importmaterial/";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.items = res.data.data.map((meterial) => {
+            return {
+              tên_nguyên_liệu: meterial.material_name,
+              nhà_phân_phối: meterial.supplier_name,
+              số_lượng: meterial.amount,
+              giá: meterial.price,
+              ngày_nhập: meterial.import_date,
+            };
+          });
+        })
+
+        .catch((error) => {
+          // this.getSuplier();
+          console.log(error);
+        });
+    },
+    onSeachName() {
+      const payload = {
+        material_name: this.searchit_form1.material_name,
+      };
+
+      this.searchItemName(payload);
+    },
+    hideModal() {
+      this.$refs["modalLoc"].hide();
+    },
+    onSeach() {
+      const payload = {
+        from_date: this.searchit_form.from_date,
+        to_date: this.searchit_form.to_date,
+      };
+
+      this.searchItem(payload);
+      this.hideModal();
+    },
     Sumprice() {
       axios
         .get("http://127.0.0.1:8000/material/sum_price/")
@@ -375,29 +466,7 @@ export default {
       event.preventDefault();
       console.log("apartment", this.apartments);
       const payload = this.apartments;
-      // const payload = [
-      //   {
-      //     supplier_id: this.form.supplier_id,
-      //     material_id: this.form.material_id,
-      //     amount: this.form.amount,
-      //     price: this.form.price,
-      //     import_date: this.form.import_date,
-      //   },
-      //   {
-      //     supplier_id: this.form.supplier_id1,
-      //     material_id: this.form.material_id1,
-      //     amount: this.form.amount1,
-      //     price: this.form.price1,
-      //     import_date: this.form.import_date1,
-      //   }
-      // ];
 
-      // this.payload.forEach((payload) => {
-      //   this.addMeterial(payload);
-      // });
-      // console.log({payload});
-      // this.addMeterial(payload);
-      // this.addMeterial(payload);
       this.addMeterial({
         data: payload,
       });

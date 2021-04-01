@@ -20,7 +20,7 @@
                           v-for="product in products"
                           :key="product.id"
                         >
-                          <img :src="product.food_image" />
+                          <img :src="'http://127.0.0.1:8000' + food.food_image" />
 
                           <p>{{ product.food_name }}</p>
                           <strong>{{ product.food_price }}.VND</strong>
@@ -39,7 +39,10 @@
                     <b-card-text>
                       <b-row>
                         <b-col lg="3" md="4" mb="6" v-for="food in foods" :key="food.id">
-                          <img :src="food.food_image.url"/>
+                          <img
+                            class="img_food"
+                            :src="'http://127.0.0.1:8000' + food.food_image"
+                          />
                           <p>{{ food.food_name }}</p>
                           <strong>{{ food.food_price }}.VND</strong>
                         </b-col>
@@ -136,6 +139,11 @@ export default {
 };
 </script>
 <style>
+.img_food {
+  height: 120px;
+  width: 120px;
+}
+
 .el-table.table-dark {
   background-color: #172b4d;
   color: #f8f9fe;

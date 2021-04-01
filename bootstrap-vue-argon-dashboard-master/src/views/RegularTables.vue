@@ -233,7 +233,7 @@ export default {
         },
         { key: "actions", label: "Hành Động" },
       ],
-      sumprice:"",
+      sumprice: "",
       editform: {
         id: "",
         supplier_name: "",
@@ -263,7 +263,6 @@ export default {
     },
   },
   methods: {
-    
     // Get All
     getSuplier() {
       fetch("http://127.0.0.1:8000/supplier/list_supplier/")
@@ -280,32 +279,32 @@ export default {
             }))
         );
     },
-    searchItem(payload){
+    searchItem(payload) {
       const path = "http://127.0.0.1:8000/supplier/search_supplier/";
       axios
         .post(path, payload)
         .then((res) => {
-          this.items  = res.data.data.map((supplier) => {
-              return {
-                mã_nhà_cung_cấp: supplier.id,
-                tên_nhà_cung_cấp: supplier.supplier_name,
-                địa_chỉ: supplier.supplier_address,
-                số_điện_thoại: supplier.supplier_phone,
-              };
-            })        
-          })  
-        
+          this.items = res.data.data.map((supplier) => {
+            return {
+              mã_nhà_cung_cấp: supplier.id,
+              tên_nhà_cung_cấp: supplier.supplier_name,
+              địa_chỉ: supplier.supplier_address,
+              số_điện_thoại: supplier.supplier_phone,
+            };
+          });
+        })
+
         .catch((error) => {
           // this.getSuplier();
           console.log(error);
         });
     },
-    onSeach(){
+    onSeach() {
       const payload = {
-        supplier_name: this.searchit_form.supplier_name
+        supplier_name: this.searchit_form.supplier_name,
       };
       console.log(payload);
-      this.searchItem(payload)
+      this.searchItem(payload);
     },
     // Add Suplier
     addSuplier(payload) {
