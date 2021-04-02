@@ -45,7 +45,7 @@
                 v-for="table in tables"
                 :key="table.id"
               >
-                <b-button @click="initTable()" class="btn-icon-clipboard">
+                <b-button @click="initTable(table.id)" class="btn-icon-clipboard">
                   {{ table.name }}
                 </b-button>
               </b-col>
@@ -159,18 +159,28 @@ export default {
     // }
   },
   methods: {
-    /// Fixxxxxxxxxxxxx
+    /// Fixxxxxxxxxxxxx Errooorrrrrrrr
     initTable(id) {
       let c = 6;
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
         .then((response) => {
-          let abc = response.filter((e) => e);
+          const value = response.filter((item) => item.id) === id;
+            console.log(value);
+            console.log(response);
         })
+      
         .catch((err) => {
           console.log(err);
         });
+
+        // const value = respone.filter(item=>item.id === (cái id m truyền vô))
+        // là mày có toàn bộ data của id đó đã truyền vô vvalue
+        // sau đó m this.nam = value.name
+        // Còn lấy id
     },
+
+
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
       // this.infoModal.content = JSON.stringify(item, null, 2);

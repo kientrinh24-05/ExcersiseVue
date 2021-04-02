@@ -2,12 +2,12 @@
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
-      <b-row>
+      <b-row  v-for="grenal in info" :key="grenal.id">
         <b-col xl="6" md="6">
           <stats-card
             title="Số Sản Phẩm"
             type="gradient-red"
-            sub-title="350,897"
+           :sub-title="grenal.amount"
             icon="ni ni-active-40"
             class="mb-2"
           >
@@ -21,7 +21,7 @@
           <stats-card
             title="Doanh Thu"
             type="gradient-orange"
-            sub-title="2,356"
+            :sub-title="grenal.revenue"
             icon="ni ni-chart-pie-35"
             class="mb-4"
           >
@@ -44,7 +44,7 @@
             <b-row align-v="center" slot="header">
               <b-col>
                 <h6 class="text-light text-uppercase ls-1 mb-1">Thống kê</h6>
-                <h5 class="h3 text-white mb-0">Doanh thu đạt nhiều trong tuần</h5>
+                <h5 class="h3 text-white mb-0">Doanh thu 6 tháng gần đây</h5>
               </b-col>
               <b-col>
                 <b-nav class="nav-pills justify-content-end">
@@ -57,14 +57,7 @@
                     <span class="d-none d-md-block">Tháng</span>
                     <span class="d-md-none">M</span>
                   </b-nav-item>
-                  <b-nav-item
-                    link-classes="py-2 px-3"
-                    :active="bigLineChart.activeIndex === 1"
-                    @click.prevent="initBigChart(1)"
-                  >
-                    <span class="d-none d-md-block">Tuần</span>
-                    <span class="d-md-none">W</span>
-                  </b-nav-item>
+                
                 </b-nav>
               </b-col>
             </b-row>
@@ -114,6 +107,9 @@ import StatsCard from "@/components/Cards/StatsCard";
 import SocialTrafficTable from "./Dashboard/SocialTrafficTable";
 import PageVisitsTable from "./Dashboard/PageVisitsTable";
 
+import axios from "axios";
+import { Header } from 'element-ui';
+
 export default {
   components: {
     LineChart,
@@ -125,6 +121,7 @@ export default {
   },
   data() {
     return {
+   
       bigLineChart: {
         allData: [
           [0, 20, 10, 30, 15, 40, 20, 60, 60],
@@ -154,9 +151,31 @@ export default {
         },
         extraOptions: chartConfigs.blueChartOptions,
       },
+
+         info: null,
     };
   },
+  created() {
+    this.getDataGreneral();
+    this.getUser();
+  },
   methods: {
+
+      getUser(){
+        axios.get(`http://127.0.0.1:8000/auth/list_user/` ,{
+          headers: {
+            Authorization:'Bearer'+localStorage.getItem('token')
+          }
+        })
+
+          
+      },
+
+      getDataGreneral() {
+      axios
+        .get("http://127.0.0.1:8000/comsudm/general/")
+        .then((response) => (this.info = response.data.data));
+    },
     initBigChart(index) {
       let chartData = {
         datasets: [

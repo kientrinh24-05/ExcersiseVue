@@ -21,7 +21,7 @@
                     placeholder="Tìm kiếm..."
                     autofocus
                     required
-                    @keyup.enter="onSeach()"
+                
                     v-model="searchit_form.supplier_name"
                   />
                   <button class="fa fa-search" type="submit"></button>
@@ -255,6 +255,9 @@ export default {
   created() {
     this.getSuplier();
     // this.Sumprice();
+    setInterval(() => {
+      this.onSeach()
+    }, 300);
   },
   watch: {},
   computed: {

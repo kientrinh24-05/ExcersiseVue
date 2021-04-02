@@ -27,7 +27,7 @@
             <b-card-body class="px-lg-5 py-lg-5">
               <h2 class="title">ĐĂNG KÝ</h2>
               <validation-observer v-slot="{ handleSubmit }" ref="formValidator">
-                <b-form role="form" @submit.prevent="handleSubmit(Register)">
+                <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
                   <base-input
                     alternative
                     class="mb-3"
@@ -69,21 +69,18 @@
                     type="password"
                     name="ConformPassword"
                     :rules="{ required: true, min: 6 }"
-                    v-model="model.password2"
+                    v-model="model.confirm_password"
                   >
                   </base-input>
 
                   <b-row class="my-4">
                     <b-col cols="12">
-                      <base-input
-                        :rules="{ required: { allowFalse: false } }"
-                        name="Privacy"
-                        Policy
-                      >
-                        <b-form-checkbox>
-                          <span class="text-muted">Staf </span>
+                     
+                        <b-form-checkbox v-model="model.is_staff">
+                          Staf 
                          </b-form-checkbox>
-                      </base-input>
+                     
+                        
                     </b-col>
                   </b-row>
                   <div class="text-center">
@@ -91,7 +88,7 @@
                       type="submit"
                       variant="primary"
                       class="mt-4"
-                      @click="Register"
+               
                       >Đăng Ký</b-button
                     >
                   </div>
@@ -114,22 +111,33 @@ export default {
         username: "",
         email: "",
         password: "",
-        password2: "",
+        confirm_password: "",
+        is_staff:""
       },
+    
+      
     };
   },
   methods: {
     onSubmit() {
       // this will be called only after form is valid. You can do an api call here to register users
+     const data = {
+       username : this.model.username,
+       email : this.model.email,
+       password :this.model.password,
+       confirm_password : this.model.confirm_password,
+       is_staff:this.model.is_staff
+     }
+     axios.post(`http://127.0.0.1:8000/auth/register/`,data)
+     .then(res =>{
+        console.log(res);
+     }).catch(err =>{
+       console.log(err);
+     })
+     this.$router.push('/login')
     },
 
-    Register() {
-      axios
-        .post("http://127.0.0.1:8000/auth/register/?format=api", this.Register)
-        .then((response) => {
-          console.log(response);
-        });
-    },
+   
   },
 };
 </script>

@@ -20,15 +20,16 @@
                           v-for="product in products"
                           :key="product.id"
                         >
-                          <img :src="'http://127.0.0.1:8000' + food.food_image" />
-
+                          <!-- <img :src="'http://127.0.0.1:8000' + food.food_image" /> -->
+     <!-- <img class="img_food" :src="food.food_image" /> -->
                           <p>{{ product.food_name }}</p>
                           <strong>{{ product.food_price }}.VND</strong>
                         </b-col>
                       </b-row></b-card-text
                     >
                   </b-tab>
-                  <b-tab
+                 
+                   <b-tab
                     style="margin: 0.5rem 0"
                     v-for="category in categorys"
                     :key="category.id"
@@ -38,17 +39,16 @@
                   >
                     <b-card-text>
                       <b-row>
-                        <b-col lg="3" md="4" mb="6" v-for="food in foods" :key="food.id">
-                          <img
-                            class="img_food"
-                            :src="'http://127.0.0.1:8000' + food.food_image"
-                          />
+                        <b-col lg="6" md="4" mb="6" v-for="food in foods" :key="food.id">
+                           <!-- <img class="img_food" :src="food.food_image" /> -->
                           <p>{{ food.food_name }}</p>
                           <strong>{{ food.food_price }}.VND</strong>
                         </b-col>
                       </b-row>
                     </b-card-text>
                   </b-tab>
+                  
+                  
                 </b-tabs>
               </b-card>
             </div>

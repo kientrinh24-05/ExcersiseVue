@@ -67,7 +67,7 @@
                               placeholder="Chọn địa chỉ hình ảnh..."
                               drop-placeholder="Drop file here..."
                               v-model="form.food_image"
-                              @change="onFileChange"
+                          
                             ></b-form-file>
                           </b-form-group>
 
@@ -256,7 +256,9 @@
 
                       <b-col lg="6">
                         <div>
-                          <b-form-group
+                          <b-row>
+                            <b-col lg="6">
+                             <b-form-group
                             id="input-group-3"
                             label="Tên nguyên liệu"
                             label-for="input-3"
@@ -274,7 +276,9 @@
                               </option>
                             </select>
                           </b-form-group>
-
+                            </b-col>
+                            <b-col lg="6">
+                              
                           <b-form-group
                             id="input-group-1"
                             label="So luong:"
@@ -288,6 +292,10 @@
                               required
                             ></b-form-input>
                           </b-form-group>
+                            </b-col>
+                          </b-row>
+                         
+
                           <b-button @click="onsubmitDetail()">add</b-button>
                           <div>
                             <b-table
@@ -296,17 +304,11 @@
                               stacked="md"
                               select-mode="single"
                               selectable
-                              @row-selected="onRowSelected"
+                       
                               show-empty
                               small
                             >
-                              <template #cell(name)="row">
-                                {{ row }}
-                                />
-                              </template>
-                              <template #cell(count)="row">
-                                {{ row.item.count }}
-                              </template>
+                              
 
                               <template #cell(actions)="row">
                                 <b-button
@@ -349,7 +351,7 @@ import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import DarkTable from "./Tables/RegularTables/DarkTable.vue";
 import axios from "axios";
-import { mapActions, mapGetters, mapState } from "vuex";
+// import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   components: {
@@ -374,8 +376,8 @@ export default {
       },
       meterials: [{ text: "", value: "" }],
       foods: [{ text: "", value: "" }],
-      items1: [{}],
-      items2: [{}],
+      items1: [],
+      items2: [],
       fields1: [
         {
           key: "namemiterial",
@@ -469,7 +471,7 @@ export default {
         .then((response) => response.json())
         .then(
           (json) =>
-            (this.items3 = json.data.map((meterial) => {
+            (this.items1 = json.data.map((meterial) => {
               return {
                 namemiterial: meterial.material_name,
                 count: meterial.amount_material,

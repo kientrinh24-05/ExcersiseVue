@@ -18,7 +18,10 @@
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+          <polygon
+            class="fill-default"
+            points="2560 0 2560 100 0 100"
+          ></polygon>
         </svg>
       </div>
     </div>
@@ -29,7 +32,10 @@
           <b-card no-body class="bg-secondary border-0 mb-0">
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4"></div>
-              <validation-observer v-slot="{ handleSubmit }" ref="formValidator">
+              <validation-observer
+                v-slot="{ handleSubmit }"
+                ref="formValidator"
+              >
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
                   <base-input
                     alternative
@@ -56,7 +62,10 @@
 
                   <b-form-checkbox>Lưu tên đăng nhập</b-form-checkbox>
                   <div class="text-center">
-                    <base-button type="primary" native-type="submit" class="my-4"
+                    <base-button
+                      type="primary"
+                      native-type="submit"
+                      class="my-4"
                       >Đăng nhập</base-button
                     >
                   </div>
@@ -95,11 +104,20 @@ export default {
   methods: {
     onSubmit() {
       // this will be called only after form is valid. You can do api call here to login
-      axios.post("http://127.0.0.1:8000/auth/login/", this.model).then(
-        function (response) {
-          console.log(response);
-        }.bind(this)
-      );
+
+      const data = {
+        username: this.model.username,
+        password: this.model.password,
+      };
+      axios
+        .post("http://127.0.0.1:8000/auth/login/", data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        localStorage.setItem('token',response.data.token)
     },
   },
 };
