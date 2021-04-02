@@ -67,7 +67,6 @@
                               placeholder="Chọn địa chỉ hình ảnh..."
                               drop-placeholder="Drop file here..."
                               v-model="form.food_image"
-                          
                             ></b-form-file>
                           </b-form-group>
 
@@ -121,7 +120,7 @@
                           </b-form>
                           <div>
                             <b-table
-                              :items="items3"
+                              :items="items1"
                               :fields="fields1"
                               stacked="md"
                               show-empty
@@ -130,7 +129,7 @@
                               <template #cell(actions)="row">
                                 <b-button
                                   size="sm"
-                                  @click="info(row.item, row.index, $event.target)"
+                                  @click="removeMeterialFoodAdd(row.item.idmeterial)"
                                   class="mr-1"
                                 >
                                   X
@@ -258,62 +257,57 @@
                         <div>
                           <b-row>
                             <b-col lg="6">
-                             <b-form-group
-                            id="input-group-3"
-                            label="Tên nguyên liệu"
-                            label-for="input-3"
-                          >
-                            <select
-                              class="custom-select"
-                              v-model="meterialdetail.material"
-                            >
-                              <option
-                                v-for="meterial in meterials"
-                                :key="meterial.id"
-                                :value="meterial.id"
+                              <b-form-group
+                                id="input-group-3"
+                                label="Tên nguyên liệu"
+                                label-for="input-3"
                               >
-                                {{ meterial.material_name }}
-                              </option>
-                            </select>
-                          </b-form-group>
+                                <select
+                                  class="custom-select"
+                                  v-model="meterialdetail.material"
+                                >
+                                  <option
+                                    v-for="meterial in meterials"
+                                    :key="meterial.id"
+                                    :value="meterial.id"
+                                  >
+                                    {{ meterial.material_name }}
+                                  </option>
+                                </select>
+                              </b-form-group>
                             </b-col>
                             <b-col lg="6">
-                              
-                          <b-form-group
-                            id="input-group-1"
-                            label="So luong:"
-                            label-for="input-1"
-                          >
-                            <b-form-input
-                              id="input-1"
-                              type="text"
-                              v-model="meterialdetail.amount_material"
-                              placeholder="Nhap so luong"
-                              required
-                            ></b-form-input>
-                          </b-form-group>
+                              <b-form-group
+                                id="input-group-1"
+                                label="So luong:"
+                                label-for="input-1"
+                              >
+                                <b-form-input
+                                  id="input-1"
+                                  type="text"
+                                  v-model="meterialdetail.amount_material"
+                                  placeholder="Nhap so luong"
+                                  required
+                                ></b-form-input>
+                              </b-form-group>
                             </b-col>
                           </b-row>
-                         
 
                           <b-button @click="onsubmitDetail()">add</b-button>
                           <div>
                             <b-table
-                              :items="items1"
+                              :items="items3"
                               :fields="fields1"
                               stacked="md"
                               select-mode="single"
                               selectable
-                       
                               show-empty
                               small
                             >
-                              
-
                               <template #cell(actions)="row">
                                 <b-button
                                   size="sm"
-                                  @click="info(row.item, row.index, $event.target)"
+                                  @click="removeMeterialFoodUpdate(row.item.idmeterial)"
                                   class="mr-1"
                                 >
                                   X
@@ -365,7 +359,8 @@ export default {
   },
   data() {
     return {
-      isEdit: null,
+      isEdit: 0,
+      isFood: null,
       show1: false,
       projects,
       currentPage: 1,
@@ -380,6 +375,10 @@ export default {
       items2: [],
       fields1: [
         {
+          key: "idmeterial",
+          label: "#",
+        },
+        {
           key: "namemiterial",
           label: "Tên Nguyên Liệu",
         },
@@ -388,6 +387,10 @@ export default {
         { key: "actions", label: "Hành Động" },
       ],
       fields2: [
+        {
+          key: "idmeterial",
+          label: "#",
+        },
         {
           key: "namemiterial",
           label: "Tên Nguyên Liệu",
@@ -455,16 +458,50 @@ export default {
     // ...mapState(['nguyenlieu'])
   },
   methods: {
-    //   ...mapActions({
-    //   addnguyenlieu: 'addnguyenlieu' // map `this.add()` to `this.$store.dispatch('increment')`
-    // }),
-    // onRowSelected(items){
-    //  items.map(res=>{
-    //    console.log(res);
-    //    this.selected.ten = res.namemiterial;
-    //    this.selected.sl = res.count;
-    //   })
-    // },
+    // Remove dont reload date
+
+    removeMeterialFoodAdd(id) {
+      const path = `http://127.0.0.1:8000/food_tabel/delete_detailfood/` + id;
+      axios
+        .delete(path)
+        .then(() => {
+          this.GetMeterialFood();
+
+          // this.message = 'Book removed!';
+          // this.showMessage = true;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          this.GetMeterialFood();
+        });
+    },
+    removeUnUpdate(id) {
+      fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items3 = json.data.map((meterial) => {
+              return {
+                idmeterial: meterial.id,
+                namemiterial: meterial.material_name,
+                count: meterial.amount_material,
+              };
+            }))
+        );
+    },
+    removeMeterialFoodUpdate(id) {
+      const path = `http://127.0.0.1:8000/food_tabel/delete_detailfood/` + id;
+
+      axios
+        .delete(path)
+        .then(() => {
+          // this.message = 'Book removed!';
+          // this.showMessage = true;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+        });
+    },
 
     GetMeterialFood() {
       fetch(`http://127.0.0.1:8000/food_tabel/create_detailfood/`)
@@ -473,6 +510,7 @@ export default {
           (json) =>
             (this.items1 = json.data.map((meterial) => {
               return {
+                idmeterial: meterial.id,
                 namemiterial: meterial.material_name,
                 count: meterial.amount_material,
               };
@@ -506,8 +544,6 @@ export default {
     addDetaiFood(id, payload) {
       this.isEdit = id;
       const path = `http://127.0.0.1:8000/food_tabel/get_detailfood/` + id;
-      console.log(id);
-      console.log(payload);
       axios
         .post(path, payload)
         .then(() => {
@@ -515,10 +551,11 @@ export default {
             .then((response) => response.json())
             .then(
               (json) =>
-                (this.items3 = json.data.map((meterial) => {
+                (this.items3 = json.data.map((meterial1) => {
                   return {
-                    namemiterial: meterial.material_name,
-                    count: meterial.amount_material,
+                    idmeterial: meterial1.id,
+                    namemiterial: meterial1.material_name,
+                    count: meterial1.amount_material,
                   };
                 }))
             );
@@ -569,6 +606,7 @@ export default {
           (json) =>
             (this.items2 = json.data.map((meterial) => {
               return {
+                idmeterial: meterial.id,
                 namemiterial: meterial.material_name,
                 count: meterial.amount_material,
               };
@@ -671,6 +709,7 @@ export default {
               (json) =>
                 (this.items3 = json.data.map((meterial) => {
                   return {
+                    idmeterial: meterial.id,
                     namemiterial: meterial.material_name,
                     count: meterial.amount_material,
                   };

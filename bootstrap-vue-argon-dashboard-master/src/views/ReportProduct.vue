@@ -19,15 +19,25 @@
                   ><i class="fas fa-filter"></i>
                 </b-button>
                 <b-modal id="modal-2">
-                  <b-form>
-                    <b-form-group id="input-group-1" label="Thời gian.">
-                      <div class="fillter_date">
-                        <b-form-input class="input-date" type="date"></b-form-input>
-                        <span>__</span>
-                        <b-form-input class="input-date" type="date"></b-form-input>
-                      </div>
-                    </b-form-group>
-                  </b-form>
+                  <b-form-group id="input-group-1" label="Thời gian.">
+                    <b-row>
+                      <b-col lg="6">
+                        <b-form-input
+                          class="input-date"
+                          v-model="fillter.fromdate"
+                          type="date"
+                        ></b-form-input>
+                      </b-col>
+                      <b-col lg="6">
+                        <b-form-input
+                          class="input-date"
+                          v-model="fillter.todate"
+                          type="date"
+                        ></b-form-input>
+                      </b-col>
+                    </b-row>
+                  </b-form-group>
+                  <b-button variant="success" @click="onSeach">Lọc</b-button>
                 </b-modal>
               </div>
 
@@ -36,11 +46,81 @@
             <div>
               <b-row class="mt-7">
                 <b-col xl="12" class="mb-5 mb-xl-0">
-                  <page-visits-table></page-visits-table>
+                  <b-table :items="items2" :fields="fields2" caption-top> </b-table>
                 </b-col>
                 <hr />
+                <div>
+                  <b-modal id="modalPopover" title="Modal with Popover" ok-only>
+                    <b-row>
+                      <b-col lg="7">
+                        <b-form-group
+                          id="input-group-3"
+                          label="Tên nguyên liệu"
+                          label-for="input-3"
+                        >
+                          <select class="custom-select" v-model="form.material">
+                            <option
+                              v-for="meterial in meterials"
+                              :key="meterial.id"
+                              :value="meterial.id"
+                            >
+                              {{ meterial.material_name }}
+                            </option>
+                          </select>
+                        </b-form-group>
+                      </b-col>
+                      <b-col lg="4">
+                        <b-form-group
+                          id="input-group-3"
+                          label="Số lượng"
+                          label-for="input-3"
+                        >
+                          <b-input type="text" v-model="form.material_reality"></b-input>
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+
+                    <div>
+                      <b-table
+                        :items="items1"
+                        :fields="fields1"
+                        stacked="md"
+                        show-empty
+                        small
+                      >
+                      </b-table>
+                    </div>
+
+                    <b-button
+                      class="mt-3"
+                      variant="outline-danger"
+                      @click="onSubmitMeterial"
+                      >Thêm</b-button
+                    >
+                  </b-modal>
+                </div>
                 <b-col xl="12" class="mb-5 mb-xl-0 mt-6">
-                  <social-traffic-table></social-traffic-table>
+                  <div class="d-flex">
+                    <b>Bạn đã cập nhập nguyên liệu thực gần nhất vào {{ date.date }}</b>
+                    <div>
+                      <b-button
+                        v-b-modal.modalPopover
+                        variant="primary"
+                        id="toggle-btn"
+                        style="margin: 1rem"
+                        >Kiểm Kho</b-button
+                      >
+
+                      <b-button
+                        variant="success"
+                        style="margin: 1rem; float: right"
+                        @click="Consumption"
+                        >Chốt Sales</b-button
+                      >
+                    </div>
+                  </div>
+
+                  <b-table :items="items" :fields="fields" caption-top> </b-table>
                 </b-col>
               </b-row>
             </div>
@@ -57,6 +137,7 @@ import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "elemen
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
+import axios from "axios";
 
 export default {
   components: {
@@ -74,24 +155,183 @@ export default {
       projects,
       users,
       selected: null,
-      options: [
-        { value: null, text: "Chọn mục" },
-        { value: "week", text: "Theo Tuần" },
-        { value: "month", text: "Theo Tháng" },
-        { value: "day", text: "Theo Ngày" },
+      fields: [
+        { key: "nameproduct", label: "Tên Nguyên Liệu" },
+        { key: "countreal", label: "Số lượng còn thực" },
+        { key: "countdigital", label: "Số lượng còn ảo" },
       ],
-      items: [
-        { Mã_Sản_Phẩm: 40, Tên_Sản_Phẩm: "Dickerson", Số_lượng: "122" },
-        { Mã_Sản_Phẩm: 41, Tên_Sản_Phẩm: "Dicn", Số_lượng: "1222" },
-        { Mã_Sản_Phẩm: 42, Tên_Sản_Phẩm: "Kerson", Số_lượng: "1212" },
-        { Mã_Sản_Phẩm: 43, Tên_Sản_Phẩm: "Kerson", Số_lượng: "1212" },
-        { Mã_Sản_Phẩm: 44, Tên_Sản_Phẩm: "Rson", Số_lượng: "12233" },
+      fields1: [
+        {
+          key: "namemiterial",
+          label: "Tên Nguyên Liệu",
+        },
+        { key: "count", label: "Số Lượng" },
       ],
+      fields2: [
+        {
+          key: "nameproduct",
+          label: "Tên Sản Phẩm",
+        },
+        { key: "price", label: "Giá Sản Phẩm" },
+      ],
+      fillter: {
+        fromdate: "",
+        todate: "",
+      },
+      form: {
+        material: "",
+        material_reality: "",
+      },
+      date: null,
+      meterials: [],
+      items: [],
+      items1: [],
+      items2: [],
     };
+  },
+  created() {
+    this.getStatisMeterial();
+    this.getMeterial();
+    this.getRealMaterial();
+    this.getDateStais();
+  },
+  methods: {
+    searchItem(payload) {
+      const path = "http://127.0.0.1:8000/comsum/consum_food/";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.items2 = res.data.data.map((material) => {
+            return {
+              nameproduct: material.food_name,
+              price: material.food_price,
+            };
+          });
+        })
+
+        .catch((error) => {
+          // this.getSuplier();
+          console.log(error);
+        });
+    },
+
+    onSeach() {
+      const payload = {
+        fromdate: this.fillter.fromdate,
+        todate: this.fillter.todate,
+      };
+
+      this.searchItem(payload);
+    },
+
+    Consumption() {
+      const path = "http://127.0.0.1:8000/comsum/consumption/";
+      axios
+        .post(path)
+        .then((res) => {
+          console.log(res);
+          this.getStatisMeterial();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getStatisMeterial();
+        });
+      window.alert("Bạn đã cập nhập thành công  vào hôm nay !");
+    },
+    AddRealMaterial(payload) {
+      const path = "http://127.0.0.1:8000/comsum/check_ware/";
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getRealMaterial();
+          this.getStatisMeterial();
+          this.getDateStais();
+        })
+        .catch((error) => {
+          this.getRealMaterial();
+          this.getStatisMeterial();
+          this.getDateStais();
+          console.log(error);
+        });
+    },
+    onSubmitMeterial(event) {
+      event.preventDefault();
+      const payload = {
+        material: this.form.material,
+        material_reality: this.form.material_reality,
+      };
+
+      this.AddRealMaterial(payload);
+    },
+
+    getRealMaterial() {
+      fetch("http://127.0.0.1:8000/comsum/check_ware/")
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items1 = json.data.map((meterial) => {
+              return {
+                namemiterial: meterial.material_name,
+                count: meterial.material_reality,
+              };
+            }))
+        );
+    },
+    getStatisMeterial() {
+      fetch("http://127.0.0.1:8000/comsum/statis/")
+        .then((response) => response.json())
+        .then(
+          (json) =>
+            (this.items = json.data.map((meterial) => {
+              return {
+                nameproduct: meterial.material_name,
+                countreal: meterial.material_reality,
+                countdigital: meterial.material_digital,
+              };
+            }))
+        );
+    },
+    getMeterial() {
+      axios
+        .get(`http://127.0.0.1:8000/material/list_material/`)
+        .then((response) => {
+          this.meterials = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getDateStais() {
+      axios
+        .get(`http://127.0.0.1:8000/comsum/load_date_ware/`)
+        .then((response) => {
+          this.date = response.data.data[0];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // showModal() {
+    //   this.$refs["my-modal"].show();
+    // },
+    // hideModal() {
+    //   this.$refs["my-modal"].hide();
+    // },
+    // toggleModal() {
+    //   // We pass the ID of the button that we want to return focus to
+    //   // when the modal has hidden
+    //   this.$refs["my-modal"].toggle("#toggle-btn");
+    // },
   },
 };
 </script>
 <style>
+.d-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .el-table.table-dark {
   background-color: #172b4d;
   color: #f8f9fe;

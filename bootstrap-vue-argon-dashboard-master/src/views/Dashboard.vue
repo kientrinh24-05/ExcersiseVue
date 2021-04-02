@@ -2,12 +2,12 @@
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
-      <b-row  v-for="grenal in info" :key="grenal.id">
+      <b-row v-for="grenal in info" :key="grenal.id">
         <b-col xl="6" md="6">
           <stats-card
             title="Số Sản Phẩm"
             type="gradient-red"
-           :sub-title="grenal.amount"
+            :sub-title="grenal.amount"
             icon="ni ni-active-40"
             class="mb-2"
           >
@@ -31,8 +31,6 @@
             </template>
           </stats-card>
         </b-col>
-        
-
       </b-row>
     </base-header>
 
@@ -57,7 +55,6 @@
                     <span class="d-none d-md-block">Tháng</span>
                     <span class="d-md-none">M</span>
                   </b-nav-item>
-                
                 </b-nav>
               </b-col>
             </b-row>
@@ -108,7 +105,7 @@ import SocialTrafficTable from "./Dashboard/SocialTrafficTable";
 import PageVisitsTable from "./Dashboard/PageVisitsTable";
 
 import axios from "axios";
-import { Header } from 'element-ui';
+import { Header } from "element-ui";
 
 export default {
   components: {
@@ -121,7 +118,6 @@ export default {
   },
   data() {
     return {
-   
       bigLineChart: {
         allData: [
           [0, 20, 10, 30, 15, 40, 20, 60, 60],
@@ -152,7 +148,7 @@ export default {
         extraOptions: chartConfigs.blueChartOptions,
       },
 
-         info: null,
+      info: null,
     };
   },
   created() {
@@ -160,20 +156,17 @@ export default {
     this.getUser();
   },
   methods: {
+    getUser() {
+      axios.get(`http://127.0.0.1:8000/auth/list_user/`, {
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("token"),
+        },
+      });
+    },
 
-      getUser(){
-        axios.get(`http://127.0.0.1:8000/auth/list_user/` ,{
-          headers: {
-            Authorization:'Bearer'+localStorage.getItem('token')
-          }
-        })
-
-          
-      },
-
-      getDataGreneral() {
+    getDataGreneral() {
       axios
-        .get("http://127.0.0.1:8000/comsudm/general/")
+        .get("http://127.0.0.1:8000/comsum/general/")
         .then((response) => (this.info = response.data.data));
     },
     initBigChart(index) {

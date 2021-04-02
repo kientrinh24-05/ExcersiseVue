@@ -215,7 +215,7 @@ export default {
       const payload = {
         material_name: this.searchit_form.material_name,
       };
-      console.log(payload);
+
       this.searchItem(payload);
     },
     getMeterial() {
