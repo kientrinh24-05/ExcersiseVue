@@ -128,13 +128,19 @@ export default {
        confirm_password : this.model.confirm_password,
        is_staff:this.model.is_staff
      }
-     axios.post(`http://127.0.0.1:8000/auth/register/`,data)
-     .then(res =>{
-        console.log(res);
-     }).catch(err =>{
-       console.log(err);
-     })
-     this.$router.push('/login')
+
+       this.$store.dispatch('register', data)
+       .then(() => this.$router.push('/login'))
+       .catch(err => console.log(err))
+    //  axios.post(`http://127.0.0.1:8000/auth/register/`,data)
+    //  .then(res =>{
+    //     console.log(res);
+    //      this.$router.push('/login')
+    //  }).catch(err =>{
+    //    console.log(err);
+    //  })
+  
+    
     },
 
    

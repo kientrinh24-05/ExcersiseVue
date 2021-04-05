@@ -76,7 +76,7 @@
           </b-dropdown-item>
 
           <div class="dropdown-divider"></div>
-          <b-dropdown-item href="http://localhost:8080/profile#/login">
+          <b-dropdown-item @click="LogOut">
             <i class="ni ni-user-run"></i>
             <span>Đăng Xuất</span>
           </b-dropdown-item>
@@ -117,6 +117,13 @@ export default {
     };
   },
   methods: {
+
+  LogOut(){
+      localStorage.clear();
+      this.$router.push(`/login`)
+      delete axios.defaults.headers.common['Authorization']
+
+  },
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },

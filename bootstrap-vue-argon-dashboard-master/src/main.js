@@ -18,7 +18,10 @@ import Vue from 'vue';
 import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
 import store from './store'
-import Vuex from 'vuex'
+import Vuex from 'vuex';
+import axios from 'axios' 
+import moment from 'vue-moment'
+
 window.Vue = Vue;
 // router setup
 import router from './routes/router';
@@ -26,10 +29,25 @@ import router from './routes/router';
 Vue.use(DashboardPlugin);
 Vue.use(Vuex)
 
+Vue.prototype.moment = moment
+Vue.prototype.$http = axios;
+
+// Get token nếu có token thì call.
+let token = localStorage.getItem('token') ;
+
+if( token ){
+  axios.defaults.headers.common['Authorization'] = 'Bearer '+token
+}
+
+
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   render: h => h(App),
   router,
   store
+
+  
 });

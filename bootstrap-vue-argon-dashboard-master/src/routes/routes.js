@@ -2,6 +2,7 @@ import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
 
 import NotFound from '@/views/NotFoundPage.vue';
+import router from './router';
 
 const routes = [
   {
@@ -55,7 +56,10 @@ const routes = [
       {
         path: '/meterial_product',
         name: 'Quản Lý Nhập Nguyên Liệu',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue')
+        component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue'),
+        // meta: {
+        //   requiresAuth: true
+        // }
       },
       {
         path: '/report',
@@ -94,5 +98,18 @@ const routes = [
     ]
   }
 ];
+ // if the user is not authenticated, `next` is called twiceco
+
+//  routers.beforeEach((to, from, next) => {
+//   if(to.matched.some(record => record.meta.requiresAuth)) {
+//     if (store.getters.isLoggedIn) {
+//       next()
+//       return
+//     }
+//     next('/login')
+//   } else {
+//     next()
+//   }
+// })
 
 export default routes;

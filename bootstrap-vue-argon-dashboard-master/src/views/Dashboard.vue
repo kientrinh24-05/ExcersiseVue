@@ -50,7 +50,6 @@
                     class="mr-2 mr-md-0"
                     :active="bigLineChart.activeIndex === 0"
                     link-classes="py-2 px-3"
-                    @click.prevent="initBigChart(0)"
                   >
                     <span class="d-none d-md-block">Tháng</span>
                     <span class="d-md-none">M</span>
@@ -77,8 +76,13 @@
               </b-col>
             </b-row>
 
-            <bar-chart :height="350" ref="barChart" :chart-data="redBarChart.chartData">
+            <bar-chart
+              :height="350"
+              ref="barChart"
+              :chart-data="redBarChart.chartData"
+            >
             </bar-chart>
+            <div>{{ message }}</div>
           </card>
         </b-col>
       </b-row>
@@ -105,8 +109,8 @@ import SocialTrafficTable from "./Dashboard/SocialTrafficTable";
 import PageVisitsTable from "./Dashboard/PageVisitsTable";
 
 import axios from "axios";
+import moment from "moment";
 import { Header } from "element-ui";
-
 export default {
   components: {
     LineChart,
@@ -117,31 +121,35 @@ export default {
     SocialTrafficTable,
   },
   data() {
+    let bigLineChartData = [120, 2023, 10, 30, 215, 2410, 20, 360, 160];
     return {
+      message: "gia tri khoi tao cua message",
+      //Check lại change data khi call a
+      labels: [1],
       bigLineChart: {
-        allData: [
-          [0, 20, 10, 30, 15, 40, 20, 60, 60],
-          [0, 20, 5, 25, 10, 30, 15, 40, 40],
-        ],
+        // allData: [
+        //   [0, 203, 10, 30, 215, 240, 20, 360, 160],
+        //   [0, 20, 5, 25, 10, 30, 15, 40, 40],
+        // ],
         activeIndex: 0,
         chartData: {
           datasets: [
             {
-              label: "Performance",
-              data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+              label: "Doanh Thu",
+              data: bigLineChartData,
             },
           ],
-          labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          labels: this.labels,
         },
         extraOptions: chartConfigs.blueChartOptions,
       },
       redBarChart: {
         chartData: {
-          labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec1"],
           datasets: [
             {
               label: "Sales",
-              data: [25, 20, 30, 22, 17, 29],
+              data: [25, 20, 6, 22, 17, 29],
             },
           ],
         },
@@ -153,38 +161,68 @@ export default {
   },
   created() {
     this.getDataGreneral();
-    this.getUser();
+    this.GetMonthLineChart();
   },
   methods: {
-    getUser() {
-      axios.get(`http://127.0.0.1:8000/auth/list_user/`, {
-        headers: {
-          Authorization: "Bearer" + localStorage.getItem("token"),
-        },
-      });
-    },
-
     getDataGreneral() {
       axios
         .get("http://127.0.0.1:8000/comsum/general/")
         .then((response) => (this.info = response.data.data));
     },
-    initBigChart(index) {
-      let chartData = {
-        datasets: [
-          {
-            label: "Performance",
-            data: this.bigLineChart.allData[index],
-          },
-        ],
-        labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      };
-      this.bigLineChart.chartData = chartData;
-      this.bigLineChart.activeIndex = index;
+
+    GetMonthLineChart() {
+      axios
+        .get("http://127.0.0.1:8000/comsum/statis_month/")
+        .then((response) => {
+          this.getListMonthChart(response.data.data);
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
+
+    getListMonthChart(data) {
+      console.log(data);
+      const TOTAL_MONTH_STATISTIC = 6;
+      const now = moment();
+      const startMonth = moment(now)
+        .subtract(TOTAL_MONTH_STATISTIC, "months")
+        .format("M/YYYY");
+
+      // var listMonth = [];
+
+      let i = 1;
+      while (i <= TOTAL_MONTH_STATISTIC) {
+        this.labels.push(
+          moment(now)
+            .subtract(TOTAL_MONTH_STATISTIC - i, "months")
+            .format("M/YYYY")
+        );
+        i++;
+      }
+      // this.labels = listMonth;
+
+      console.log(this.labels, "labels");
+      this.message = "bien message sau khi call api lay so lieu render lai";
+    },
+
+    // initBigChart(index) {
+    //   let chartData = {
+    //     datasets: [
+    //       {
+    //         label: "Performance",
+    //         data: this.bigLineChart.allData[index],
+    //       },
+    //     ],
+    //     labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    //   };
+    //   this.bigLineChart.chartData = chartData;
+    //   this.bigLineChart.activeIndex = index;
+    // },
   },
   mounted() {
-    this.initBigChart(0);
+    // this.initBigChart(0);
   },
 };
 </script>

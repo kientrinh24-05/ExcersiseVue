@@ -18,5 +18,9 @@ const router = new VueRouter({
     return { x: 0, y: 0 };
   }
 });
+// router.beforeEach((to, from, next) => {
+//   if (to.name !== 'Đăng Nhập' && !isAuthenticated) next({ name: 'Đăng Nhập' })
+//   next()
+// })
 
 export default router;

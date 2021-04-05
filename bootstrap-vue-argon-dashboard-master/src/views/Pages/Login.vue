@@ -105,19 +105,37 @@ export default {
     onSubmit() {
       // this will be called only after form is valid. You can do api call here to login
 
-      const data = {
-        username: this.model.username,
-        password: this.model.password,
-      };
-      axios
-        .post("http://127.0.0.1:8000/auth/login/", data)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        localStorage.setItem('token',response.data.token)
+      // const data = {
+      //   username: this.model.username,
+      //   password: this.model.password,
+      // };
+      // axios
+      //   .post("http://127.0.0.1:8000/auth/login/", data)
+      //   .then((response) => {
+      //     console.log(response);
+      //       localStorage.setItem('token',response.data.token),
+      //          localStorage.setItem('username',response.data.username)
+      //      this.$router.push('/dashboard')
+         
+      //  // axios.defaults.headers.common['Authorization'] = token
+       
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      // window.alert("Nhập sai tk")
+      //   });
+
+    
+        let username = this.model.username
+        let password = this.model.password
+        this.$store.dispatch('login', { username, password })
+       .then(() =>  this.$router.push('/dashboard'))
+       .catch(err => console.log(err))
+      
+        
+
+
+       
     },
   },
 };

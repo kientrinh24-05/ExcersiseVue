@@ -255,9 +255,9 @@ export default {
   created() {
     this.getSuplier();
     // this.Sumprice();
-    setInterval(() => {
-      this.onSeach()
-    }, 300);
+    // setInterval(() => {
+    //   this.onSeach()
+    // }, 300);
   },
   watch: {},
   computed: {

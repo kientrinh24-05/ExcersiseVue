@@ -38,7 +38,7 @@
                     name="Username"
                     :rules="{ required: true, text: true }"
                     prepend-icon="fa fa-user"
-                    placeholder="Tên đăng nhập"
+                    placeholder="Mật Khẩu Cũ"
                     v-model="model.username"
                   >
                   </base-input>
@@ -50,7 +50,7 @@
                     :rules="{ required: true, min: 6 }"
                     prepend-icon="ni ni-lock-circle-open"
                     type="password"
-                    placeholder="Mật Khẩu"
+                    placeholder="Mật Khẩu Mới"
                     v-model="model.password"
                   >
                   </base-input>
