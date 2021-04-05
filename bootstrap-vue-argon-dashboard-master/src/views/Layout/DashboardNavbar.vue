@@ -57,7 +57,7 @@
               <img alt="Image placeholder" src="img/theme/team-4.jpg" />
             </span>
             <b-media-body class="ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm font-weight-bold">Kane</span>
+              <span class="mb-0 text-sm font-weight-bold">Duy Kiên</span>
             </b-media-body>
           </b-media>
         </a>
@@ -117,13 +117,11 @@ export default {
     };
   },
   methods: {
-
-  LogOut(){
+    LogOut() {
       localStorage.clear();
-      this.$router.push(`/login`)
-      delete axios.defaults.headers.common['Authorization']
-
-  },
+      this.$router.push(`/login`);
+      delete axios.defaults.headers.common["Authorization"];
+    },
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },

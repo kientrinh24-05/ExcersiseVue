@@ -25,12 +25,14 @@
                         <b-form-input
                           class="input-date"
                           v-model="fillter.fromdate"
+                          value="01/02/2021"
                           type="date"
                         ></b-form-input>
                       </b-col>
                       <b-col lg="6">
                         <b-form-input
                           class="input-date"
+                          value="05/04/2021"
                           v-model="fillter.todate"
                           type="date"
                         ></b-form-input>

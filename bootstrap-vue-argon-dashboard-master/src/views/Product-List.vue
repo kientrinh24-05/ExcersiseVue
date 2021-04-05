@@ -62,42 +62,54 @@
               <b-row>
                 <b-col lg="6 " md="12">
                   <b-tabs pills card>
-                   <b-tab title="Tất Cả">
-                    <b-card-text>
-                      <b-row>
-                        <b-col
-                          lg="3"
-                          md="4"
-                          mb="6"
-                          v-for="product in products"
-                          :key="product.id"
-                        >
-                          <img :src="product.food_image" />
+                    <b-tab title="Tất Cả">
+                      <b-card-text>
+                        <b-row>
+                          <b-col
+                            lg="3"
+                            md="4"
+                            mb="6"
+                            v-for="product in products"
+                            :key="product.id"
+                          >
+                            <img
+                              class="img_food"
+                              :src="'http://127.0.0.1:8000' + product.food_image"
+                            />
 
-                          <p>{{ product.food_name }}</p>
-                          <strong>{{ product.food_price }}.VND</strong>
-                        </b-col>
-                      </b-row></b-card-text
+                            <p>{{ product.food_name }}</p>
+                            <strong>{{ product.food_price }}.VND</strong>
+                          </b-col>
+                        </b-row></b-card-text
+                      >
+                    </b-tab>
+                    <b-tab
+                      style="margin: 0.5rem 0"
+                      v-for="category in categorys"
+                      :key="category.id"
+                      :title="category.category_name"
+                      v-model="category_name"
+                      @click="showNameCategory(category.category_name)"
                     >
-                  </b-tab>
-                   <b-tab
-                    style="margin: 0.5rem 0"
-                    v-for="category in categorys"
-                    :key="category.id"
-                    :title="category.category_name"
-                    v-model="category_name"
-                    @click="showNameCategory(category.category_name)"
-                  >
-                    <b-card-text>
-                      <b-row>
-                        <b-col lg="6" md="4" mb="6" v-for="food in foods" :key="food.id">
-                          <img :src="food.food_image" />
-                          <p>{{ food.food_name }}</p>
-                          <strong>{{ food.food_price }}.VND</strong>
-                        </b-col>
-                      </b-row>
-                    </b-card-text>
-                  </b-tab>
+                      <b-card-text>
+                        <b-row>
+                          <b-col
+                            lg="6"
+                            md="4"
+                            mb="6"
+                            v-for="food in foods"
+                            :key="food.id"
+                          >
+                            <img
+                              class="img_food"
+                              :src="'http://127.0.0.1:8000' + food.food_image"
+                            />
+                            <p>{{ food.food_name }}</p>
+                            <strong>{{ food.food_price }}.VND</strong>
+                          </b-col>
+                        </b-row>
+                      </b-card-text>
+                    </b-tab>
                   </b-tabs>
                 </b-col>
                 <b-col lg="6" md="12">
@@ -122,7 +134,6 @@
                           style="width: 50px"
                           @click="info(row.index)"
                         />
-                        
                       </template>
                       <template #cell(actions)="row">
                         <b-button
@@ -271,8 +282,8 @@ export default {
       ],
     };
   },
-  created(){
-     this.getAllCategory();
+  created() {
+    this.getAllCategory();
     this.getAllProducts();
   },
   methods: {
@@ -280,7 +291,7 @@ export default {
     hideModal() {
       this.$refs["modal-2"].hide();
     },
-     getAllCategory() {
+    getAllCategory() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_category/`)
         .then((response) => {

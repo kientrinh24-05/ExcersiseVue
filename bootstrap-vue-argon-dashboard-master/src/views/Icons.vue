@@ -45,59 +45,64 @@
                 v-for="table in tables"
                 :key="table.id"
               >
-                <b-button @click="initTable(table.id)" class="btn-icon-clipboard">
+                <b-button
+                  v-b-modal.modal-10
+                  @click="BookTable(table.id, table.status)"
+                  class="btn-icon-clipboard"
+                >
                   {{ table.name }}
                 </b-button>
               </b-col>
             </b-row>
-            <b-modal :id="infoModal.id" title="Thông tin bàn  ">
+            <b-modal id="modal-10" title="Thông tin bàn  ">
               <b-row>
                 <b-col lg="12" md="6">
                   <h3>Thông tin đặt bàn</h3>
-                  <b-form-group>
-                    <b-form-input
-                      id="input-1"
-                      type="text"
-                      placeholder="Tên Người Đặt"
-                      v-model="booktables.namebook"
-                      required
-                    ></b-form-input>
-                  </b-form-group>
+                  <b-form @submit="onSubmitBookTables">
+                    <b-form-group>
+                      <b-form-input
+                        id="input-1"
+                        type="text"
+                        placeholder="Tên Người Đặt"
+                        v-model="booktables.namebook"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
 
-                  <b-form-group>
-                    <b-form-input
-                      id="input-2"
-                      v-model="booktables.phonebook"
-                      placeholder="Số ĐT"
-                      required
-                    ></b-form-input>
-                  </b-form-group>
-                  <b-form-group>
-                    <b-form-input
-                      id="input-2"
-                      v-model="booktables.countbook"
-                      placeholder="Số Lượng"
-                      required
-                    ></b-form-input>
-                  </b-form-group>
-                  <b-form-group>
-                    <b-form-input
-                      id="input-2"
-                      v-model="booktables.datebook"
-                      placeholder="Ngày Đặt"
-                      required
-                      type="date"
-                    ></b-form-input>
-                  </b-form-group>
-                  <b-form-group>
-                    <b-form-input
-                      id="input-2"
-                      v-model="booktables.moneybook"
-                      placeholder="Tiền Đặt"
-                      required
-                    ></b-form-input>
-                  </b-form-group>
-                  <b-button variant="success">Đặt Bàn</b-button>
+                    <b-form-group>
+                      <b-form-input
+                        id="input-2"
+                        v-model="booktables.phonebook"
+                        placeholder="Số ĐT"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                    <b-form-group>
+                      <b-form-input
+                        id="input-2"
+                        v-model="booktables.countbook"
+                        placeholder="Số Lượng"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                    <b-form-group>
+                      <b-form-input
+                        v-model="booktables.datebook"
+                        type="datetime-local"
+                        value="2011-08-19T13:45:00"
+                        id="example-datetime-local-input"
+                      ></b-form-input>
+                    </b-form-group>
+                    <b-form-group>
+                      <b-form-input
+                        id="input-2"
+                        v-model="booktables.moneybook"
+                        placeholder="Tiền Đặt"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                    <b-button type="submit" variant="success">Đặt Bàn</b-button>
+                  </b-form>
                 </b-col>
                 <hr />
               </b-row>
@@ -121,14 +126,24 @@ export default {
   name: "icons",
   data() {
     return {
+      tableID: null,
       tables: null,
       booktables: {
+        id: "",
         namebook: "",
         phonebook: "",
         countbook: "",
-        moneybook: "",
-        datebook: "",
+        moneybook: " ",
+        datebook: " ",
       },
+      // AddBookTable: {
+      //   id: "",
+      //   namebook: "",
+      //   phonebook: "",
+      //   countbook: "",
+      //   moneybook: "",
+      //   datebook: "",
+      // },
       items: [],
 
       FormAdd: {
@@ -160,32 +175,94 @@ export default {
   },
   methods: {
     /// Fixxxxxxxxxxxxx Errooorrrrrrrr
-    initTable(id) {
-      let c = 6;
+    // initTable(id) {
+    //   this.tableID = id;
+
+    //   console.log(id);
+    //   console.log(status);
+    //   if (status == "Bàn đã đặt") {
+    //     axios
+    //       .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
+    //       .then((res) => res.data)
+    //       .then((response) => {
+    //         const { data } = response;
+
+    //         this.booktables.namebook = data.name_book;
+    //         this.booktables.phonebook = data.phone_book;
+
+    //         this.booktables.countbook = data.number_of_people;
+    //         this.booktables.moneybook = data.money_book;
+    //         this.booktables.datebook = data.time_book;
+    //       });
+    //   } else {
+    //     this.booktables.namebook = "";
+    //     this.booktables.phonebook = "";
+
+    //     this.booktables.countbook = "";
+    //     this.booktables.moneybook = "";
+    //     this.booktables.datebook = "";
+    //   }
+    // },
+    BookTable(id, status) {
+      this.tableID = id;
+      if (status == "Bàn đã đặt") {
+        axios
+          .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
+          .then((res) => res.data)
+          .then((response) => {
+            const { data } = response;
+            this.booktables.namebook = data.name_book;
+            this.booktables.phonebook = data.phone_book;
+            this.booktables.countbook = data.number_of_people;
+            this.booktables.moneybook = data.money_book;
+            this.booktables.datebook = data.time_book;
+          });
+      } else {
+        this.booktables.namebook = "";
+        this.booktables.phonebook = "";
+
+        this.booktables.countbook = "";
+        this.booktables.moneybook = "";
+        this.booktables.datebook = "";
+      }
+    },
+    booktTables(payload) {
+      const path = "http://127.0.0.1:8000/food_tabel/book_table/";
       axios
-        .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
-        .then((response) => {
-          const value = response.filter((item) => item.id) === id;
-            console.log(value);
-            console.log(response);
+        .post(path, payload)
+        .then((res) => {
+          // this.getTable();
+          console.log(res);
         })
-      
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          // this.getTable();
+          console.log(error);
         });
+    },
+    onSubmitBookTables(event) {
+      event.preventDefault();
 
-        // const value = respone.filter(item=>item.id === (cái id m truyền vô))
-        // là mày có toàn bộ data của id đó đã truyền vô vvalue
-        // sau đó m this.nam = value.name
-        // Còn lấy id
+      // this.$refs.modalAddTable.hide();
+      const payload = {
+        table: (this.booktables.id = this.tableID),
+        name_book: this.booktables.namebook,
+        phone_book: this.booktables.phonebook,
+        number_of_people: this.booktables.countbook,
+        money_book: this.booktables.moneybook,
+        time_book: this.booktables.datebook,
+      };
+      console.log(payload);
+      console.log(payload.time_book);
+
+      this.booktTables(payload);
+      this.$toaster.success("Đặt bàn thành công");
     },
 
-
-    info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      // this.infoModal.content = JSON.stringify(item, null, 2);
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
-    },
+    // info(item, index, button) {
+    //   this.infoModal.title = `Row index: ${index}`;
+    //   // this.infoModal.content = JSON.stringify(item, null, 2);
+    //   this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+    // },
 
     getTable() {
       axios
@@ -207,6 +284,8 @@ export default {
       console.log(payload);
 
       this.addTable(payload);
+
+      this.$toaster.success("Thêm  bàn thành công");
     },
     //ADD Table
     addTable(payload) {
@@ -222,22 +301,7 @@ export default {
         });
     },
     // Nếu trạng thái bàn trống thì post , còn bàn đã đặt thì update vs get
-    BookTable(id, status) {
-      if (status == "Bàn đã đặt") {
-        axios
-          .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
-          .then((res) => res.data)
-          .then((response) => {
-            const { data } = response;
 
-            this.booktables.namebook = data.name_book;
-            this.booktables.phonebook = data.phone_book;
-            this.booktables.countbook = data.number_of_people;
-            this.booktables.moneybook = data.money_book;
-            this.booktables.datebook = data.time_book;
-          });
-      }
-    },
     onCopy() {
       this.$notify({
         type: "info",

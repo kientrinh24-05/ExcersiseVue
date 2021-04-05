@@ -390,6 +390,7 @@ export default {
 
       this.searchItem(payload);
       this.hideModal();
+      this.$toaster.success("Lọc thành công");
     },
     Sumprice() {
       axios
@@ -470,6 +471,7 @@ export default {
       this.addMeterial({
         data: payload,
       });
+      this.$toaster.success("Nhập nguyên liệu thành công");
     },
 
     onReset(event) {

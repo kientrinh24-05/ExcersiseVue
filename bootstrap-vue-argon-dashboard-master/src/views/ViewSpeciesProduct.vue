@@ -228,6 +228,7 @@ export default {
         category_name: this.form.category_name,
       };
       this.addMeterial(payload);
+      this.$toaster.success("Thêm thể loại thành công");
     },
     //Update
     edit(id) {
@@ -252,9 +253,11 @@ export default {
           console.log(res.data);
           this.getCategory();
           this.$refs.editCategoryModal.hide();
+          this.$toaster.success("Sửa thể loại thành công");
         })
         .catch((err) => {
           this.$refs.editCategoryModal.hide();
+          this.$toaster.error("Sửa thể loại thất bại");
         });
     },
 

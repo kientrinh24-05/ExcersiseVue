@@ -21,6 +21,12 @@ import store from './store'
 import Vuex from 'vuex';
 import axios from 'axios' 
 import moment from 'vue-moment'
+import Toaster from 'v-toaster'
+ 
+// You need a specific loader for CSS files like https://github.com/webpack/css-loader
+import 'v-toaster/dist/v-toaster.css'
+ 
+// optional set default imeout, the default is 10000 (10 seconds).
 
 window.Vue = Vue;
 // router setup
@@ -28,6 +34,7 @@ import router from './routes/router';
 // plugin setup
 Vue.use(DashboardPlugin);
 Vue.use(Vuex)
+Vue.use(Toaster, {timeout: 3000})
 
 Vue.prototype.moment = moment
 Vue.prototype.$http = axios;

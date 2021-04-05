@@ -76,11 +76,7 @@
               </b-col>
             </b-row>
 
-            <bar-chart
-              :height="350"
-              ref="barChart"
-              :chart-data="redBarChart.chartData"
-            >
+            <bar-chart :height="350" ref="barChart" :chart-data="redBarChart.chartData">
             </bar-chart>
             <div>{{ message }}</div>
           </card>
@@ -121,11 +117,12 @@ export default {
     SocialTrafficTable,
   },
   data() {
-    let bigLineChartData = [120, 2023, 10, 30, 215, 2410, 20, 360, 160];
+    let bigLineChartData = [12011, 223, 110, 40000, 55000, 2410, 20, 360, 160];
     return {
       message: "gia tri khoi tao cua message",
       //Check lại change data khi call a
-      labels: [1],
+      labels: [],
+
       bigLineChart: {
         // allData: [
         //   [0, 203, 10, 30, 215, 240, 20, 360, 160],
@@ -139,6 +136,7 @@ export default {
               data: bigLineChartData,
             },
           ],
+          // labels: ["11/2020", "12/2020", "1/2021", "2/2021", "3/2021", "4/2021"],
           labels: this.labels,
         },
         extraOptions: chartConfigs.blueChartOptions,
@@ -161,6 +159,8 @@ export default {
   },
   created() {
     this.getDataGreneral();
+  },
+  mounted() {
     this.GetMonthLineChart();
   },
   methods: {
@@ -169,23 +169,12 @@ export default {
         .get("http://127.0.0.1:8000/comsum/general/")
         .then((response) => (this.info = response.data.data));
     },
-
-    GetMonthLineChart() {
-      axios
-        .get("http://127.0.0.1:8000/comsum/statis_month/")
-        .then((response) => {
-          this.getListMonthChart(response.data.data);
-          console.log(response);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
     getListMonthChart(data) {
       console.log(data);
       const TOTAL_MONTH_STATISTIC = 6;
+
       const now = moment();
+
       const startMonth = moment(now)
         .subtract(TOTAL_MONTH_STATISTIC, "months")
         .format("M/YYYY");
@@ -207,6 +196,18 @@ export default {
       this.message = "bien message sau khi call api lay so lieu render lai";
     },
 
+    GetMonthLineChart() {
+      axios
+        .get("http://127.0.0.1:8000/comsum/statis_month/")
+        .then((response) => {
+          this.getListMonthChart(response.data.data);
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     // initBigChart(index) {
     //   let chartData = {
     //     datasets: [
@@ -220,9 +221,6 @@ export default {
     //   this.bigLineChart.chartData = chartData;
     //   this.bigLineChart.activeIndex = index;
     // },
-  },
-  mounted() {
-    // this.initBigChart(0);
   },
 };
 </script>

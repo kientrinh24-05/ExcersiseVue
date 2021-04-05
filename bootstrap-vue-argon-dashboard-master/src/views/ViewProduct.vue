@@ -466,13 +466,14 @@ export default {
         .delete(path)
         .then(() => {
           this.GetMeterialFood();
-
+          this.$toaster.success("Xóa nguyên liệu thành công");
           // this.message = 'Book removed!';
           // this.showMessage = true;
         })
         .catch((error) => {
           // eslint-disable-next-line
           this.GetMeterialFood();
+          this.$toaster.error("Xóa nguyên liệu thất bại");
         });
     },
     removeUnUpdate(id) {
@@ -539,6 +540,7 @@ export default {
 
       this.AddMeterialFood(payload);
       console.log(payload);
+      this.$toaster.success("Thêm nguyên liệu món thành công");
     },
 
     addDetaiFood(id, payload) {
@@ -573,6 +575,7 @@ export default {
         },
       ];
       this.addDetaiFood(this.isEdit, { data: payload });
+      this.$toaster.success("Sửa nguyên liệu món thành công");
       console.log(payload);
     },
 
@@ -597,6 +600,7 @@ export default {
       };
 
       this.AddMeterial(payload);
+      this.$toaster.success("Thêm món ăn thành công");
     },
 
     watchMeterial(id) {
@@ -684,6 +688,8 @@ export default {
       console.log(payload);
 
       this.addProduct(payload);
+
+      this.$toaster.success("Thêm món ăn thành công");
     },
     //Update
     edit(id) {
@@ -732,9 +738,11 @@ export default {
           console.log(res.data);
           this.Getproduct();
           this.$refs.editFood.hide();
+          this.$toaster.success("Sửa món ăn thành công");
         })
         .catch((err) => {
           this.$refs.editFood.hide();
+          this.$toaster.error("Sửa món ăn thành công");
         });
     },
 

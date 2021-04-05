@@ -9,7 +9,7 @@
       </b-col>
     </b-row>
 
-    <b-form @submit.prevent="updateProfile">
+    <b-form @submit.prevent="update">
       <h6 class="heading-small text-muted mb-4">Thông tin người dùng</h6>
 
       <div class="pl-lg-4">
@@ -35,19 +35,22 @@
         </b-row>
         <b-row>
           <b-col lg="6">
-            <base-input type="text" label="Họ" placeholder="Họ" v-model="user.firstName">
+            <base-input type="text" label="Họ" placeholder="Họ" v-model="user.first_name">
             </base-input>
           </b-col>
           <b-col lg="6">
-            <base-input type="text" label="Tên" placeholder="Tên" v-model="user.lastName">
+            <base-input
+              type="text"
+              label="Tên"
+              placeholder="Tên"
+              v-model="user.last_name"
+            >
             </base-input>
           </b-col>
         </b-row>
       </div>
-      <hr class="my-4" />
 
       <!-- Address -->
-      <h6 class="heading-small text-muted mb-4">Thông tin liên lạc</h6>
 
       <div class="pl-lg-4">
         <b-row>
@@ -59,36 +62,90 @@
               v-model="user.address"
             >
             </base-input>
+
+            <base-input type="file" label="Avatar" v-model="user.avt"> </base-input>
           </b-col>
+          <b-button type="submit" variant="success">Cập Nhật</b-button>
+          <b-button variant="primary">Hủy Bỏ</b-button>
         </b-row>
       </div>
 
       <hr class="my-4" />
+
       <!-- Description -->
     </b-form>
   </card>
 </template>
 <script>
+import axios from "axios";
+var thisUser;
 export default {
   data() {
     return {
       user: {
-        company: "Creative Code Inc.",
-        username: "michael23",
+        first_name: "",
+        last_name: "",
+        username: "",
         email: "",
-        firstName: "Mike",
-        lastName: "Andrew",
-        address: "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09",
-        city: "New York",
-        country: "USA",
-        postalCode: "",
-        aboutMe: `Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.`,
+
+        address: "",
+        avatar: "",
       },
+
+      // isUser = localStorage.getItem("username"),
     };
+  },
+  created() {
+    var isUser = localStorage.getItem("username");
+
+    console.log(isUser);
+
+    if (isUser) {
+      this.ShowProfile(isUser);
+    }
   },
   methods: {
     updateProfile() {
       alert("Your data: " + JSON.stringify(this.user));
+    },
+    ShowProfile(name) {
+      axios
+        .get(`http://127.0.0.1:8000/auth/change_profile/` + name)
+        .then((res) => res.data)
+        .then((response) => {
+          const { data } = response;
+
+          this.user.username = data.username;
+          this.user.email = data.email;
+          this.user.first_name = data.first_name;
+          this.user.last_name = data.last_name;
+          this.user.address = data.address;
+          this.user.avatar = data.avatar;
+
+          console.log(response);
+        });
+    },
+
+    update() {
+      thisUser = localStorage.getItem("username");
+
+      axios
+        .put(`http://127.0.0.1:8000/auth/change_profile/` + thisUser, this.user, {})
+        .then((res) => {
+          // this.ShowProfile(thisUser);
+          console.log(res.data);
+          console.log(this.user);
+          // this.getMeterial();
+
+          // created();
+          // this.$refs.editSupModal.hide();
+          this.$toaster.success("Cập nhật thông tin thành công");
+        })
+        .catch((err) => {
+          // this.$refs.editSupModal.hide();
+          // this.ShowProfile(thisUser);
+          this.$toaster.error("Cập nhật thông tin thất bại");
+        });
     },
   },
 };

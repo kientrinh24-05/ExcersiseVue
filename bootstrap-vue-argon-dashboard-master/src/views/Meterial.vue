@@ -241,6 +241,7 @@ export default {
         .catch((error) => {
           this.getMeterial();
           console.log(error);
+          this.$toaster.error("Thất bại");
         });
     },
 
@@ -251,6 +252,7 @@ export default {
         material_name: this.form.material_name,
       };
       this.addMeterial(payload);
+      this.$toaster.success("Thêm nguyên liệu thành công");
     },
     edit(id) {
       this.isEdit = id;
@@ -274,9 +276,11 @@ export default {
           console.log(res.data);
           this.getMeterial();
           this.$refs.editSupModal.hide();
+          this.$toaster.success("Sửa nguyên liệu thành");
         })
         .catch((err) => {
           this.$refs.editSupModal.hide();
+          this.$toaster.error("Sửa nguyên liệu thất bại");
         });
     },
     onReset(event) {

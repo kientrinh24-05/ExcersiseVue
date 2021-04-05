@@ -12,7 +12,9 @@ const store= new Vuex.Store({
     //   nguyenlieu: []
     status: '',
     token: localStorage.getItem('token') || '',
-    user : {}
+    username : {},
+    admin:"",
+    superuser:"",
   },
   
   getters : {
@@ -25,17 +27,23 @@ const store= new Vuex.Store({
     //       commit('addnguyenlieu', nguyenlieus)
     //   },
 
-    login({commit}, user){
+    login({commit}, username){
         return new Promise((resolve, reject) => {
           commit('auth_request')
-          axios({url: 'http://127.0.0.1:8000/auth/login/', data: user, method: 'POST' })
+          axios({url: 'http://127.0.0.1:8000/auth/login/', data: username, method: 'POST' })
           .then(resp => {
             const token = resp.data.token
-            const user = resp.data.user
+            const username = resp.data.username
+            const admin = resp.data.admin
+            const superuser = resp.data.superuser
             localStorage.setItem('token', token)
+            localStorage.setItem('username', username)
+            localStorage.setItem('admin', admin)
+            localStorage.setItem('superuser', superuser)
             console.log(token);
+          
             axios.defaults.headers.common['Authorization'] = 'Bearer '+token
-            commit('auth_success', token, user)
+            commit('auth_success', token, username)
             resolve(resp)
           })
           .catch(err => {
@@ -84,10 +92,10 @@ const store= new Vuex.Store({
         state.status = 'loading'
         console.log(status);
       },
-      auth_success(state, token, user){
+      auth_success(state, token, username){
         state.status = 'success'
         state.token = token
-        state.user = user
+        state.username = username
       },
       auth_error(state){
         state.status = 'error'

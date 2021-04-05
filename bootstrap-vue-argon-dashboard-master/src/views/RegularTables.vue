@@ -21,7 +21,6 @@
                     placeholder="Tìm kiếm..."
                     autofocus
                     required
-                
                     v-model="searchit_form.supplier_name"
                   />
                   <button class="fa fa-search" type="submit"></button>
@@ -331,8 +330,9 @@ export default {
         supplier_address: this.form.supplier_address,
         supplier_phone: this.form.supplier_phone,
       };
-      this.showAlert();
+
       this.addSuplier(payload);
+      this.$toaster.success("Thêm nhà cung cấp thành công");
     },
     //Update
     edit(id) {
@@ -359,9 +359,11 @@ export default {
           console.log(res.data);
           this.getSuplier();
           this.$refs.editSupModal.hide();
+          this.$toaster.success("Sửa nhà cung cấp thành công");
         })
         .catch((err) => {
           this.$refs.editSupModal.hide();
+          this.$toaster.error("Sữa nhà cung cấp thất bại");
         });
     },
     // Search
