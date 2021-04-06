@@ -267,31 +267,31 @@ export default {
     },
 
     getRealMaterial() {
-      fetch("http://127.0.0.1:8000/comsum/check_ware/")
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items1 = json.data.map((meterial) => {
-              return {
-                namemiterial: meterial.material_name,
-                count: meterial.material_reality,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/comsum/check_ware/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items1 = res.data.map((supplier) => {
+            return {
+              namemiterial: supplier.material_name,
+              count: supplier.supplier,
+            };
+          });
+        });
     },
     getStatisMeterial() {
-      fetch("http://127.0.0.1:8000/comsum/statis/")
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items = json.data.map((meterial) => {
-              return {
-                nameproduct: meterial.material_name,
-                countreal: meterial.material_reality,
-                countdigital: meterial.material_digital,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/comsum/statis/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items = res.data.map((meterial) => {
+            return {
+              nameproduct: meterial.material_name,
+              countreal: meterial.material_reality,
+              countdigital: meterial.material_digital,
+            };
+          });
+        });
     },
     getMeterial() {
       axios

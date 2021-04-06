@@ -39,6 +39,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
       },
       {
+        path: '/usermanger',
+        name: 'Quản Lý Nhân Viên',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Usermanager.vue')
+      },
+      {
         path: '/viewproduct',
         name: 'Quản Lý Món Ăn',
         component: () => import(/* webpackChunkName: "demo" */ '../views/ViewProduct.vue')

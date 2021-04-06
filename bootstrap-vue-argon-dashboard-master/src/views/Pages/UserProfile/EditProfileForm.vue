@@ -62,8 +62,14 @@
               v-model="user.address"
             >
             </base-input>
-
-            <base-input type="file" label="Avatar" v-model="user.avt"> </base-input>
+            <b-form-group id="input-group-2" label="Hình Ảnh">
+              <b-form-file
+                placeholder="Chọn địa chỉ hình ảnh..."
+                drop-placeholder="Drop file here..."
+                v-model="user.avt"
+              ></b-form-file>
+            </b-form-group>
+            <!-- <base-input type="file" label="Avatar" v-model="user.avt"> </base-input> -->
           </b-col>
           <b-button type="submit" variant="success">Cập Nhật</b-button>
           <b-button variant="primary">Hủy Bỏ</b-button>
@@ -128,13 +134,19 @@ export default {
 
     update() {
       thisUser = localStorage.getItem("username");
-
+      let formData = new FormData();
+      formData.append("username", this.user.username);
+      formData.append("email", this.user.email);
+      formData.append("first_name", this.user.first_name);
+      formData.append("last_name", this.user.last_name);
+      formData.append("address", this.user.address);
+      formData.append("avatar", this.user.avatar);
       axios
-        .put(`http://127.0.0.1:8000/auth/change_profile/` + thisUser, this.user, {})
+        .put(`http://127.0.0.1:8000/auth/change_profile/` + thisUser, formData, {})
         .then((res) => {
           // this.ShowProfile(thisUser);
           console.log(res.data);
-          console.log(this.user);
+          console.log(formData);
           // this.getMeterial();
 
           // created();

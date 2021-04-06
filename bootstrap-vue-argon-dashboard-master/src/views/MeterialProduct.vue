@@ -194,7 +194,7 @@
                   <div class="count_price">
                     <b-col lg="4">
                       <span>Tổng tiền</span>
-                      <label class="label-cout">{{ sumprice }}vnđ</label>
+                      <label class="label-cout">{{ sumprice }} vnđ</label>
                     </b-col>
                   </div>
 
@@ -317,7 +317,7 @@ export default {
         // { key: "actions", label: "Hành động" },
       ],
       items: [],
-      sumprice: "",
+      sumprice: null,
     };
   },
   created() {
@@ -344,6 +344,19 @@ export default {
               ngày_nhập: meterial.import_date,
             };
           });
+          this.sumprice = res.data.sumprice.map((sum) => {
+            return {
+              sumprice: sum,
+            };
+          });
+          // this.sumprice = res.sumprice.sum;
+          // console.log(this.sumprice);
+
+          // this.sumprice = res.data.data.sumprice.sum;
+          // console.log(this.sumprice);
+          // return {
+          //   sumprice: sum.sum,
+          // };
         })
 
         .catch((error) => {
@@ -357,6 +370,8 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.items = res.data.data.map((meterial) => {
+            // sumprice = res.data.sumprice.sum;
+            // console.log(sumprice);
             return {
               tên_nguyên_liệu: meterial.material_name,
               nhà_phân_phối: meterial.supplier_name,
@@ -365,8 +380,9 @@ export default {
               ngày_nhập: meterial.import_date,
             };
           });
-        })
 
+          console.log(sumprice);
+        })
         .catch((error) => {
           // this.getSuplier();
           console.log(error);
@@ -436,20 +452,20 @@ export default {
 
     //Get iimportMeterial
     getImportMeterial() {
-      fetch("http://127.0.0.1:8000/material/get_importmaterial/")
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items = json.data.map((meterial) => {
-              return {
-                tên_nguyên_liệu: meterial.material_name,
-                nhà_phân_phối: meterial.supplier_name,
-                số_lượng: meterial.amount,
-                giá: meterial.price,
-                ngày_nhập: meterial.import_date,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/material/get_importmaterial/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items = res.data.map((meterial) => {
+            return {
+              tên_nguyên_liệu: meterial.material_name,
+              nhà_phân_phối: meterial.supplier_name,
+              số_lượng: meterial.amount,
+              giá: meterial.price,
+              ngày_nhập: meterial.import_date,
+            };
+          });
+        });
     },
     addMeterial(payload) {
       const path = "http://127.0.0.1:8000/material/list_importmaterial/";

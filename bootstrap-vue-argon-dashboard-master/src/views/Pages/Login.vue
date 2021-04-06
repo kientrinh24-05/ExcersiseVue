@@ -18,10 +18,7 @@
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <polygon
-            class="fill-default"
-            points="2560 0 2560 100 0 100"
-          ></polygon>
+          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
         </svg>
       </div>
     </div>
@@ -32,10 +29,7 @@
           <b-card no-body class="bg-secondary border-0 mb-0">
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4"></div>
-              <validation-observer
-                v-slot="{ handleSubmit }"
-                ref="formValidator"
-              >
+              <validation-observer v-slot="{ handleSubmit }" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
                   <base-input
                     alternative
@@ -62,10 +56,7 @@
 
                   <b-form-checkbox>Lưu tên đăng nhập</b-form-checkbox>
                   <div class="text-center">
-                    <base-button
-                      type="primary"
-                      native-type="submit"
-                      class="my-4"
+                    <base-button type="primary" native-type="submit" class="my-4"
                       >Đăng nhập</base-button
                     >
                   </div>
@@ -77,11 +68,6 @@
             <b-col cols="6">
               <router-link to="/changepass" class="text-light"
                 ><small>Đổi mật khẩu</small></router-link
-              >
-            </b-col>
-            <b-col cols="6" class="text-right">
-              <router-link to="/register" class="text-light"
-                ><small>Đăng ký tài khoản</small></router-link
               >
             </b-col>
           </b-row>
@@ -116,26 +102,21 @@ export default {
       //       localStorage.setItem('token',response.data.token),
       //          localStorage.setItem('username',response.data.username)
       //      this.$router.push('/dashboard')
-         
+
       //  // axios.defaults.headers.common['Authorization'] = token
-       
+
       //   })
       //   .catch((err) => {
       //     console.log(err);
       // window.alert("Nhập sai tk")
       //   });
 
-    
-        let username = this.model.username
-        let password = this.model.password
-        this.$store.dispatch('login', { username, password })
-       .then(() =>  this.$router.push('/dashboard'))
-       .catch(err => console.log(err))
-      
-        
-
-
-       
+      let username = this.model.username;
+      let password = this.model.password;
+      this.$store
+        .dispatch("login", { username, password })
+        .then(() => this.$router.push("/dashboard"))
+        .catch((err) => console.log(err));
     },
   },
 };

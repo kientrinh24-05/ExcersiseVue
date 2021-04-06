@@ -196,17 +196,17 @@ export default {
     },
     //Get All
     getCategory() {
-      fetch("http://127.0.0.1:8000/food_tabel/list_category/")
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items = json.data.map((category) => {
-              return {
-                Mã_thể_loại: category.id,
-                tên_thể_loại: category.category_name,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_category/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items = res.data.map((category) => {
+            return {
+              Mã_thể_loại: category.id,
+              tên_thể_loại: category.category_name,
+            };
+          });
+        });
     },
     // Add Category
     addMeterial(payload) {

@@ -8,7 +8,7 @@
         <b-col lg="12">
           <card header-classes="bg-transparent">
             <div class="items-click-add">
-              <h3>Danh sách nguyên liệu</h3>
+              <h3>Danh sách nhân viên</h3>
               <div>
                 <div class="pseudo-search">
                   <input
@@ -21,29 +21,9 @@
                   <button class="fa fa-search" type="submit"></button>
                 </div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
-                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
-
-                <b-modal id="modal-1" title="Thêm nguyên liệu" ref="ModalAdd">
-                  <div>
-                    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                      <b-form-group
-                        id="input-group-1"
-                        label="Tên nguyên liệu"
-                        label-for="input-1"
-                      >
-                        <b-form-input
-                          id="input-1"
-                          v-model="form.material_name"
-                          placeholder="Nhập tên nguyên liệu"
-                          required
-                        ></b-form-input>
-                      </b-form-group>
-
-                      <b-button type="submit" variant="success">Xác Nhận</b-button>
-                      <b-button type="reset" variant="light">Đóng</b-button>
-                    </b-form>
-                  </div>
-                </b-modal>
+                <b-button v-b-modal.modal-1 variant="success" to="/register"
+                  >Thêm mới</b-button
+                >
               </div>
             </div>
 
@@ -61,10 +41,19 @@
                       :current-page="currentPage"
                       :fields="fields"
                     >
+                      <template v-slot:cell(Admin)="row">
+                        <input type="checkbox" v-model="row.item.Admin" />
+                      </template>
+                      <template v-slot:cell(Trạng_Thái)="row">
+                        <b-badge v-if="row.item.Trạng_Thái" variant="success"
+                          >Hoạt Động</b-badge
+                        >
+                        <b-badge v-else variant="warning">Không Hoạt Động</b-badge>
+                      </template>
                       <template #cell(actions)="row">
                         <i
-                          v-b-modal.my-modal
-                          @click="edit(row.item.mã_nguyên_liệu)"
+                          v-b-modal.my-modal1
+                          @click="edit(row.item.Username)"
                           class="fas fa-pencil-alt"
                         ></i>
                       </template>
@@ -72,7 +61,6 @@
                     <b-card-footer class="py-4 d-flex justify-content-start">
                       <b-pagination
                         v-model="currentPage"
-                        :total-rows="rows"
                         :per-page="perPage"
                         first-number
                         last-number
@@ -81,29 +69,66 @@
                   </div>
 
                   <!-- Modal  -->
-                  <b-modal
-                    id="my-modal"
-                    ref="editSupModal"
-                    title="Thông tin nguyên liệu"
-                    ok-only
-                  >
+                  <b-modal id="my-modal1" title="Thông tin nhân viên" ok-only>
                     <pre></pre>
                     <div>
-                      <h2 style="text-align: center">Sửa Thể Loại</h2>
+                      <h2 style="text-align: center">Sửa Nhân Viên</h2>
                       <div>
                         <b-form @submit="update" @reset="onReset" v-if="show">
                           <b-form-group
                             id="input-group-1"
-                            label="Tên nguyên liệu"
+                            label="Username"
                             label-for="input-1"
                           >
                             <b-form-input
                               id="input-1"
-                              placeholder="Nhập tên nguyên liệu"
-                              v-model="editform.material_name"
+                              placeholder="Nhập username"
+                              v-model="editform.username"
                               required
                             ></b-form-input>
                           </b-form-group>
+                          <b-form-group
+                            id="input-group-1"
+                            label="Email"
+                            label-for="input-1"
+                          >
+                            <b-form-input
+                              id="input-1"
+                              placeholder="clreax@gmail.com"
+                              v-model="editform.email"
+                              required
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-row>
+                            <b-col lg="6">
+                              <b-form-group
+                                id="input-group-1"
+                                label="Admin"
+                                label-for="input-1"
+                              >
+                                <b-form-checkbox
+                                  id="checkbox-1"
+                                  v-model="editform.is_staff"
+                                  name="checkbox-1"
+                                >
+                                </b-form-checkbox>
+                              </b-form-group>
+                            </b-col>
+                            <b-col lg="6">
+                              <b-form-group
+                                id="input-group-1"
+                                label="Trạng Thái"
+                                label-for="input-1"
+                              >
+                                <b-form-checkbox
+                                  id="checkbox-2"
+                                  v-model="editform.is_active"
+                                  name="checkbox-2"
+                                >
+                                </b-form-checkbox>
+                              </b-form-group>
+                            </b-col>
+                          </b-row>
 
                           <!-- Show Modal Nguyên Liệu -->
 
@@ -152,8 +177,10 @@ export default {
         material_name: "",
       },
       editform: {
-        id: "",
-        material_name: "",
+        username: "",
+        email: "",
+        is_staff: Boolean,
+        is_active: Boolean,
       },
       perPage: 10,
       currentPage: 1,
@@ -165,11 +192,19 @@ export default {
       show: true,
       fields: [
         {
-          key: "mã_nguyên_liệu",
-          label: "#",
+          key: "Username",
         },
         {
-          key: "tên_nguyên_liệu",
+          key: "Email",
+        },
+        {
+          key: "Admin",
+        },
+        {
+          key: "Trạng_Thái",
+          // formatter: (value, key, item) => {
+          //   return value ? "Hoạt Động" : "Không Hoạt Động";
+          // },
         },
 
         { key: "actions", label: "Hành động" },
@@ -182,9 +217,12 @@ export default {
   },
   created() {
     this.getMeterial();
-    // setInterval(() => {
-    //   this.onSeach();
-    // }, 300);
+
+    let token = localStorage.getItem("token");
+    console.log(token);
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    }
   },
   computed: {
     rows() {
@@ -192,95 +230,49 @@ export default {
     },
   },
   methods: {
-    searchItem(payload) {
-      const path = "http://127.0.0.1:8000/material/search_material/";
-      axios
-        .post(path, payload)
-        .then((res) => {
-          this.items = res.data.data.map((material) => {
-            return {
-              mã_nguyên_liệu: material.id,
-              tên_nguyên_liệu: material.material_name,
-            };
-          });
-        })
-
-        .catch((error) => {
-          // this.getSuplier();
-          console.log(error);
-        });
-    },
-
-    onSeach() {
-      const payload = {
-        material_name: this.searchit_form.material_name,
-      };
-
-      this.searchItem(payload);
-    },
     getMeterial() {
       axios
-        .get(`http://127.0.0.1:8000/material/list_material/`)
+        .get(`http://127.0.0.1:8000/auth/list_user/`)
         .then((response) => response.data)
         .then((res) => {
-          this.items = res.data.map((supplier) => {
+          this.items = res.data.map((meterial) => {
             return {
-              mã_nguyên_liệu: supplier.id,
-              tên_nguyên_liệu: supplier.material_name,
+              Username: meterial.username,
+              Admin: meterial.is_staff,
+              Email: meterial.email,
+              Trạng_Thái: meterial.is_active,
             };
           });
         });
     },
-    addMeterial(payload) {
-      const path = "http://127.0.0.1:8000/material/list_material/";
-      axios
-        .post(path, payload)
-        .then(() => {
-          this.getMeterial();
-        })
-        .catch((error) => {
-          this.getMeterial();
-          console.log(error);
-          this.$toaster.error("Thất bại");
-        });
-    },
+    edit(username) {
+      this.isEdit = username;
 
-    onSubmit(event) {
-      event.preventDefault();
-      this.$refs.ModalAdd.hide();
-      const payload = {
-        material_name: this.form.material_name,
-      };
-      this.addMeterial(payload);
-      this.$toaster.success("Thêm nguyên liệu thành công");
-    },
-    edit(id) {
-      this.isEdit = id;
       axios
-        .get(`http://127.0.0.1:8000/material/detail_material/` + id)
+        .get(`http://127.0.0.1:8000/auth/update_user/` + username)
         .then((res) => res.data)
         .then((response) => {
+          console.log(response);
           const { data } = response;
 
-          this.editform.material_name = data.material_name;
+          this.editform.username = data.username;
+          this.editform.email = data.email;
+          this.editform.is_staff = data.is_staff;
+          this.editform.is_active = data.is_active;
         });
     },
     update() {
       axios
-        .put(
-          `http://127.0.0.1:8000/material/detail_material/` + this.isEdit,
-          this.editform,
-          {}
-        )
+        .put(`http://127.0.0.1:8000/auth/update_user/` + this.isEdit, this.editform, {})
         .then((res) => {
           console.log(res.data);
           this.getMeterial();
-          this.$refs.editSupModal.hide();
-          this.$toaster.success("Sửa nguyên liệu thành");
+          //   this.$refs.editSupModal.hide();
+          this.$toaster.success("Thành công");
         })
         .catch((err) => {
-          this.$refs.editSupModal.hide();
-          this.$toaster.error("Sửa nguyên liệu thất bại");
+          //   this.$refs.editSupModal.hide();
+          this.$toaster.error("Thất bại");
         });
     },
     onReset(event) {

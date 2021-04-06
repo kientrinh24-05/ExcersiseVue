@@ -28,6 +28,14 @@
           }"
         >
         </sidebar-item>
+        <sidebar-item
+          :link="{
+            name: 'Quản Lý Nhân Viên',
+            path: '/usermanger',
+            icon: 'ni ni-circle-08 text-red',
+          }"
+        >
+        </sidebar-item>
         <!-- Cài đặt Món -->
         <sidebar-item
           :link="{

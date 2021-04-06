@@ -477,18 +477,18 @@ export default {
         });
     },
     removeUnUpdate(id) {
-      fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items3 = json.data.map((meterial) => {
-              return {
-                idmeterial: meterial.id,
-                namemiterial: meterial.material_name,
-                count: meterial.amount_material,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items3 = res.data.map((meterial) => {
+            return {
+              idmeterial: meterial.id,
+              namemiterial: meterial.material_name,
+              count: meterial.amount_material,
+            };
+          });
+        });
     },
     removeMeterialFoodUpdate(id) {
       const path = `http://127.0.0.1:8000/food_tabel/delete_detailfood/` + id;
@@ -505,18 +505,18 @@ export default {
     },
 
     GetMeterialFood() {
-      fetch(`http://127.0.0.1:8000/food_tabel/create_detailfood/`)
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items1 = json.data.map((meterial) => {
-              return {
-                idmeterial: meterial.id,
-                namemiterial: meterial.material_name,
-                count: meterial.amount_material,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/create_detailfood/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items1 = res.data.map((meterial) => {
+            return {
+              idmeterial: meterial.id,
+              namemiterial: meterial.material_name,
+              count: meterial.amount_material,
+            };
+          });
+        });
     },
     AddMeterialFood(payload) {
       const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
@@ -549,18 +549,18 @@ export default {
       axios
         .post(path, payload)
         .then(() => {
-          fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
-            .then((response) => response.json())
-            .then(
-              (json) =>
-                (this.items3 = json.data.map((meterial1) => {
-                  return {
-                    idmeterial: meterial1.id,
-                    namemiterial: meterial1.material_name,
-                    count: meterial1.amount_material,
-                  };
-                }))
-            );
+          axios
+            .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+            .then((response) => response.data)
+            .then((res) => {
+              this.items3 = res.data.map((meterial1) => {
+                return {
+                  idmeterial: meterial1.id,
+                  namemiterial: meterial1.material_name,
+                  count: meterial1.amount_material,
+                };
+              });
+            });
         })
         .catch((error) => {
           this.watchMeterial(id);
@@ -604,18 +604,18 @@ export default {
     },
 
     watchMeterial(id) {
-      fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items2 = json.data.map((meterial) => {
-              return {
-                idmeterial: meterial.id,
-                namemiterial: meterial.material_name,
-                count: meterial.amount_material,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items2 = res.data.map((meterial) => {
+            return {
+              idmeterial: meterial.id,
+              namemiterial: meterial.material_name,
+              count: meterial.amount_material,
+            };
+          });
+        });
     },
     getMeterial() {
       axios
@@ -641,19 +641,19 @@ export default {
     },
     //Get All Food
     Getproduct() {
-      fetch("http://127.0.0.1:8000/food_tabel/list_food/")
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items = json.data.map((product) => {
-              return {
-                mã_món_ăn: product.id,
-                tên_món_ăn: product.food_name,
-                phân_loại: product.category_name,
-                giá_sản_phẩm: product.food_price,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_food/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items = res.data.map((product) => {
+            return {
+              mã_món_ăn: product.id,
+              tên_món_ăn: product.food_name,
+              phân_loại: product.category_name,
+              giá_sản_phẩm: product.food_price,
+            };
+          });
+        });
     },
     //add Food
     addProduct(payload) {
@@ -709,18 +709,18 @@ export default {
           this.editform.food_price = data.food_price;
           this.editform.food_image = data.food_image;
 
-          fetch(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
-            .then((response) => response.json())
-            .then(
-              (json) =>
-                (this.items3 = json.data.map((meterial) => {
-                  return {
-                    idmeterial: meterial.id,
-                    namemiterial: meterial.material_name,
-                    count: meterial.amount_material,
-                  };
-                }))
-            );
+          axios
+            .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
+            .then((response) => response.data)
+            .then((res) => {
+              this.items3 = res.data.map((meterial) => {
+                return {
+                  idmeterial: meterial.id,
+                  namemiterial: meterial.material_name,
+                  count: meterial.amount_material,
+                };
+              });
+            });
         })
         .catch((err) => {
           console.log(err);

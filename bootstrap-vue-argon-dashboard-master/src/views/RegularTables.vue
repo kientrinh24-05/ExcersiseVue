@@ -266,20 +266,35 @@ export default {
   },
   methods: {
     // Get All
+    // getSuplier() {
+    //   fetch("http://127.0.0.1:8000/supplier/list_supplier/")
+    //     .then((response) => response.json())
+    //     .then(
+    //       (json) =>
+    //         (this.items = json.data.map((supplier) => {
+    //           return {
+    //             mã_nhà_cung_cấp: supplier.id,
+    //             tên_nhà_cung_cấp: supplier.supplier_name,
+    //             địa_chỉ: supplier.supplier_address,
+    //             số_điện_thoại: supplier.supplier_phone,
+    //           };
+    //         }))
+    //     );
+    // },
     getSuplier() {
-      fetch("http://127.0.0.1:8000/supplier/list_supplier/")
-        .then((response) => response.json())
-        .then(
-          (json) =>
-            (this.items = json.data.map((supplier) => {
-              return {
-                mã_nhà_cung_cấp: supplier.id,
-                tên_nhà_cung_cấp: supplier.supplier_name,
-                địa_chỉ: supplier.supplier_address,
-                số_điện_thoại: supplier.supplier_phone,
-              };
-            }))
-        );
+      axios
+        .get(`http://127.0.0.1:8000/supplier/list_supplier/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items = res.data.map((supplier) => {
+            return {
+              mã_nhà_cung_cấp: supplier.id,
+              tên_nhà_cung_cấp: supplier.supplier_name,
+              địa_chỉ: supplier.supplier_address,
+              số_điện_thoại: supplier.supplier_phone,
+            };
+          });
+        });
     },
     searchItem(payload) {
       const path = "http://127.0.0.1:8000/supplier/search_supplier/";

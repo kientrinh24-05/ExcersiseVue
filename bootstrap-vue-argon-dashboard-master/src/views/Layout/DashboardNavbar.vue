@@ -57,7 +57,7 @@
               <img alt="Image placeholder" src="img/theme/team-4.jpg" />
             </span>
             <b-media-body class="ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm font-weight-bold">Duy Kiên</span>
+              <span class="mb-0 text-sm font-weight-bold">{{ info.username }}</span>
             </b-media-body>
           </b-media>
         </a>
@@ -70,9 +70,9 @@
             <i class="ni ni-settings-gear-65"></i>
             <span>Thông tin</span>
           </b-dropdown-item>
-          <b-dropdown-item href="#!">
+          <b-dropdown-item href="http://localhost:8080/profile#/changepass">
             <i class="ni ni-settings-gear-65"></i>
-            <span>Cài đặt</span>
+            <span>Đổi mật khẩu</span>
           </b-dropdown-item>
 
           <div class="dropdown-divider"></div>
@@ -88,6 +88,7 @@
 <script>
 import { CollapseTransition } from "vue2-transitions";
 import { BaseNav, Modal } from "@/components";
+import axios from "axios";
 
 export default {
   components: {
@@ -108,15 +109,34 @@ export default {
       return this.capitalizeFirstLetter(name);
     },
   },
+  created() {
+    var isUser = localStorage.getItem("username");
+
+    console.log(isUser);
+
+    if (isUser) {
+      this.ShowProfile(isUser);
+    }
+  },
   data() {
     return {
       activeNotifications: false,
       showMenu: false,
       searchModalVisible: false,
       searchQuery: "",
+
+      info: null,
     };
   },
   methods: {
+    ShowProfile(username) {
+      axios
+        .get(`http://127.0.0.1:8000/auth/change_profile/` + username)
+        .then((response) => {
+          this.info = response.data.data;
+          console.log(this.info);
+        });
+    },
     LogOut() {
       localStorage.clear();
       this.$router.push(`/login`);

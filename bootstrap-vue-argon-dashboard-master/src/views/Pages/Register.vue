@@ -75,20 +75,11 @@
 
                   <b-row class="my-4">
                     <b-col cols="12">
-                     
-                        <b-form-checkbox v-model="model.is_staff">
-                          Staf 
-                         </b-form-checkbox>
-                     
-                        
+                      <b-form-checkbox v-model="model.is_staff"> Staf </b-form-checkbox>
                     </b-col>
                   </b-row>
                   <div class="text-center">
-                    <b-button
-                      type="submit"
-                      variant="primary"
-                      class="mt-4"
-               
+                    <b-button type="submit" variant="primary" class="mt-4"
                       >Đăng Ký</b-button
                     >
                   </div>
@@ -112,38 +103,33 @@ export default {
         email: "",
         password: "",
         confirm_password: "",
-        is_staff:""
+        is_staff: "",
       },
-    
-      
     };
   },
   methods: {
     onSubmit() {
       // this will be called only after form is valid. You can do an api call here to register users
-     const data = {
-       username : this.model.username,
-       email : this.model.email,
-       password :this.model.password,
-       confirm_password : this.model.confirm_password,
-       is_staff:this.model.is_staff
-     }
+      const data = {
+        username: this.model.username,
+        email: this.model.email,
+        password: this.model.password,
+        confirm_password: this.model.confirm_password,
+        is_staff: this.model.is_staff,
+      };
 
-       this.$store.dispatch('register', data)
-       .then(() => this.$router.push('/login'))
-       .catch(err => console.log(err))
-    //  axios.post(`http://127.0.0.1:8000/auth/register/`,data)
-    //  .then(res =>{
-    //     console.log(res);
-    //      this.$router.push('/login')
-    //  }).catch(err =>{
-    //    console.log(err);
-    //  })
-  
-    
+      this.$store
+        .dispatch("register", data)
+        .then(() => this.$router.push("/usermanger"))
+        .catch((err) => console.log(err));
+      //  axios.post(`http://127.0.0.1:8000/auth/register/`,data)
+      //  .then(res =>{
+      //     console.log(res);
+      //      this.$router.push('/login')
+      //  }).catch(err =>{
+      //    console.log(err);
+      //  })
     },
-
-   
   },
 };
 </script>
