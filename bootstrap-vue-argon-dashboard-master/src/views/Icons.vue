@@ -41,14 +41,14 @@
                 @click="BookTable(table.id, table.status)"
                 lg="3"
                 md="6"
-                class="table"
                 v-for="table in tables"
                 :key="table.id"
               >
                 <b-button
                   v-b-modal.modal-10
+                  :class="getTableColor(table.status)"
                   @click="BookTable(table.id, table.status)"
-                  class="btn-icon-clipboard"
+                  class="btn-icon-clipboard table"
                 >
                   {{ table.name }}
                 </b-button>
@@ -127,7 +127,7 @@ export default {
   data() {
     return {
       tableID: null,
-      tables: null,
+      tables: [],
       booktables: {
         id: "",
         namebook: "",
@@ -165,44 +165,21 @@ export default {
   },
   created() {
     this.getTable();
-    // const table = document.querySelector("tavke")
-    // const tables1 = document.querySelector("table");
-    // if (table.status == "Bàn đã đặt") {
-    //   tables1.classList(".sucses");
-    // } else {
-    //   console.log("lỗi");
-    // }
   },
   methods: {
-    /// Fixxxxxxxxxxxxx Errooorrrrrrrr
-    // initTable(id) {
-    //   this.tableID = id;
-
-    //   console.log(id);
-    //   console.log(status);
-    //   if (status == "Bàn đã đặt") {
-    //     axios
-    //       .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
-    //       .then((res) => res.data)
-    //       .then((response) => {
-    //         const { data } = response;
-
-    //         this.booktables.namebook = data.name_book;
-    //         this.booktables.phonebook = data.phone_book;
-
-    //         this.booktables.countbook = data.number_of_people;
-    //         this.booktables.moneybook = data.money_book;
-    //         this.booktables.datebook = data.time_book;
-    //       });
-    //   } else {
-    //     this.booktables.namebook = "";
-    //     this.booktables.phonebook = "";
-
-    //     this.booktables.countbook = "";
-    //     this.booktables.moneybook = "";
-    //     this.booktables.datebook = "";
-    //   }
-    // },
+    //Mapper
+    getTableColor(value) {
+      switch (value) {
+        case "Bàn đã đặt":
+          return "change";
+        case "Có người":
+          return "sucses";
+        case "Tạm ngưng hoạt động":
+          return "no-sucses";
+        default:
+          return "no-change";
+      }
+    },
     BookTable(id, status) {
       this.tableID = id;
       if (status == "Bàn đã đặt") {
@@ -265,6 +242,7 @@ export default {
     // },
 
     getTable() {
+      // this.tableStatus = status;
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
         .then((response) => {
@@ -335,6 +313,10 @@ ul li {
   border: 1px solid gray;
   text-align: center;
   font-weight: bold;
+}
+
+.no-change {
+  background-color: white;
 }
 .sucses {
   background: red;

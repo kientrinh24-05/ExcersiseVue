@@ -8,8 +8,10 @@ const store= new Vuex.Store({
     // modules:{
     //   nguyenlieu
     // }
-     state : {
+  state : {
     //   nguyenlieu: []
+    orderFood:[],
+    foodItems:null,
     status: '',
     token: localStorage.getItem('token') || '',
     username : {},
@@ -26,7 +28,13 @@ const store= new Vuex.Store({
     //   addnguyenlieu({ commit }, nguyenlieus) {
     //       commit('addnguyenlieu', nguyenlieus)
     //   },
-
+    setfoodItemsById({commit}, state, id){
+      let array = state.find(d=> d.id == id);
+      commit('setFoodItemsById', array);
+    },
+    setfoodItems({commit}, items){
+      commit('setFoodItems',items );
+    },
     login({commit}, username){
         return new Promise((resolve, reject) => {
           commit('auth_request')
@@ -88,6 +96,12 @@ const store= new Vuex.Store({
     //   addnguyenlieu: (state, nguyenlieus) => {
     //       state.nguyenlieu.unshift(nguyenlieus);
     //   }
+    setFoodItemsById(state, items){
+      state.orderFood.unshift(items);
+    },
+    setFoodItems(state, items){
+      state.foodItems = items;
+    },
     auth_request(state){
         state.status = 'loading'
         console.log(status);

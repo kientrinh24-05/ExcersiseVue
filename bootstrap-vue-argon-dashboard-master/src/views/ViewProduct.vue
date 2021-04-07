@@ -241,6 +241,7 @@
                               placeholder="Chọn địa chỉ hình ảnh..."
                               drop-placeholder="Drop file here..."
                               v-model="editform.food_image"
+                              @input="input"
                             ></b-form-file>
                           </b-form-group>
 
@@ -346,6 +347,7 @@ import LightTable from "./Tables/RegularTables/LightTable";
 import DarkTable from "./Tables/RegularTables/DarkTable.vue";
 import axios from "axios";
 // import { mapActions, mapGetters, mapState } from "vuex";
+import Papa from "papaparse";
 
 export default {
   components: {
@@ -459,7 +461,24 @@ export default {
   },
   methods: {
     // Remove dont reload date
-
+    // input(fs) {
+    //   console.log("vo");
+    //   fs && this.readFile(fs);
+    // },
+    // parseCallback(result) {
+    //   console.log("result", result);
+    //   console.log("line count: ", result.data.length);
+    //   this.isLoading = false;
+    //   console.log("process time: ", new Date().getTime() - window.start);
+    // },
+    // async readFile(file) {
+    //   window.start = new Date().getTime();
+    //   Papa.parse(file, {
+    //     header: true,
+    //     skipEmptyLines: true,
+    //     complete: this.parseCallback,
+    //   });
+    // },
     removeMeterialFoodAdd(id) {
       const path = `http://127.0.0.1:8000/food_tabel/delete_detailfood/` + id;
       axios

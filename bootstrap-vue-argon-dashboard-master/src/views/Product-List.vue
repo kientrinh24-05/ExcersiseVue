@@ -10,10 +10,6 @@
             <div class="items-click-add">
               <h2>Danh sách bàn ăn</h2>
               <div>
-                <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
-                  <button class="fa fa-search" type="submit"></button>
-                </div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
@@ -31,7 +27,9 @@
                       ></b-form-select>
                     </b-form-group>
                     <div>
-                      <b-button variant="success" @click="ShowTable(selected)">Xác nhận</b-button>
+                      <b-button variant="success" @click="ShowTable(selected)"
+                        >Xác nhận</b-button
+                      >
                       <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
                     </div>
                   </b-form>
@@ -40,17 +38,14 @@
             </div>
             <b-row class="icon-examples">
               <b-col
-            
+                @click="getOrderFood(table.id)"
                 lg="3"
                 md="6"
                 class="table"
                 v-for="table in tables"
                 :key="table.id"
               >
-                <b-button
-               
-                  class="btn-icon-clipboard"
-                >
+                <b-button :class="getTableColor(table.status)" class="btn-icon-clipboard">
                   {{ table.name }}
                 </b-button>
               </b-col>
@@ -69,9 +64,10 @@
                       <b-card-text>
                         <b-row>
                           <b-col
-                            lg="3"
-                            md="4"
+                            lg="4"
+                            md="6"
                             mb="6"
+                            class="product-content"
                             v-for="product in products"
                             :key="product.id"
                           >
@@ -79,9 +75,10 @@
                               class="img_food"
                               :src="'http://127.0.0.1:8000' + product.food_image"
                             />
-
-                            <p>{{ product.food_name }}</p>
                             <strong>{{ product.food_price }}.VND</strong>
+                            <p>{{ product.food_name }}</p>
+
+                            <b-badge pill class="add" variant="primary">ADD</b-badge>
                           </b-col>
                         </b-row></b-card-text
                       >
@@ -98,8 +95,9 @@
                         <b-row>
                           <b-col
                             lg="6"
-                            md="4"
+                            md="6"
                             mb="6"
+                            class="product-content"
                             v-for="food in foods"
                             :key="food.id"
                           >
@@ -107,8 +105,17 @@
                               class="img_food"
                               :src="'http://127.0.0.1:8000' + food.food_image"
                             />
-                            <p>{{ food.food_name }}</p>
                             <strong>{{ food.food_price }}.VND</strong>
+
+                            <p>{{ food.food_name }}</p>
+
+                            <b-badge
+                              @click="setProduct(food.id)"
+                              class="add"
+                              pill
+                              variant="primary"
+                              >ADD</b-badge
+                            >
                           </b-col>
                         </b-row>
                       </b-card-text>
@@ -122,7 +129,7 @@
                     <b-table striped hover :items="items"></b-table>
                   </div> -->
                     <b-table
-                      :items="items"
+                      :items="orderFood"
                       :fields="fields"
                       stacked="md"
                       show-empty
@@ -135,17 +142,9 @@
                         <input
                           type="number"
                           style="width: 50px"
+                          :value="row.item.count"
                           @click="info(row.index)"
                         />
-                      </template>
-                      <template #cell(actions)="row">
-                        <b-button
-                          size="sm"
-                          @click="info(row.item, row.index, $event.target)"
-                          class="mr-1"
-                        >
-                          X
-                        </b-button>
                       </template>
                     </b-table>
                   </div>
@@ -169,30 +168,7 @@
                 <b-col lg="6" md="12">
                   <div class="view_table">
                     <h2>Thông tin bàn</h2>
-                    <b-form v-if="show">
-                      <b-form-group
-                        id="input-group-1"
-                        label="Mã bàn:"
-                        label-for="input-1"
-                      >
-                        <b-form-input
-                          id="input-1"
-                          type="text"
-                          placeholder="Mã Bàn"
-                          disabled
-                          required
-                        ></b-form-input>
-                      </b-form-group>
 
-                      <b-form-group
-                        id="input-group-2"
-                        label="Trạng thái:"
-                        label-for="input-2"
-                      >
-                        <b-form-input id="input-2" placeholder="" required></b-form-input>
-                      </b-form-group>
-                    </b-form>
-                    <hr />
                     <span>Chọn bàn</span>
                     <b-form-select id="ratio"></b-form-select>
                     <b-button class="btn_table" variant="primary">Chuyển bàn</b-button>
@@ -214,6 +190,7 @@ import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -226,13 +203,13 @@ export default {
   },
   data() {
     return {
-      tables:[],
+      tables: [],
       projects,
       users,
       foods: [],
       categorys: [],
-      products: [],
-      selected: "A",
+      products: null,
+      selected: "Trống",
       options: [
         { item: "Có người", name: "Có người" },
         { item: "Trống", name: "Trống" },
@@ -248,29 +225,9 @@ export default {
         checked: [],
       },
       show: true,
-      aspects: [
-        { text: "101", value: "6:3" },
-        { text: "102", value: "1:1" },
-        { text: "103", value: "16:9" },
-      ],
-      items: [
-        {
-          nameproduct: "Xoài Lắc",
-          price: 20100,
-        },
 
-        {
-          nameproduct: "Dâu Tây",
-          price: 21000,
-        },
-        { nameproduct: "Dâu Lắc", price: 2000 },
-        {
-          nameproduct: "Bánh Tráng",
-          price: 203300,
-        },
-      ],
+      items: [{}],
       fields: [
-        {},
         {
           key: "nameproduct",
           label: "Tên Sản Phẩm",
@@ -282,18 +239,64 @@ export default {
           key: "price",
           label: "Giá",
         },
-        {},
-        { key: "actions", label: "Hành Động" },
       ],
     };
   },
   created() {
     this.getAllCategory();
     this.getAllProducts();
-    this.getTable();
+
+    console.log(this.products, "products");
+    this.ShowTableActive("Trống");
+  },
+  mounted() {
+    console.log(this.products, "products");
+  },
+  computed: {
+    //   ...mapState(["orderFood"]),
+    orderFood() {
+      return this.$store.state.orderFood;
+    },
+    foodItems() {
+      return this.$store.state.foodItems;
+    },
   },
   methods: {
-    info(item, index, button) {},
+    ...mapActions(["setfoodItems", "setfoodItemsById"]),
+    // setfoodItemsAll() {
+    //   this.setfoodItems(this.foods);
+    // },
+    setProduct(id) {
+      this.setfoodItemsById(this.foodItems, id);
+    },
+    getOrderFood(idTable) {
+      axios
+        .get(`http://127.0.0.1:8000/order/get_food_ordered/` + idTable)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items = res.data.map((supplier) => {
+            return {
+              nameproduct: supplier.food_name,
+              count: supplier.amount,
+              price: supplier.food_price,
+            };
+          });
+        });
+    },
+    // Mapper
+    getTableColor(value) {
+      switch (value) {
+        case "Bàn đã đặt":
+          return "change";
+        case "Có người":
+          return "sucses";
+        case "Tạm ngưng hoạt động":
+          return "no-sucses";
+        default:
+          return "no-change";
+      }
+    },
+
     getTable() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
@@ -304,7 +307,19 @@ export default {
           console.log(err);
         });
     },
-  ShowTable(name) {
+    ShowTableActive(name) {
+      console.log(name);
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/search_table/` + name)
+
+        .then((response) => {
+          this.tables = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    ShowTable(name) {
       console.log(name);
       axios
         .get(`http://127.0.0.1:8000/food_tabel/search_table/` + name)
@@ -334,7 +349,11 @@ export default {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_food/`)
         .then((response) => {
+          console.log(response, "response");
           this.products = response.data.data;
+
+          console.log(response.data.data, "response");
+          this.setfoodItems(response.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -348,7 +367,6 @@ export default {
 
         .then((response) => {
           this.foods = response.data.data;
-          console.log(this.foods);
         })
         .catch((err) => {
           console.log(err);
@@ -358,6 +376,10 @@ export default {
 };
 </script>
 <style>
+.add {
+  cursor: pointer;
+  font-size: 1rem;
+}
 .el-table.table-dark {
   background-color: #172b4d;
   color: #f8f9fe;
@@ -425,13 +447,26 @@ export default {
   font-weight: bold;
 }
 
+.no-change {
+  background-color: white;
+}
+.sucses {
+  background: red;
+}
+.no-sucses {
+  background: green;
+}
 .change {
   background: yellow;
 }
+
 .items-click-add {
   margin: 1rem 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.product-content {
+  margin: 1rem 0;
 }
 </style>

@@ -33,13 +33,12 @@
         </b-col>
       </b-row>
     </base-header>
-    <base-header class="pb-6 pb-8  bg-gradient-success">
+    <base-header class="pb-6 pb-8 bg-gradient-success">
       <b-container fluid class="mt--7">
         <b-row>
-         <b-col lg="12">
+          <b-col lg="12">
             <chart />
-         </b-col>
-        
+          </b-col>
         </b-row>
       </b-container>
     </base-header>
@@ -106,18 +105,6 @@ export default {
         },
         extraOptions: chartConfigs.blueChartOptions,
       },
-      redBarChart: {
-        chartData: {
-          labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec1"],
-          datasets: [
-            {
-              label: "Sales",
-              data: [25, 20, 6, 22, 17, 29],
-            },
-          ],
-        },
-        extraOptions: chartConfigs.blueChartOptions,
-      },
 
       info: null,
     };
@@ -130,28 +117,14 @@ export default {
   },
   methods: {
     //Chart
-    activate(elem) {
-      this.selected = elem;
-    },
-    handler() {
-      var args = arguments;
-      for (var arg of args) {
-        if (arg instanceof Function) {
-          arg();
-        }
-      }
-    },
-    select(elem) {
-      this.currentView = elem;
-      this.activate(elem);
-    },
+
     getDataGreneral() {
       axios
         .get("http://127.0.0.1:8000/comsum/general/")
         .then((response) => (this.info = response.data.data));
     },
     getListMonthChart(data) {
-      console.log(data);
+      // console.log(data);
       const TOTAL_MONTH_STATISTIC = 6;
 
       const now = moment();
@@ -173,8 +146,8 @@ export default {
       }
       // this.labels = listMonth;
 
-      console.log(this.labels, "labels");
-      this.message = "bien message sau khi call api lay so lieu render lai";
+      // console.log(this.labels, "labels");
+      // this.message = "bien message sau khi call api lay so lieu render lai";
     },
 
     GetMonthLineChart() {
@@ -182,7 +155,6 @@ export default {
         .get("http://127.0.0.1:8000/comsum/statis_month/")
         .then((response) => {
           this.getListMonthChart(response.data.data);
-          console.log(response);
         })
         .catch((err) => {
           console.log(err);
