@@ -33,64 +33,25 @@
         </b-col>
       </b-row>
     </base-header>
+    <base-header class="pb-6 pb-8  bg-gradient-success">
+      <b-container fluid class="mt--7">
+        <b-row>
+         <b-col lg="12">
+            <chart />
+         </b-col>
+        
+        </b-row>
+      </b-container>
+    </base-header>
 
     <!--Charts-->
-    <b-container fluid class="mt--7">
-      <b-row>
-        <b-col xl="8" class="mb-5 mb-xl-0">
-          <card type="default" header-classes="bg-transparent">
-            <b-row align-v="center" slot="header">
-              <b-col>
-                <h6 class="text-light text-uppercase ls-1 mb-1">Thống kê</h6>
-                <h5 class="h3 text-white mb-0">Doanh thu 6 tháng gần đây</h5>
-              </b-col>
-              <b-col>
-                <b-nav class="nav-pills justify-content-end">
-                  <b-nav-item
-                    class="mr-2 mr-md-0"
-                    :active="bigLineChart.activeIndex === 0"
-                    link-classes="py-2 px-3"
-                  >
-                    <span class="d-none d-md-block">Tháng</span>
-                    <span class="d-md-none">M</span>
-                  </b-nav-item>
-                </b-nav>
-              </b-col>
-            </b-row>
-            <line-chart
-              :height="350"
-              ref="bigChart"
-              :chart-data="bigLineChart.chartData"
-              :extra-options="bigLineChart.extraOptions"
-            >
-            </line-chart>
-          </card>
-        </b-col>
-
-        <b-col xl="4" class="mb-5 mb-xl-0">
-          <card header-classes="bg-transparent">
-            <b-row align-v="center" slot="header">
-              <b-col>
-                <h6 class="text-uppercase text-muted ls-1 mb-1">Thống Kê</h6>
-                <h5 class="h3 mb-0">Số Sản Phẩm</h5>
-              </b-col>
-            </b-row>
-
-            <bar-chart :height="350" ref="barChart" :chart-data="redBarChart.chartData">
-            </bar-chart>
-            <div>{{ message }}</div>
-          </card>
-        </b-col>
-      </b-row>
-      <!-- End charts-->
-
-      <!--Tables-->
-
-      <!--End tables-->
-    </b-container>
   </div>
 </template>
 <script>
+//Chart
+
+import Chart from "@/components/Chart.vue";
+
 // Charts
 import * as chartConfigs from "@/components/Charts/config";
 import LineChart from "@/components/Charts/LineChart";
@@ -115,10 +76,14 @@ export default {
     StatsCard,
     PageVisitsTable,
     SocialTrafficTable,
+    //Char
+    chart: Chart,
   },
   data() {
     let bigLineChartData = [12011, 223, 110, 40000, 55000, 2410, 20, 360, 160];
     return {
+      selected: "chart",
+      currentView: "chart",
       message: "gia tri khoi tao cua message",
       //Check lại change data khi call a
       labels: [],
@@ -164,6 +129,22 @@ export default {
     this.GetMonthLineChart();
   },
   methods: {
+    //Chart
+    activate(elem) {
+      this.selected = elem;
+    },
+    handler() {
+      var args = arguments;
+      for (var arg of args) {
+        if (arg instanceof Function) {
+          arg();
+        }
+      }
+    },
+    select(elem) {
+      this.currentView = elem;
+      this.activate(elem);
+    },
     getDataGreneral() {
       axios
         .get("http://127.0.0.1:8000/comsum/general/")

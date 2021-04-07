@@ -2,7 +2,8 @@ import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
 
 import NotFound from '@/views/NotFoundPage.vue';
-import router from './router';
+// import router from './router';
+ import VueRouter from 'vue-router';
 
 const routes = [
   {
@@ -13,6 +14,9 @@ const routes = [
       {
         path: '/dashboard',
         name: 'Tổng Quát',
+        meta: {
+          requiresAuth: true
+        },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -21,7 +25,10 @@ const routes = [
       {
         path: '/icons',
         name: 'Quản Lý Bàn',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue')
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue'),
+        meta: {
+          requiresAuth: true
+        },
       },
       {
         path: '/profile',
@@ -103,18 +110,33 @@ const routes = [
     ]
   }
 ];
- // if the user is not authenticated, `next` is called twiceco
 
-//  routers.beforeEach((to, from, next) => {
-//   if(to.matched.some(record => record.meta.requiresAuth)) {
-//     if (store.getters.isLoggedIn) {
-//       next()
-//       return
-//     }
-//     next('/login')
-//   } else {
-//     next()
-//   }
-// })
+
+
+const router = new VueRouter({
+  mode:"history",
+  routes
+})
+ // if the user is not authenticated, `next` is called twiceco
+ 
+ router.beforeEach((to, from, next) => {
+  //  if(to.meta.requiresAuth){
+  //    const authen = localStorage.getItem('token')
+  //    if (authen) {
+  //       next()
+  //    }else{
+  //      next({name:'Đăng Nhập'})
+  //    }
+  //  }
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login')
+  } else {
+    next()
+  }
+})
 
 export default routes;

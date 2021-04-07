@@ -22,7 +22,14 @@ import Vuex from 'vuex';
 import axios from 'axios' 
 import moment from 'vue-moment'
 import Toaster from 'v-toaster'
- 
+import HighchartsVue from 'highcharts-vue'
+import Highcharts from 'highcharts'
+// import stockInit from 'highcharts/modules/stock'
+// import mapInit from 'highcharts/modules/map'
+// import addWorldMap from './js/worldmap'
+// stockInit(Highcharts)
+// mapInit(Highcharts)
+// addWorldMap(Highcharts)
 // You need a specific loader for CSS files like https://github.com/webpack/css-loader
 import 'v-toaster/dist/v-toaster.css'
  
@@ -35,6 +42,7 @@ import router from './routes/router';
 Vue.use(DashboardPlugin);
 Vue.use(Vuex)
 Vue.use(Toaster, {timeout: 3000})
+Vue.use(HighchartsVue)
 
 Vue.prototype.moment = moment
 Vue.prototype.$http = axios;

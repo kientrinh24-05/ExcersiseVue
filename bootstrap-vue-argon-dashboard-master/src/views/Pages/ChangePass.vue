@@ -137,11 +137,16 @@ export default {
       axios.put(`http://127.0.0.1:8000/auth/change_pass/`, this.user, {}).then((res) => {
         // Errrr
         console.log(res, "res");
+
+        
         if (res.data.status_code[0] == 200) {
           this.$toaster.success("Đổi mật khẩu thành công");
           this.$router.push("/dashboard");
           return;
         }
+        
+
+
         if (res.data.status_code[0] == 400) {
           this.$toaster.success("Đổi mật khẩu fail");
           return;

@@ -31,7 +31,7 @@
                       ></b-form-select>
                     </b-form-group>
                     <div>
-                      <b-button variant="success" @click="hideModal">Xác nhận</b-button>
+                      <b-button variant="success" @click="ShowTable(selected)">Xác nhận</b-button>
                       <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
                     </div>
                   </b-form>
@@ -39,17 +39,20 @@
               </div>
             </div>
             <b-row class="icon-examples">
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard">101 </b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard">102 </b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard"> 103 </b-button>
-              </b-col>
-              <b-col lg="3" md="6">
-                <b-button class="btn-icon-clipboard">104</b-button>
+              <b-col
+            
+                lg="3"
+                md="6"
+                class="table"
+                v-for="table in tables"
+                :key="table.id"
+              >
+                <b-button
+               
+                  class="btn-icon-clipboard"
+                >
+                  {{ table.name }}
+                </b-button>
               </b-col>
             </b-row>
           </card>
@@ -223,6 +226,7 @@ export default {
   },
   data() {
     return {
+      tables:[],
       projects,
       users,
       foods: [],
@@ -230,9 +234,10 @@ export default {
       products: [],
       selected: "A",
       options: [
-        { item: "A", name: "Đã có người" },
-        { item: "B", name: "Còn trống" },
-        { item: "D", name: "Tạm ngưng hoạt động " },
+        { item: "Có người", name: "Có người" },
+        { item: "Trống", name: "Trống" },
+        { item: "Bàn đã đặt", name: "Bàn đã đặt" },
+        { item: "Tạm ngưng hoạt động", name: "Tạm ngưng hoạt động " },
       ],
       rows: 100,
       currentPage: 1,
@@ -285,9 +290,33 @@ export default {
   created() {
     this.getAllCategory();
     this.getAllProducts();
+    this.getTable();
   },
   methods: {
     info(item, index, button) {},
+    getTable() {
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
+        .then((response) => {
+          this.tables = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  ShowTable(name) {
+      console.log(name);
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/search_table/` + name)
+
+        .then((response) => {
+          this.tables = response.data.data;
+          console.log(this.foods);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     hideModal() {
       this.$refs["modal-2"].hide();
     },
