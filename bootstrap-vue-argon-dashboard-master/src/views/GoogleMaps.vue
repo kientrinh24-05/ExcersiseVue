@@ -41,7 +41,7 @@
                   >
                     <b-card-text>
                       <b-row>
-                        <b-col lg="6" md="4" mb="6" v-for="food in foods" :key="food.id">
+                        <b-col lg="3" md="4" mb="6" v-for="food in foods" :key="food.id">
                           <img
                             class="img_food"
                             :src="'http://127.0.0.1:8000' + food.food_image"

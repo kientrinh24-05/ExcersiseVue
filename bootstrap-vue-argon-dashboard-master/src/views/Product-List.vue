@@ -78,7 +78,7 @@
                             <strong>{{ product.food_price }}.VND</strong>
                             <p>{{ product.food_name }}</p>
 
-                            <b-badge pill class="add" variant="primary">ADD</b-badge>
+                            <b-badge pill class="add"   @click="addOrderFood12(product)" variant="primary">ADD</b-badge>
                           </b-col>
                         </b-row></b-card-text
                       >
@@ -110,7 +110,7 @@
                             <p>{{ food.food_name }}</p>
 
                             <b-badge
-                              @click="setProduct(food.id)"
+                            
                               class="add"
                               pill
                               variant="primary"
@@ -129,7 +129,7 @@
                     <b-table striped hover :items="items"></b-table>
                   </div> -->
                     <b-table
-                      :items="orderFood"
+                      :items="items"
                       :fields="fields"
                       stacked="md"
                       show-empty
@@ -225,8 +225,8 @@ export default {
         checked: [],
       },
       show: true,
-
-      items: [{}],
+      orderfood:[],
+      items: [],
       fields: [
         {
           key: "nameproduct",
@@ -246,28 +246,41 @@ export default {
     this.getAllCategory();
     this.getAllProducts();
 
-    console.log(this.products, "products");
+    // console.log(this.products, "products");
     this.ShowTableActive("Trống");
+   
   },
   mounted() {
-    console.log(this.products, "products");
+    // console.log(this.products, "products");
   },
   computed: {
     //   ...mapState(["orderFood"]),
-    orderFood() {
-      return this.$store.state.orderFood;
-    },
-    foodItems() {
-      return this.$store.state.foodItems;
-    },
+    // orderFood() {
+    //   return this.$store.state.orderFood;
+    // },
+    // foodItems() {
+    //   return this.$store.state.foodItems;
+    // },
   },
   methods: {
-    ...mapActions(["setfoodItems", "setfoodItemsById"]),
+
+    
+    // ...mapActions(["setfoodItems", "setfoodItemsById"]),
     // setfoodItemsAll() {
     //   this.setfoodItems(this.foods);
     // },
-    setProduct(id) {
-      this.setfoodItemsById(this.foodItems, id);
+    // setProduct(id) {
+    //   this.setfoodItemsById(this.foodItems, id);
+    // },
+
+    addOrderFood12(product){
+        orderfood.push(product)
+      console.log('ádasđ');
+        products.map((p) =>{
+          if (product.id = p.id) {
+            console.log('Kane');
+          }
+        })
     },
     getOrderFood(idTable) {
       axios
@@ -349,11 +362,11 @@ export default {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_food/`)
         .then((response) => {
-          console.log(response, "response");
+          // console.log(response, "response");
           this.products = response.data.data;
 
-          console.log(response.data.data, "response");
-          this.setfoodItems(response.data.data);
+          // console.log(response.data.data, "response");
+          // this.setfoodItems(response.data.data);
         })
         .catch((err) => {
           console.log(err);

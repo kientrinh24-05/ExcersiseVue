@@ -208,11 +208,11 @@ export default {
       axios
         .post(path, payload)
         .then((res) => {
-          // this.getTable();
+           this.getTable();
           console.log(res);
         })
         .catch((error) => {
-          // this.getTable();
+           this.getTable();
           console.log(error);
         });
     },

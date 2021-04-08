@@ -7,9 +7,7 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col lg="12">
-          <b-alert :show="dismissCountDown" dismissible fade variant="warning">
-            Đã thêm thành công trong {{ dismissCountDown }} seconds...
-          </b-alert>
+    
 
           <card header-classes="bg-transparent">
             <div class="items-click-add">
