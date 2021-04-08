@@ -78,7 +78,13 @@
                             <strong>{{ product.food_price }}.VND</strong>
                             <p>{{ product.food_name }}</p>
 
-                            <b-badge pill class="add"   @click="addOrderFood12(product)" variant="primary">ADD</b-badge>
+                            <b-button
+                              pill
+                              class="add"
+                              @click="addProduct(product)"
+                              variant="primary"
+                              >ADD</b-button
+                            >
                           </b-col>
                         </b-row></b-card-text
                       >
@@ -109,13 +115,7 @@
 
                             <p>{{ food.food_name }}</p>
 
-                            <b-badge
-                            
-                              class="add"
-                              pill
-                              variant="primary"
-                              >ADD</b-badge
-                            >
+                            <b-badge class="add" pill variant="primary">ADD</b-badge>
                           </b-col>
                         </b-row>
                       </b-card-text>
@@ -128,7 +128,7 @@
                     <!-- <div>
                     <b-table striped hover :items="items"></b-table>
                   </div> -->
-                    <b-table
+                    <!--  <b-table
                       :items="items"
                       :fields="fields"
                       stacked="md"
@@ -139,14 +139,51 @@
                         {{ row.value.first }} {{ row.value.last }}
                       </template>
                       <template #cell(count)="row">
-                        <input
-                          type="number"
-                          style="width: 50px"
-                          :value="row.item.count"
-                          @click="info(row.index)"
-                        />
+                        <button @click="increaseQ(row)" class="btn btn-info btn-sm">
+                          -
+                        </button>
+                        {{ row.item.count }}
+                        <button
+                          @click="increaseQ(product)"
+                          class="btn btn-info btn-sm"
+                          size="sm"
+                        >
+                          +
+                        </button>
                       </template>
-                    </b-table>
+                    </b-table> -->
+
+                    <table class="table text-center">
+                      <thead>
+                        <tr>
+                          <th scope="col">Tên Sản Phẩm</th>
+                          <th scope="col">Số Lượng</th>
+                          <th scope="col">Giá</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="product in cart" :key="product.id">
+                          <td>{{ product.food_name }}</td>
+                          <td>
+                            <button
+                              @click="decreaseQ(product)"
+                              class="btn btn-info btn-sm"
+                            >
+                              -
+                            </button>
+                            {{ product.food_image }}
+                            <button
+                              @click="increaseQ(product)"
+                              class="btn btn-info btn-sm"
+                              size="sm"
+                            >
+                              +
+                            </button>
+                          </td>
+                          <td>{{ product.food_price }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                   <div class="footer_view">
                     <div class="btn-view">
@@ -160,7 +197,7 @@
                         label="Tổng tiền"
                         label-for="input-1"
                       >
-                        <label class="label-cout">6.223.334đ</label>
+                        <label class="label-cout">1000l</label>
                       </b-form-group>
                     </div>
                   </div>
@@ -190,7 +227,7 @@ import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import axios from "axios";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
@@ -203,12 +240,14 @@ export default {
   },
   data() {
     return {
+      idTables: null,
       tables: [],
+      cart: null,
       projects,
       users,
       foods: [],
       categorys: [],
-      products: null,
+      products: [],
       selected: "Trống",
       options: [
         { item: "Có người", name: "Có người" },
@@ -225,8 +264,9 @@ export default {
         checked: [],
       },
       show: true,
-      orderfood:[],
+      orderfood: [],
       items: [],
+
       fields: [
         {
           key: "nameproduct",
@@ -245,56 +285,88 @@ export default {
   created() {
     this.getAllCategory();
     this.getAllProducts();
-
-    // console.log(this.products, "products");
+    console.log(this.foodItems, "foodItems");
     this.ShowTableActive("Trống");
-   
   },
   mounted() {
     // console.log(this.products, "products");
   },
   computed: {
-    //   ...mapState(["orderFood"]),
+    // ...mapState(["foodItems"]),
     // orderFood() {
     //   return this.$store.state.orderFood;
     // },
-    // foodItems() {
-    //   return this.$store.state.foodItems;
-    // },
+    foodItems() {
+      return this.$store.state.foodItems;
+    },
   },
   methods: {
+    ...mapActions(["setfoodItems", "setfoodItemsById"]),
+    setfoodItemsAll() {
+      this.setfoodItems(this.foods);
+    },
+    setProduct(id) {
+      this.setfoodItemsById(this.foodItems, id);
+    },
 
-    
-    // ...mapActions(["setfoodItems", "setfoodItemsById"]),
-    // setfoodItemsAll() {
-    //   this.setfoodItems(this.foods);
-    // },
-    // setProduct(id) {
-    //   this.setfoodItemsById(this.foodItems, id);
-    // },
+    addProduct(product) {
+      var idTable = localStorage.getItem("idtalbe");
+      if (idTable == null) {
+        return this.$toaster.success("Bạn Vui Lòng Chọn Bàn Trước Khi Order");
+      }
 
-    addOrderFood12(product){
-        orderfood.push(product)
-      console.log('ádasđ');
-        products.map((p) =>{
-          if (product.id = p.id) {
-            console.log('Kane');
-          }
-        })
+      this.cart.push(product);
+
+      this.products.map((p) => {
+        if (product.id == p.id) {
+          p.cart = !p.cart;
+          p.amount = 1;
+        }
+      });
+    },
+    increaseQ(product) {
+      console.log();
+      this.products.value.map((p) => {
+        if (product.id == p.id) {
+          p.amount += 1;
+        }
+      });
+    },
+    decreaseQ(product) {
+      this.products.value.map((p) => {
+        if (product.id == p.id && p.amount > 1) {
+          p.amount -= 1;
+        }
+      });
+    },
+    addOrderFood12(product) {
+      //  .value.push(product);
+      // products.value.map((p) => {
+      //   if (product.id == p.id) {
+      //     p.cart = !p.cart;
+      //   }
+      // var indexTable = cart.findIndex((item) => item.tableId == tableId);
     },
     getOrderFood(idTable) {
-      axios
-        .get(`http://127.0.0.1:8000/order/get_food_ordered/` + idTable)
-        .then((response) => response.data)
-        .then((res) => {
-          this.items = res.data.map((supplier) => {
-            return {
-              nameproduct: supplier.food_name,
-              count: supplier.amount,
-              price: supplier.food_price,
-            };
+      (this.idTables = idTable),
+        localStorage.setItem("idtalbe", idTable),
+        axios
+          .get(`http://127.0.0.1:8000/order/get_food_ordered/` + idTable)
+          .then((response) => {
+            this.cart = response.data.data;
+            console.log(this.cart);
           });
-        });
+
+      // .then((response) => response.data)
+      // .then((res) => {
+      //   this.items = res.data.map((supplier) => {
+      //     return {
+      //       nameproduct: supplier.food_name,
+      //       count: supplier.amount,
+      //       price: supplier.food_price,
+      //     };
+      //   });
+      // });
     },
     // Mapper
     getTableColor(value) {
@@ -321,7 +393,6 @@ export default {
         });
     },
     ShowTableActive(name) {
-      console.log(name);
       axios
         .get(`http://127.0.0.1:8000/food_tabel/search_table/` + name)
 
@@ -333,13 +404,11 @@ export default {
         });
     },
     ShowTable(name) {
-      console.log(name);
       axios
         .get(`http://127.0.0.1:8000/food_tabel/search_table/` + name)
 
         .then((response) => {
           this.tables = response.data.data;
-          console.log(this.foods);
         })
         .catch((err) => {
           console.log(err);
@@ -365,8 +434,8 @@ export default {
           // console.log(response, "response");
           this.products = response.data.data;
 
-          // console.log(response.data.data, "response");
-          // this.setfoodItems(response.data.data);
+          console.log(response.data.data, "response");
+          this.setfoodItems(response.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -385,6 +454,9 @@ export default {
           console.log(err);
         });
     },
+  },
+  updated() {
+    console.log("vo", this.foodItems);
   },
 };
 </script>
