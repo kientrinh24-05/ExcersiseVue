@@ -29,6 +29,7 @@
         >
         </sidebar-item>
         <sidebar-item
+          v-if="(supperuser = false) && (admin = true)"
           :link="{
             name: 'Quản Lý Nhân Viên',
             path: '/usermanger',
@@ -175,6 +176,10 @@ export default {
   },
   mounted() {
     this.initScrollbar();
+  },
+  created() {
+    var supperuser = localStorage.getItem("superuser");
+    var admin = localStorage.getItem("admin");
   },
 };
 </script>
