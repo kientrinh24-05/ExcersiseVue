@@ -10,7 +10,9 @@
             <div class="items-click-add">
               <h2>Danh sách bàn ăn</h2>
               <div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button variant="primary"
+                  ><i class="fas fa-sync-alt"></i
+                ></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
@@ -30,7 +32,9 @@
                       <b-button variant="success" @click="ShowTable(selected)"
                         >Xác nhận</b-button
                       >
-                      <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
+                      <b-button variant="secondary" @click="hideModal"
+                        >Hủy Bỏ</b-button
+                      >
                     </div>
                   </b-form>
                 </b-modal>
@@ -41,11 +45,16 @@
                 @click="getOrderFood(table.id)"
                 lg="3"
                 md="6"
-                class="table"
+            
                 v-for="table in tables"
                 :key="table.id"
               >
-                <b-button :class="getTableColor(table.status)" class="btn-icon-clipboard">
+            <!--    {'btn-danger': lights, 'btn-success': !lights} -->
+                <b-button
+                  :class="getTableColor(table.status)  "
+                  
+                  class="btn-icon-clipboard"
+                >
                   {{ table.name }}
                 </b-button>
               </b-col>
@@ -73,18 +82,25 @@
                           >
                             <img
                               class="img_food"
-                              :src="'http://127.0.0.1:8000' + product.food_image"
+                              :src="
+                                'http://127.0.0.1:8000' + product.food_image
+                              "
                             />
                             <strong>{{ product.food_price }}.VND</strong>
                             <p>{{ product.food_name }}</p>
 
-                            <b-button
-                              pill
-                              class="add"
+                            <button
+                              :disabled="product.cart"
                               @click="addProduct(product)"
-                              variant="primary"
-                              >ADD</b-button
+                              href="#"
+                              class="btn btn-block"
+                              :class="{
+                                'btn-primary': !product.cart,
+                                'btn-success': product.cart,
+                              }"
                             >
+                              {{ !product.cart ? "Add" : "Added" }}
+                            </button>
                           </b-col>
                         </b-row></b-card-text
                       >
@@ -94,7 +110,7 @@
                       v-for="category in categorys"
                       :key="category.id"
                       :title="category.category_name"
-                      v-model="category_name"
+                     
                       @click="showNameCategory(category.category_name)"
                     >
                       <b-card-text>
@@ -115,7 +131,9 @@
 
                             <p>{{ food.food_name }}</p>
 
-                            <b-badge class="add" pill variant="primary">ADD</b-badge>
+                            <b-badge class="add" pill variant="primary"
+                              >ADD</b-badge
+                            >
                           </b-col>
                         </b-row>
                       </b-card-text>
@@ -171,7 +189,8 @@
                             >
                               -
                             </button>
-                            {{ product.food_image }}
+                            <input type="text" v-model=" product.amount" style="width: 30px;margin:0 5px;">
+                            
                             <button
                               @click="increaseQ(product)"
                               class="btn btn-info btn-sm"
@@ -197,7 +216,7 @@
                         label="Tổng tiền"
                         label-for="input-1"
                       >
-                        <label class="label-cout">1000l</label>
+                        <label class="label-cout">{{ calcSum  + '  VNĐ'}}</label>
                       </b-form-group>
                     </div>
                   </div>
@@ -208,7 +227,9 @@
 
                     <span>Chọn bàn</span>
                     <b-form-select id="ratio"></b-form-select>
-                    <b-button class="btn_table" variant="primary">Chuyển bàn</b-button>
+                    <b-button class="btn_table" variant="primary"
+                      >Chuyển bàn</b-button
+                    >
                   </div>
                 </b-col>
               </b-row>
@@ -222,7 +243,13 @@
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -240,11 +267,13 @@ export default {
   },
   data() {
     return {
+      total: 0,
       idTables: null,
       tables: [],
-      cart: null,
+      cart: [],
       projects,
       users,
+    lights:null,
       foods: [],
       categorys: [],
       products: [],
@@ -285,7 +314,7 @@ export default {
   created() {
     this.getAllCategory();
     this.getAllProducts();
-    console.log(this.foodItems, "foodItems");
+
     this.ShowTableActive("Trống");
   },
   mounted() {
@@ -296,18 +325,26 @@ export default {
     // orderFood() {
     //   return this.$store.state.orderFood;
     // },
-    foodItems() {
-      return this.$store.state.foodItems;
+    // foodItems() {
+    //   return this.$store.state.foodItems;
+    // },
+
+    calcSum() {
+      let total = 0;
+      this.cart.forEach((item, i) => {
+        total += item.food_price * item.amount;
+      });
+      return total;
     },
   },
   methods: {
-    ...mapActions(["setfoodItems", "setfoodItemsById"]),
-    setfoodItemsAll() {
-      this.setfoodItems(this.foods);
-    },
-    setProduct(id) {
-      this.setfoodItemsById(this.foodItems, id);
-    },
+    // ...mapActions(["setfoodItems", "setfoodItemsById"]),
+    // setfoodItemsAll() {
+    //   this.setfoodItems(this.foods);
+    // },
+    // setProduct(id) {
+    //   this.setfoodItemsById(this.foodItems, id);
+    // },
 
     addProduct(product) {
       var idTable = localStorage.getItem("idtalbe");
@@ -316,38 +353,30 @@ export default {
       }
 
       this.cart.push(product);
-
       this.products.map((p) => {
         if (product.id == p.id) {
           p.cart = !p.cart;
-          p.amount = 1;
+          // p.amount = 1;
         }
       });
     },
     increaseQ(product) {
-      console.log();
-      this.products.value.map((p) => {
+      this.products.map((p) => {
         if (product.id == p.id) {
           p.amount += 1;
         }
       });
     },
     decreaseQ(product) {
-      this.products.value.map((p) => {
+      this.products.map((p) => {
         if (product.id == p.id && p.amount > 1) {
           p.amount -= 1;
         }
       });
     },
-    addOrderFood12(product) {
-      //  .value.push(product);
-      // products.value.map((p) => {
-      //   if (product.id == p.id) {
-      //     p.cart = !p.cart;
-      //   }
-      // var indexTable = cart.findIndex((item) => item.tableId == tableId);
-    },
+
     getOrderFood(idTable) {
+        this.lights = !this.lights;
       (this.idTables = idTable),
         localStorage.setItem("idtalbe", idTable),
         axios
@@ -356,6 +385,7 @@ export default {
             this.cart = response.data.data;
             console.log(this.cart);
           });
+     
 
       // .then((response) => response.data)
       // .then((res) => {
@@ -435,7 +465,7 @@ export default {
           this.products = response.data.data;
 
           console.log(response.data.data, "response");
-          this.setfoodItems(response.data.data);
+          // this.setfoodItems(response.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -455,12 +485,15 @@ export default {
         });
     },
   },
-  updated() {
-    console.log("vo", this.foodItems);
-  },
 };
 </script>
 <style>
+.btn-danger {
+  border: 2px solid red;
+}
+.btn-success{
+  border: 2px solid gold;
+}
 .add {
   cursor: pointer;
   font-size: 1rem;
