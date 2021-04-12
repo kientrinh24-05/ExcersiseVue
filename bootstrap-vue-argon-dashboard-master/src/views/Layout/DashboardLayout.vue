@@ -7,6 +7,7 @@
           :link="{
             name: 'Trang Chủ',
             path: '/dashboard',
+      
             icon: 'ni ni-tv-2 text-primary',
           }"
         >
@@ -29,16 +30,20 @@
         >
         </sidebar-item>
         <sidebar-item
-          v-if="(supperuser = false) && (admin = true)"
+   
           :link="{
             name: 'Quản Lý Nhân Viên',
             path: '/usermanger',
             icon: 'ni ni-circle-08 text-red',
           }"
+         
+           
+        
         >
         </sidebar-item>
         <!-- Cài đặt Món -->
         <sidebar-item
+        
           :link="{
             name: 'Cài đặt menu',
             icon: 'ni ni-shop text-primary',
@@ -111,14 +116,14 @@
         >
         </sidebar-item>
 
-        <sidebar-item
+       <!--  <sidebar-item
           :link="{
             name: 'Đăng Xuất',
             path: '/login',
             icon: 'ni ni-key-25 text-info',
           }"
         >
-        </sidebar-item>
+        </sidebar-item>-->
       </template>
     </side-bar>
     <div class="main-content">
@@ -135,6 +140,7 @@
   </div>
 </template>
 <script>
+
 /* eslint-disable no-new */
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -160,6 +166,12 @@ import DashboardContent from "./Content.vue";
 import { FadeTransition } from "vue2-transitions";
 
 export default {
+  data(){
+    return {
+  
+  
+    }
+  },
   components: {
     DashboardNavbar,
     ContentFooter,
@@ -178,8 +190,8 @@ export default {
     this.initScrollbar();
   },
   created() {
-    var supperuser = localStorage.getItem("superuser");
-    var admin = localStorage.getItem("admin");
+    supperuser = localStorage.getItem("superuser");
+   admin = localStorage.getItem("admin");
   },
 };
 </script>

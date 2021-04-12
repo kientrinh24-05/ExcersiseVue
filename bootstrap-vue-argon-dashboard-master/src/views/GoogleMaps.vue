@@ -104,6 +104,7 @@ export default {
     this.getAllProducts();
   },
   methods: {
+    // GET ALL 
     getAllCategory() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_category/`)
@@ -124,7 +125,7 @@ export default {
           console.log(err);
         });
     },
-
+  // SEARCH CATEGORY NAME
     showNameCategory(name) {
       console.log(name);
       axios

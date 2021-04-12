@@ -1,4 +1,4 @@
-import Vue from 'vue';
+/*  import Vue from 'vue';
 import Router from 'vue-router';
 import DashboardLayout from '../views/Starter/SampleLayout.vue';
 import Starter from '../views/Starter/SamplePage.vue';
@@ -21,7 +21,7 @@ export default new Router({
       ]
     }
   ],
-  scrollBehavior: (to, from ,savedPosition) => {
+  scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {
       return savedPosition;
     }
@@ -30,4 +30,4 @@ export default new Router({
     }
     return { x: 0, y: 0 };
   }
-});
+});*/

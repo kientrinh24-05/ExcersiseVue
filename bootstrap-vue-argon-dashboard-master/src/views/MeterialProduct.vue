@@ -327,9 +327,10 @@ export default {
     this.Sumprice();
     // setInterval(() => {
     //   this.onSeachName();
-    // }, 500);
+    // }, 800);
   },
   methods: {
+    //SEARCH METERIAL PRODUCT
     searchItem(payload) {
       const path = "http://127.0.0.1:8000/material/search_date_importmaterial/";
       axios
@@ -349,21 +350,25 @@ export default {
               sumprice: sum,
             };
           });
-          // this.sumprice = res.sumprice.sum;
-          // console.log(this.sumprice);
-
-          // this.sumprice = res.data.data.sumprice.sum;
-          // console.log(this.sumprice);
-          // return {
-          //   sumprice: sum.sum,
-          // };
+        
         })
 
         .catch((error) => {
-          // this.getSuplier();
+        
           console.log(error);
         });
     },
+    onSeach() {
+      const payload = {
+        from_date: this.searchit_form.from_date,
+        to_date: this.searchit_form.to_date,
+      };
+
+      this.searchItem(payload);
+      this.hideModal();
+      this.$toaster.success("Lọc thành công");
+    },
+    //SEARCH METERIAL PRODUCT IN NAME
     searchItemName(payload) {
       const path = "http://127.0.0.1:8000/material/search_name_importmaterial/";
       axios
@@ -384,7 +389,7 @@ export default {
           console.log(sumprice);
         })
         .catch((error) => {
-          // this.getSuplier();
+          
           console.log(error);
         });
     },
@@ -395,24 +400,16 @@ export default {
 
       this.searchItemName(payload);
     },
-    hideModal() {
-      this.$refs["modalLoc"].hide();
-    },
-    onSeach() {
-      const payload = {
-        from_date: this.searchit_form.from_date,
-        to_date: this.searchit_form.to_date,
-      };
-
-      this.searchItem(payload);
-      this.hideModal();
-      this.$toaster.success("Lọc thành công");
-    },
-    Sumprice() {
+  //GET SUM PRICE 
+ Sumprice() {
       axios
         .get("http://127.0.0.1:8000/material/sum_price/")
         .then((response) => (this.sumprice = response.data.price));
     },
+
+   
+    
+   // ADD ROW ITEMS
     addNewApartment() {
       // this.apartments.push(Vue.util.extend({}, this.apartment));
       this.apartments.push({
@@ -423,6 +420,7 @@ export default {
         import_date: "",
       });
     },
+  // REMOVE ROW ITEMS
     removeApartment(index) {
       Vue.delete(this.apartments, index);
     },
@@ -467,6 +465,7 @@ export default {
           });
         });
     },
+    // ADD METERIAL 
     addMeterial(payload) {
       const path = "http://127.0.0.1:8000/material/list_importmaterial/";
       axios
@@ -479,6 +478,7 @@ export default {
           console.error(error);
         });
     },
+    
     onSubmit(event) {
       event.preventDefault();
       console.log("apartment", this.apartments);
@@ -489,7 +489,10 @@ export default {
       });
       this.$toaster.success("Nhập nguyên liệu thành công");
     },
-
+    
+ hideModal() {
+      this.$refs["modalLoc"].hide();
+    },
     onReset(event) {
       event.preventDefault();
       // Reset our form values

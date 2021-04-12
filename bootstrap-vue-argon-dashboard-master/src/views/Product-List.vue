@@ -10,7 +10,9 @@
             <div class="items-click-add">
               <h2>Danh sách bàn ăn</h2>
               <div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button variant="primary"
+                  ><i class="fas fa-sync-alt"></i
+                ></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
@@ -30,7 +32,9 @@
                       <b-button variant="success" @click="ShowTable(selected)"
                         >Xác nhận</b-button
                       >
-                      <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
+                      <b-button variant="secondary" @click="hideModal"
+                        >Hủy Bỏ</b-button
+                      >
                     </div>
                   </b-form>
                 </b-modal>
@@ -45,7 +49,10 @@
                 :key="table.id"
               >
                 <!--    {'btn-danger': lights, 'btn-success': !lights} -->
-                <b-button :class="getTableColor(table.status)" class="btn-icon-clipboard">
+                <b-button
+                  :class="getTableColor(table.status)"
+                  class="btn-icon-clipboard"
+                >
                   {{ table.name }}
                 </b-button>
               </b-col>
@@ -73,7 +80,9 @@
                           >
                             <img
                               class="img_food"
-                              :src="'http://127.0.0.1:8000' + product.food_image"
+                              :src="
+                                'http://127.0.0.1:8000' + product.food_image
+                              "
                             />
                             <strong>{{ product.food_price }}.VND</strong>
                             <p>{{ product.food_name }}</p>
@@ -207,8 +216,47 @@
                   </div>
                   <div class="footer_view">
                     <div class="btn-view">
-                      <b-button variant="danger"> Thanh Toán</b-button>
-                      <b-button variant="success"> Lưu</b-button>
+                      <b-button
+                        variant="danger"
+                        v-b-modal.modal-1
+                        @click="printBill()"
+                      >
+                        Thanh Toán</b-button
+                      >
+
+                      <b-modal id="modal-1" title="Phiếu thanh toán">
+                        <h3 style="text-align: center">PHIẾU TÍNH TIỀN</h3>
+                        <ul>
+                          <li>Mã hóa đơn : {{ print.bill_id }}</li>
+                          <li>Ngày lập : {{ print.time_created }}</li>
+                          <li>Bàn : {{ print.table_name }}</li>
+                        </ul>
+                        <hr />
+
+                        <table class="table text-center">
+                          <thead>
+                            <tr>
+                              <th scope="col">Tên Sản Phẩm</th>
+                              <th scope="col">Giá</th>
+                              <th scope="col">Số Lượng</th>
+
+                              <th scope="col">Thành tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="Food in listFood" :key="Food.id">
+                              <td>{{ Food.food_name }}</td>
+                              <td>{{ Food.price }}</td>
+                              <td>{{ Food.amount }}</td>
+                              <td>{{ Food.total_price }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <p>Tổng thành tiền : {{ print.total }}</p>
+                      </b-modal>
+                      <b-button variant="success" @click="onsubmitSaveBill()">
+                        Lưu</b-button
+                      >
                     </div>
 
                     <div class="title-view">
@@ -217,7 +265,9 @@
                         label="Tổng tiền"
                         label-for="input-1"
                       >
-                        <label class="label-cout">{{ calcSum + "  VNĐ" }}</label>
+                        <label class="label-cout">{{
+                          calcSum + "  VNĐ"
+                        }}</label>
                       </b-form-group>
                     </div>
                   </div>
@@ -228,7 +278,9 @@
 
                     <span>Chọn bàn</span>
                     <b-form-select id="ratio"></b-form-select>
-                    <b-button class="btn_table" variant="primary">Chuyển bàn</b-button>
+                    <b-button class="btn_table" variant="primary"
+                      >Chuyển bàn</b-button
+                    >
                   </div>
                 </b-col>
               </b-row>
@@ -242,7 +294,13 @@
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -266,7 +324,11 @@ export default {
       cart: [],
       projects,
       users,
-
+      product: {
+        food_name: "",
+        amount: "",
+        food_price: "",
+      },
       foods: [],
       categorys: [],
       products: [],
@@ -302,6 +364,13 @@ export default {
           label: "Giá",
         },
       ],
+      print: {
+        bill_id: "",
+        time_created: "",
+        total: "",
+        table_name: "",
+      },
+      listFood: [],
     };
   },
   created() {
@@ -322,6 +391,7 @@ export default {
     //   return this.$store.state.foodItems;
     // },
 
+    //SUM PRICE IN FILLTER
     calcSum() {
       let total = 0;
       this.cart.forEach((item, i) => {
@@ -339,6 +409,60 @@ export default {
     //   this.setfoodItemsById(this.foodItems, id);
     // },
 
+    printBill() {
+     // let id = localStorage.getItem("idtalbe");
+     
+      axios
+        .get(`http://127.0.0.1:8000/order/print_bill/` + this.idTables)
+        .then((res) => res.data)
+        .then((response) => {
+          const { data } = response;
+          (this.print.bill_id = response.bill_id),
+            (this.print.time_created = response.time_created),
+            (this.print.total = response.total),
+            (this.print.table_name = response.table_name),
+            (this.listFood = response.data),
+            console.log(this.listFood);
+        });
+    },
+
+    saveBill(payload) {
+      const path = "http://127.0.0.1:8000/order/food_ordered/";
+      axios
+        .post(path, payload)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+          // this.$toaster.error("Thất bại");
+        });
+    },
+    // EROOO
+    onsubmitSaveBill() {
+      let idtable = localStorage.getItem("idtalbe");
+      console.log(idtable, "idtale");
+
+      const payload = {
+        table_id: idtable,
+
+        list_food: [
+          {
+            food_name: "Cá Ồ Cuốn bánh tráng",
+            food_amount: 122,
+          },
+          {
+            food_name: "Cá Ồ Cuốn bánh tráng",
+            food_amount: 122,
+          },
+        ],
+      };
+      console.log(payload, "payload");
+
+      this.saveBill(payload);
+
+      // this.$toaster.success("Thêm nguyên liệu thành công");
+    },
+
+    // ADD PRODUCT CATEGORY
     addProduct1(product) {
       var idTable = localStorage.getItem("idtalbe");
       if (idTable == null) {
@@ -349,11 +473,12 @@ export default {
       this.foods.map((p) => {
         if (product.id == p.id) {
           p.cart = !p.cart;
-          // p.amount = 1;
+          p.amount = 1;
         }
       });
+      console.log(this.cart);
     },
-
+    // ADD PRODUCT ALL
     addProduct(product) {
       var idTable = localStorage.getItem("idtalbe");
       if (idTable == null) {
@@ -367,7 +492,9 @@ export default {
           // p.amount = 1;
         }
       });
+      console.log(this.cart);
     },
+    // PLUS PRODUCT
     increaseQ(product) {
       this.products.map((p) => {
         if (product.id == p.id) {
@@ -375,6 +502,7 @@ export default {
         }
       });
     },
+    // MINUS PRODUCT
     decreaseQ(product) {
       this.products.map((p) => {
         if (product.id == p.id && p.amount > 1) {
@@ -382,18 +510,16 @@ export default {
         }
       });
     },
-
+    // GET ORDER TABLE ORDER IN ID TABLE
     getOrderFood(idTable) {
-      this.foods.cart = true;
-      this.products.cart = true;
-
-      (this.idTables = idTable),
+      this.idTables = idTable;
+      // this.foods.cart = true;
+      // this.products.cart = true;
         localStorage.setItem("idtalbe", idTable),
         axios
           .get(`http://127.0.0.1:8000/order/get_food_ordered/` + idTable)
           .then((response) => {
             this.cart = response.data.data;
-            console.log(this.cart);
           });
     },
     // Mapper
@@ -409,7 +535,7 @@ export default {
           return "no-change";
       }
     },
-
+    // GET ALL TABLE
     getTable() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_table/`)
@@ -420,6 +546,7 @@ export default {
           console.log(err);
         });
     },
+    // FILLTER TABLE NAME
     ShowTableActive(name) {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/search_table/` + name)
@@ -431,6 +558,7 @@ export default {
           console.log(err);
         });
     },
+
     ShowTable(name) {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/search_table/` + name)
@@ -442,9 +570,7 @@ export default {
           console.log(err);
         });
     },
-    hideModal() {
-      this.$refs["modal-2"].hide();
-    },
+
     getAllCategory() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_category/`)
@@ -481,6 +607,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    hideModal() {
+      this.$refs["modal-2"].hide();
     },
   },
 };

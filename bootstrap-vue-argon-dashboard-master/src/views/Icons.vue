@@ -180,6 +180,7 @@ export default {
           return "no-change";
       }
     },
+    // BOOK TABLE DATA
     BookTable(id, status) {
       this.tableID = id;
       if (status == "Bàn đã đặt") {
@@ -203,6 +204,7 @@ export default {
         this.booktables.datebook = "";
       }
     },
+    // BOOK TABLE 
     booktTables(payload) {
       const path = "http://127.0.0.1:8000/food_tabel/book_table/";
       axios
@@ -216,6 +218,7 @@ export default {
           console.log(error);
         });
     },
+    // BOOK TABLE 
     onSubmitBookTables(event) {
       event.preventDefault();
 
@@ -235,12 +238,8 @@ export default {
       this.$toaster.success("Đặt bàn thành công");
     },
 
-    // info(item, index, button) {
-    //   this.infoModal.title = `Row index: ${index}`;
-    //   // this.infoModal.content = JSON.stringify(item, null, 2);
-    //   this.$root.$emit("bv::show::modal", this.infoModal.id, button);
-    // },
-
+   
+    // GET ALL TABLE
     getTable() {
       // this.tableStatus = status;
       axios
@@ -252,20 +251,8 @@ export default {
           console.log(err);
         });
     },
-    onSubmit(event) {
-      event.preventDefault();
-
-      this.$refs.modalAddTable.hide();
-      const payload = {
-        name: this.FormAdd.name,
-      };
-      console.log(payload);
-
-      this.addTable(payload);
-
-      this.$toaster.success("Thêm  bàn thành công");
-    },
-    //ADD Table
+   
+    //ADD TABLE
     addTable(payload) {
       const path = "http://127.0.0.1:8000/food_tabel/create_table/";
       axios
@@ -278,7 +265,20 @@ export default {
           console.log(error);
         });
     },
-    // Nếu trạng thái bàn trống thì post , còn bàn đã đặt thì update vs get
+     onSubmit(event) {
+      event.preventDefault();
+
+      this.$refs.modalAddTable.hide();
+      const payload = {
+        name: this.FormAdd.name,
+      };
+      console.log(payload);
+
+      this.addTable(payload);
+
+      this.$toaster.success("Thêm  bàn thành công");
+    },
+  /////////
 
     onCopy() {
       this.$notify({

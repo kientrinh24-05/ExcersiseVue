@@ -198,6 +198,7 @@ export default {
     this.getDateStais();
   },
   methods: {
+    // SEARCH PRODUCT
     searchItem(payload) {
       const path = "http://127.0.0.1:8000/comsum/consum_food/";
       axios
@@ -225,7 +226,7 @@ export default {
 
       this.searchItem(payload);
     },
-
+   // UPDATE STATIS
     Consumption() {
       const path = "http://127.0.0.1:8000/comsum/consumption/";
       axios
@@ -240,6 +241,7 @@ export default {
         });
       window.alert("Bạn đã cập nhập thành công  vào hôm nay !");
     },
+    
     AddRealMaterial(payload) {
       const path = "http://127.0.0.1:8000/comsum/check_ware/";
       axios

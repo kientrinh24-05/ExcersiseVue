@@ -279,6 +279,7 @@ export default {
     //         }))
     //     );
     // },
+  // GET SUPPLIER 
     getSuplier() {
       axios
         .get(`http://127.0.0.1:8000/supplier/list_supplier/`)
@@ -294,6 +295,7 @@ export default {
           });
         });
     },
+    // SEARCH SUPPLIER 
     searchItem(payload) {
       const path = "http://127.0.0.1:8000/supplier/search_supplier/";
       axios
@@ -379,7 +381,7 @@ export default {
           this.$toaster.error("Sữa nhà cung cấp thất bại");
         });
     },
-    // Search
+  
 
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;

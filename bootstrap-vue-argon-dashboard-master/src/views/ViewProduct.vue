@@ -460,25 +460,7 @@ export default {
     // ...mapState(['nguyenlieu'])
   },
   methods: {
-    // Remove dont reload date
-    // input(fs) {
-    //   console.log("vo");
-    //   fs && this.readFile(fs);
-    // },
-    // parseCallback(result) {
-    //   console.log("result", result);
-    //   console.log("line count: ", result.data.length);
-    //   this.isLoading = false;
-    //   console.log("process time: ", new Date().getTime() - window.start);
-    // },
-    // async readFile(file) {
-    //   window.start = new Date().getTime();
-    //   Papa.parse(file, {
-    //     header: true,
-    //     skipEmptyLines: true,
-    //     complete: this.parseCallback,
-    //   });
-    // },
+    // DELETER FOOD
     removeMeterialFoodAdd(id) {
       const path = `http://127.0.0.1:8000/food_tabel/delete_detailfood/` + id;
       axios
@@ -495,6 +477,7 @@ export default {
           this.$toaster.error("Xóa nguyên liệu thất bại");
         });
     },
+    // GET UN UPDATE
     removeUnUpdate(id) {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
@@ -509,6 +492,7 @@ export default {
           });
         });
     },
+    // REMOVE FOOD UPDATE
     removeMeterialFoodUpdate(id) {
       const path = `http://127.0.0.1:8000/food_tabel/delete_detailfood/` + id;
 
@@ -522,7 +506,7 @@ export default {
           // eslint-disable-next-line
         });
     },
-
+  // GET METERIAL FOOD 
     GetMeterialFood() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/create_detailfood/`)
@@ -537,6 +521,7 @@ export default {
           });
         });
     },
+    // ALL METERIAL FOOD
     AddMeterialFood(payload) {
       const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
       axios
@@ -561,7 +546,7 @@ export default {
       console.log(payload);
       this.$toaster.success("Thêm nguyên liệu món thành công");
     },
-
+  // ADD DETAIL FOOD 
     addDetaiFood(id, payload) {
       this.isEdit = id;
       const path = `http://127.0.0.1:8000/food_tabel/get_detailfood/` + id;
@@ -597,7 +582,7 @@ export default {
       this.$toaster.success("Sửa nguyên liệu món thành công");
       console.log(payload);
     },
-
+ // ADD METERIAL 
     AddMeterial() {
       const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
       axios
@@ -621,7 +606,7 @@ export default {
       this.AddMeterial(payload);
       this.$toaster.success("Thêm món ăn thành công");
     },
-
+// WATCH METERIAL 
     watchMeterial(id) {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
@@ -696,12 +681,6 @@ export default {
 
       event.preventDefault();
 
-      // const payload = {
-      //   food_name: this.form.food_name,
-      //   category_name: this.form.category_name,
-      //   food_price: this.form.food_price,
-      //   food_image: this.form.food_image,
-      // };
 
       const payload = formData;
       console.log(payload);
