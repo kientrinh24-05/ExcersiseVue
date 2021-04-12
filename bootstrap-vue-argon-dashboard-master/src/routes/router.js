@@ -17,7 +17,8 @@ const router = new VueRouter({
       redirect: 'dashboard',
       component: DashboardLayout,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        access: []
       },
       children: [
         {
@@ -26,63 +27,50 @@ const router = new VueRouter({
          
           component: () => import(/* webpackChunkName: "demo" */ '../views/Dashboard.vue'),
           meta:{
-            requiredRoles:['supperuser','admin']
+            requiredRoles:['supperuser','admin','user']
           }
         },
         {
           path: '/icons',
           name: 'Quản Lý Bàn',
           component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue'),
-          // meta: {
-          //   requiresAuth: true,
-          //   is_supperuser: true,
-          //   is_admin:true,
-          // },
+          meta:{
+            requiredRoles:['supperuser','admin']
+          }
         },
         {
           path: '/profile',
           name: 'Thông tin người dùng',
           component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/UserProfile.vue'),
-          // meta: {
-          //   requiresAuth: true
-          // },
+        
         },
         {
           path: '/maps',
           name: 'Danh sách món ăn ',
           component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue'),
-          // meta: {
-          //   requiresAuth: true
-          // },
+       
         },
         {
           path: '/tables',
           name: 'Quản Lý Nhà Cung Cấp',
-          // meta: {
-          //   requiresAuth: true
-          // },
+        
           component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
         },
         {
           path: '/usermanger',
           name: 'Quản Lý Nhân Viên',
-          // meta: {
-          //   requiresAuth: true,
-          // },
           component: () => import(/* webpackChunkName: "demo" */ '../views/Usermanager.vue'),
-
-          // beforeEnter(to, from, next) {
-            
-          //   if (supperuser = false  , admin = true) {
-          //     console.log("Kane");
-          //    next();
+          // beforeEnter(to,from,next){
+          //   let curentadmin = JSON.parse(localStorage.getItem('auth'));
+          // console.log(curentadmin.superuser)
+          //   if (curentadmin && curentadmin.superusertrue && curentadmin.admin ) {
+          //       next();
+          //   }else{  
+          //       next('/')
           //   }
-          //   next("/");
           // }
-
-
-
         },
+      
         {
           path: '/viewproduct',
           name: 'Quản Lý Món Ăn',
@@ -94,44 +82,32 @@ const router = new VueRouter({
         {
           path: '/viewspecies_product',
           name: 'Quản Lý Thể Loại Món',
-          // meta: {
-          //   requiresAuth: true
-          // },
+        
           component: () => import(/* webpackChunkName: "demo" */ '../views/ViewSpeciesProduct.vue')
         },
         {
           path: '/meterial',
           name: 'Danh sách nguyên liệu',
-          // meta: {
-          //   requiresAuth: true
-          // },
+         
           component: () => import(/* webpackChunkName: "demo" */ '../views/Meterial.vue')
         },
         {
           path: '/meterial_product',
           name: 'Quản Lý Nhập Nguyên Liệu',
-          // meta: {
-          //   requiresAuth: true
-          // },
+       
           component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue'),
-          // meta: {
-          //   requiresAuth: true
-          // }
+          
         },
         {
           path: '/report',
           name: 'Báo Cáo',
-          // meta: {
-          //   requiresAuth: true
-          // },
+         
           component: () => import(/* webpackChunkName: "demo" */ '../views/ReportProduct.vue')
         },
         {
           path: '/productlist',
           name: 'Thông tin bàn ăn',   
-          // meta: {
-          //   requiresAuth: true
-          // },
+        
           component: () => import(/* webpackChunkName: "demo" */ '../views/Product-List.vue')
         },
 
@@ -162,7 +138,8 @@ const router = new VueRouter({
       ]
     }
   ],
-
+ 
+  
   linkActiveClass: 'active',
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {
@@ -181,18 +158,21 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
  
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    var token = localStorage.getItem('token')
+    
+    var token = JSON.parse(localStorage.getItem('auth'));
+
     if (token) {
       next()
-      return
+      return;
     }
+   
+    next('/login');
+  }
   
-    
-    next('/login')
-
-  } else {
+  else {
     next()
   }
+
 })
 
 export default router;

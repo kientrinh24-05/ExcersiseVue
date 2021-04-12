@@ -96,12 +96,12 @@
 </template>
 <script>
 import axios from "axios";
-var isUser = localStorage.getItem("username");
+var isUser = JSON.parse(localStorage.getItem("auth"));
 export default {
   data() {
     return {
       user: {
-        username: isUser,
+        username: isUser.username,
         password: "",
         password_old: "",
         confirm_password: "",
@@ -132,30 +132,25 @@ export default {
     //     });
     // },
     update() {
-      var thisUser = localStorage.getItem("username");
-
       axios.put(`http://127.0.0.1:8000/auth/change_pass/`, this.user, {}).then((res) => {
         // Errrr
         console.log(res, "res");
 
-        
         if (res.data.status_code[0] == 200) {
           this.$toaster.success("Đổi mật khẩu thành công");
           this.$router.push("/dashboard");
           return;
         }
-        
-
 
         if (res.data.status_code[0] == 400) {
           this.$toaster.success("Đổi mật khẩu fail");
           return;
         }
 
-        // console.log(this.user.password_old);
-        // console.log(this.user.password);
-        // console.log(this.user.confirm_password);
-        // console.log(res.data);
+        console.log(this.user.password_old);
+        console.log(this.user.password);
+        console.log(this.user.confirm_password);
+        console.log(res.data);
         // console.log(res.data.message);
 
         // console.log(res.data.message);

@@ -102,13 +102,12 @@ export default {
     };
   },
   created() {
-    var isUser = localStorage.getItem("username");
-
-    console.log(isUser);
+    var isUser = JSON.parse(localStorage.getItem("auth"));
 
     if (isUser) {
-      this.ShowProfile(isUser);
+      this.ShowProfile(isUser.username);
     }
+    console.log(isUser.username);
   },
   methods: {
     updateProfile() {
@@ -133,7 +132,7 @@ export default {
     },
 
     update() {
-      thisUser = localStorage.getItem("username");
+      thisUser = JSON.parse(localStorage.getItem("auth"));
       let formData = new FormData();
       formData.append("username", this.user.username);
       formData.append("email", this.user.email);
@@ -142,7 +141,11 @@ export default {
       formData.append("address", this.user.address);
       formData.append("avatar", this.user.avatar);
       axios
-        .put(`http://127.0.0.1:8000/auth/change_profile/` + thisUser, formData, {})
+        .put(
+          `http://127.0.0.1:8000/auth/change_profile/` + thisUser.username,
+          formData,
+          {}
+        )
         .then((res) => {
           // this.ShowProfile(thisUser);
           console.log(res.data);

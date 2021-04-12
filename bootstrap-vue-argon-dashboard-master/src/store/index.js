@@ -52,18 +52,20 @@ const store= new Vuex.Store({
           commit('auth_request')
           axios({url: 'http://127.0.0.1:8000/auth/login/', data: username, method: 'POST' })
           .then(resp => {
-            const token = resp.data.token
+            // const token = resp.data.token;
             const username = resp.data.username
-            const admin = resp.data.admin
-            const superuser = resp.data.superuser
-            localStorage.setItem('token', token)
-            localStorage.setItem('username', username)
-            localStorage.setItem('admin', admin)
-            localStorage.setItem('superuser', superuser)
-            console.log(token);
-          
-            axios.defaults.headers.common['Authorization'] = 'Bearer '+token
-            commit('auth_success', token, username)
+            // const admin = resp.data.admin
+            // const superuser = resp.data.superuser
+            const { status_code, ...infor } = resp.data;
+            
+            localStorage.setItem('auth', JSON.stringify(infor));
+            // localStorage.setItem('token', token)
+           // localStorage.setItem('username', username)
+            // localStorage.setItem('admin', admin)
+            // localStorage.setItem('superuser', superuser)
+            console.log(resp.data.token);
+            axios.defaults.headers.common['Authorization'] = 'Bearer '+ resp.data.token
+            commit('auth_success', resp.data.token, username)
             resolve(resp)
           })
           .catch(err => {

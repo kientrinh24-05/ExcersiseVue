@@ -255,6 +255,7 @@
                       </b-col>
 
                       <b-col lg="6">
+                        <h2 style="text-align: center">Sửa nguyên liệu</h2>
                         <div>
                           <b-row>
                             <b-col lg="6">
@@ -294,7 +295,6 @@
                             </b-col>
                           </b-row>
 
-                          <b-button @click="onsubmitDetail()">add</b-button>
                           <div>
                             <b-table
                               :items="items3"
@@ -315,6 +315,9 @@
                                 </b-button>
                               </template>
                             </b-table>
+                            <b-button @click="onsubmitDetail()" variant="primary"
+                              >Sửa</b-button
+                            >
                           </div>
                         </div>
                       </b-col>
@@ -506,7 +509,7 @@ export default {
           // eslint-disable-next-line
         });
     },
-  // GET METERIAL FOOD 
+    // GET METERIAL FOOD
     GetMeterialFood() {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/create_detailfood/`)
@@ -546,7 +549,7 @@ export default {
       console.log(payload);
       this.$toaster.success("Thêm nguyên liệu món thành công");
     },
-  // ADD DETAIL FOOD 
+    // ADD DETAIL FOOD
     addDetaiFood(id, payload) {
       this.isEdit = id;
       const path = `http://127.0.0.1:8000/food_tabel/get_detailfood/` + id;
@@ -582,7 +585,7 @@ export default {
       this.$toaster.success("Sửa nguyên liệu món thành công");
       console.log(payload);
     },
- // ADD METERIAL 
+    // ADD METERIAL
     AddMeterial() {
       const path = "http://127.0.0.1:8000/food_tabel/create_detailfood/";
       axios
@@ -606,7 +609,7 @@ export default {
       this.AddMeterial(payload);
       this.$toaster.success("Thêm món ăn thành công");
     },
-// WATCH METERIAL 
+    // WATCH METERIAL
     watchMeterial(id) {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
@@ -680,7 +683,6 @@ export default {
       formData.append("food_image", this.form.food_image);
 
       event.preventDefault();
-
 
       const payload = formData;
       console.log(payload);

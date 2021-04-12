@@ -110,12 +110,10 @@ export default {
     },
   },
   created() {
-    var isUser = localStorage.getItem("username");
+    var isUser = JSON.parse(localStorage.getItem("auth"));
 
-    console.log(isUser);
-
-    if (isUser) {
-      this.ShowProfile(isUser);
+    if (isUser.username) {
+      this.ShowProfile(isUser.username);
     }
   },
   data() {

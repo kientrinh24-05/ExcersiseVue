@@ -117,8 +117,16 @@
                         variant="success"
                         style="margin: 1rem; float: right"
                         @click="Consumption"
+                        v-b-modal.modal-sales
                         >Chốt Sales</b-button
                       >
+
+                      <b-modal id="modal-sales">
+                        <p class="my-4">Nguyên liệu tiêu thụ hôm nay !</p>
+                        <hr />
+
+                        <b-table :items="items3" :fields="fields3" caption-top> </b-table>
+                      </b-modal>
                     </div>
                   </div>
 
@@ -176,6 +184,15 @@ export default {
         },
         { key: "price", label: "Giá Sản Phẩm" },
       ],
+      fields3: [
+        {
+          key: "id",
+          label: "#",
+        },
+        { key: "meterial_name", label: "Tên Nguyên Liệu" },
+        { key: "amount_consumption", label: "Số lượng tiêu thụ" },
+        { key: "time_consumption", label: "Ngày tiêu thụ" },
+      ],
       fillter: {
         fromdate: "",
         todate: "",
@@ -189,6 +206,7 @@ export default {
       items: [],
       items1: [],
       items2: [],
+      items3: [],
     };
   },
   created() {
@@ -226,7 +244,7 @@ export default {
 
       this.searchItem(payload);
     },
-   // UPDATE STATIS
+    // UPDATE STATIS
     Consumption() {
       const path = "http://127.0.0.1:8000/comsum/consumption/";
       axios
@@ -234,14 +252,15 @@ export default {
         .then((res) => {
           console.log(res);
           this.getStatisMeterial();
+          this.getConsumption();
         })
         .catch((error) => {
           console.log(error);
           this.getStatisMeterial();
+          this.getConsumption();
         });
-      window.alert("Bạn đã cập nhập thành công  vào hôm nay !");
     },
-    
+
     AddRealMaterial(payload) {
       const path = "http://127.0.0.1:8000/comsum/check_ware/";
       axios
@@ -268,6 +287,21 @@ export default {
       this.AddRealMaterial(payload);
     },
 
+    getConsumption() {
+      axios
+        .get(`http://127.0.0.1:8000/comsum/consumption/`)
+        .then((response) => response.data)
+        .then((res) => {
+          this.items3 = res.data.map((consumption) => {
+            return {
+              id: consumption.id,
+              meterial_name: consumption.material_name,
+              amount_consumption: consumption.amount_consumption,
+              time_consumption: consumption.time_consumption,
+            };
+          });
+        });
+    },
     getRealMaterial() {
       axios
         .get(`http://127.0.0.1:8000/comsum/check_ware/`)
@@ -276,7 +310,7 @@ export default {
           this.items1 = res.data.map((supplier) => {
             return {
               namemiterial: supplier.material_name,
-              count: supplier.supplier,
+              count: supplier.material_reality,
             };
           });
         });

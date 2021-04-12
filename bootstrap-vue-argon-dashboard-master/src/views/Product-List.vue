@@ -10,9 +10,7 @@
             <div class="items-click-add">
               <h2>Danh sách bàn ăn</h2>
               <div>
-                <b-button variant="primary"
-                  ><i class="fas fa-sync-alt"></i
-                ></b-button>
+                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
@@ -32,9 +30,7 @@
                       <b-button variant="success" @click="ShowTable(selected)"
                         >Xác nhận</b-button
                       >
-                      <b-button variant="secondary" @click="hideModal"
-                        >Hủy Bỏ</b-button
-                      >
+                      <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
                     </div>
                   </b-form>
                 </b-modal>
@@ -49,10 +45,7 @@
                 :key="table.id"
               >
                 <!--    {'btn-danger': lights, 'btn-success': !lights} -->
-                <b-button
-                  :class="getTableColor(table.status)"
-                  class="btn-icon-clipboard"
-                >
+                <b-button :class="getTableColor(table.status)" class="btn-icon-clipboard">
                   {{ table.name }}
                 </b-button>
               </b-col>
@@ -80,9 +73,7 @@
                           >
                             <img
                               class="img_food"
-                              :src="
-                                'http://127.0.0.1:8000' + product.food_image
-                              "
+                              :src="'http://127.0.0.1:8000' + product.food_image"
                             />
                             <strong>{{ product.food_price }}.VND</strong>
                             <p>{{ product.food_name }}</p>
@@ -216,11 +207,7 @@
                   </div>
                   <div class="footer_view">
                     <div class="btn-view">
-                      <b-button
-                        variant="danger"
-                        v-b-modal.modal-1
-                        @click="printBill()"
-                      >
+                      <b-button variant="danger" v-b-modal.modal-1 @click="printBill">
                         Thanh Toán</b-button
                       >
 
@@ -253,6 +240,8 @@
                           </tbody>
                         </table>
                         <p>Tổng thành tiền : {{ print.total }}</p>
+
+                        <b-button @click="LocalBill()"> In Bill </b-button>
                       </b-modal>
                       <b-button variant="success" @click="onsubmitSaveBill()">
                         Lưu</b-button
@@ -265,9 +254,7 @@
                         label="Tổng tiền"
                         label-for="input-1"
                       >
-                        <label class="label-cout">{{
-                          calcSum + "  VNĐ"
-                        }}</label>
+                        <label class="label-cout">{{ calcSum + "  VNĐ" }}</label>
                       </b-form-group>
                     </div>
                   </div>
@@ -278,9 +265,7 @@
 
                     <span>Chọn bàn</span>
                     <b-form-select id="ratio"></b-form-select>
-                    <b-button class="btn_table" variant="primary"
-                      >Chuyển bàn</b-button
-                    >
+                    <b-button class="btn_table" variant="primary">Chuyển bàn</b-button>
                   </div>
                 </b-col>
               </b-row>
@@ -294,13 +279,7 @@
   </div>
 </template>
 <script>
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -408,29 +387,41 @@ export default {
     // setProduct(id) {
     //   this.setfoodItemsById(this.foodItems, id);
     // },
+    LocalBill() {
+      const path = `http://127.0.0.1:8000/order/pay_bill/` + this.idTables;
+      axios
+        .post(path)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+          // this.$toaster.error("Thất bại");
+        });
+    },
 
     printBill() {
-     // let id = localStorage.getItem("idtalbe");
-     
+      // let id = localStorage.getItem("idtalbe");
+
       axios
         .get(`http://127.0.0.1:8000/order/print_bill/` + this.idTables)
         .then((res) => res.data)
         .then((response) => {
+          console.log(response);
           const { data } = response;
           (this.print.bill_id = response.bill_id),
             (this.print.time_created = response.time_created),
             (this.print.total = response.total),
             (this.print.table_name = response.table_name),
-            (this.listFood = response.data),
-            console.log(this.listFood);
+            (this.listFood = response.data);
         });
     },
 
     saveBill(payload) {
-      const path = "http://127.0.0.1:8000/order/food_ordered/";
+      const path = "http://127.0.0.1:8000/order/order_food/";
       axios
         .post(path, payload)
-        .then(() => {})
+        .then(() => {
+          console.log(payload);
+        })
         .catch((error) => {
           console.log(error);
           // this.$toaster.error("Thất bại");
@@ -440,18 +431,19 @@ export default {
     onsubmitSaveBill() {
       let idtable = localStorage.getItem("idtalbe");
       console.log(idtable, "idtale");
+      console.log(idtable);
 
       const payload = {
         table_id: idtable,
 
         list_food: [
           {
-            food_name: "Cá Ồ Cuốn bánh tráng",
-            food_amount: 122,
+            food_name: "Cơm",
+            food_amount: 8,
           },
           {
-            food_name: "Cá Ồ Cuốn bánh tráng",
-            food_amount: 122,
+            food_name: "Rau muống xào",
+            food_amount: 2,
           },
         ],
       };
@@ -515,12 +507,13 @@ export default {
       this.idTables = idTable;
       // this.foods.cart = true;
       // this.products.cart = true;
-        localStorage.setItem("idtalbe", idTable),
+      localStorage.setItem("idtalbe", idTable),
         axios
-          .get(`http://127.0.0.1:8000/order/get_food_ordered/` + idTable)
+          .get(`http://127.0.0.1:8000/order/food_ordered/` + idTable)
           .then((response) => {
             this.cart = response.data.data;
           });
+      console.log(idTable);
     },
     // Mapper
     getTableColor(value) {
