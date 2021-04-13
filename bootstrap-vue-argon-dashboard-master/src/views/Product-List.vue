@@ -121,7 +121,7 @@
 
                             <button
                               :disabled="food.cart"
-                              @click="addProduct1(food)"
+                              @click="addProduct(food)"
                               href="#"
                               class="btn btn-block"
                               :class="{
@@ -213,7 +213,7 @@
 
                       <b-modal id="modal-1" title="Phiếu thanh toán">
                         <h3 style="text-align: center">PHIẾU TÍNH TIỀN</h3>
-                        <ul>
+                        <ul style="display: block; list-style-type: square">
                           <li>Mã hóa đơn : {{ print.bill_id }}</li>
                           <li>Ngày lập : {{ print.time_created }}</li>
                           <li>Bàn : {{ print.table_name }}</li>
@@ -224,22 +224,19 @@
                           <thead>
                             <tr>
                               <th scope="col">Tên Sản Phẩm</th>
-                              <th scope="col">Giá</th>
                               <th scope="col">Số Lượng</th>
-
-                              <th scope="col">Thành tiền</th>
+                              <th scope="col">Giá</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr v-for="Food in listFood" :key="Food.id">
                               <td>{{ Food.food_name }}</td>
-                              <td>{{ Food.price }}</td>
                               <td>{{ Food.amount }}</td>
-                              <td>{{ Food.total_price }}</td>
+                              <td>{{ Food.price }}</td>
                             </tr>
                           </tbody>
                         </table>
-                        <p>Tổng thành tiền : {{ print.total }}</p>
+                        <p>Tổng thành tiền : {{ print.total_price }}</p>
 
                         <b-button @click="LocalBill()"> In Bill </b-button>
                       </b-modal>
@@ -305,7 +302,7 @@ export default {
       users,
       product: {
         food_name: "",
-        amount: "",
+        amount: 1,
         food_price: "",
       },
       foods: [],
@@ -346,7 +343,7 @@ export default {
       print: {
         bill_id: "",
         time_created: "",
-        total: "",
+        total_price: "",
         table_name: "",
       },
       listFood: [],
@@ -405,11 +402,14 @@ export default {
         .get(`http://127.0.0.1:8000/order/print_bill/` + this.idTables)
         .then((res) => res.data)
         .then((response) => {
-          console.log(response);
+          if (response.message == "Not found bill") {
+            this.$toaster.error("Bàn không có hóa đơn để thanh toán");
+          }
+
           const { data } = response;
           (this.print.bill_id = response.bill_id),
             (this.print.time_created = response.time_created),
-            (this.print.total = response.total),
+            (this.print.total_price = response.total_price),
             (this.print.table_name = response.table_name),
             (this.listFood = response.data);
         });
@@ -430,61 +430,85 @@ export default {
     // EROOO
     onsubmitSaveBill() {
       let idtable = localStorage.getItem("idtalbe");
-      console.log(idtable, "idtale");
-      console.log(idtable);
+
+      let payload1 = [];
+
+      this.cart.forEach((item, i) => {
+        payload1.push(this.cart[i]);
+      });
 
       const payload = {
         table_id: idtable,
-
-        list_food: [
-          {
-            food_name: "Cơm",
-            food_amount: 8,
-          },
-          {
-            food_name: "Rau muống xào",
-            food_amount: 2,
-          },
-        ],
+        list_food: payload1,
       };
-      console.log(payload, "payload");
+      // console.log(payload.list_food, "payload");
 
       this.saveBill(payload);
 
-      // this.$toaster.success("Thêm nguyên liệu thành công");
+      this.$toaster.success("Thêm nguyên liệu thành công");
     },
 
     // ADD PRODUCT CATEGORY
-    addProduct1(product) {
+    addProduct1(cartItem) {
       var idTable = localStorage.getItem("idtalbe");
       if (idTable == null) {
         return this.$toaster.success("Bạn Vui Lòng Chọn Bàn Trước Khi Order");
       }
 
-      this.cart.push(product);
-      this.foods.map((p) => {
-        if (product.id == p.id) {
-          p.cart = !p.cart;
-          p.amount = 1;
+      let flag = true;
+
+      this.cart.map((item) => {
+        if (item.id === cartItem.id) {
+          (item.amount += 1), (flag = false);
         }
       });
-      console.log(this.cart);
+      if (flag) {
+        cartItem.amount = 1;
+        this.cart.push(cartItem);
+      }
     },
     // ADD PRODUCT ALL
-    addProduct(product) {
+    addProduct(cartItem) {
       var idTable = localStorage.getItem("idtalbe");
       if (idTable == null) {
         return this.$toaster.success("Bạn Vui Lòng Chọn Bàn Trước Khi Order");
       }
+      var a = 0;
+      let flag = true;
+      console.log(this.cart);
 
-      this.cart.push(product);
-      this.products.map((p) => {
-        if (product.id == p.id) {
-          p.cart = !p.cart;
-          // p.amount = 1;
+      this.cart.map((item) => {
+        if (item.id === cartItem.id) {
+          (item.amount += 1), (flag = false);
         }
       });
-      console.log(this.cart);
+      if (flag) {
+        cartItem.amount = 1;
+        this.cart.push(cartItem);
+      }
+
+      // this.products.map((p) => {
+      //   console.log("log 1");
+      //   if (product.id == p.id) {
+      //     p.cart = !p.cart;
+      //     p.amount = 1;
+
+      //     // console.log(p.food_name, "foodname p");
+      //   }
+      //   // this.cart.forEach((item, i) => {
+      //   //   console.log(p.food_name, "prodcut_name");
+      //   //   console.log(this.cart[i].food_name, "card_name");
+      //   //   if (this.products.food_name == this.cart[i].food_name) {
+      //   //     // this.products.cart = !this.products.cart;
+      //   //     // this.products.amount = 1;
+      //   //     // return this.cart.amount++, console.log(this.cart);
+      //   //   } else {
+      //   //     // console.log(this.product.food_name, "prodcut_name");
+      //   //     // console.log(this.cart[i].food_name, "card_name");
+      //   //     this.cart.push(product);
+      //   //   }
+      //   // });
+      // });
     },
     // PLUS PRODUCT
     increaseQ(product) {

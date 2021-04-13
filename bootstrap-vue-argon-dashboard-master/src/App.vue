@@ -29,7 +29,7 @@ export default {
   display: none;
 }
 .img_food {
-  width: 40px;
-  height: 40px;
+  width: 120px;
+  height: 120px;
 }
 </style>

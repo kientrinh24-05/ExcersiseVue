@@ -35,26 +35,34 @@ const router = new VueRouter({
           name: 'Quản Lý Bàn',
           component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue'),
           meta:{
-            requiredRoles:['superuser','admin']
+            requiredRoles:['superuser','admin','user']
           }
         },
         {
           path: '/profile',
           name: 'Thông tin người dùng',
           component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/UserProfile.vue'),
-        
+          meta:{
+            requiredRoles:['superuser','admin','user']
+          }
         },
         {
           path: '/maps',
           name: 'Danh sách món ăn ',
           component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue'),
-       
+          meta:{
+            requiredRoles:['superuser','admin']
+          }
+          
         },
         {
           path: '/tables',
           name: 'Quản Lý Nhà Cung Cấp',
         
-          component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
+          component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue'),
+          meta:{
+            requiredRoles:['superuser','admin']
+          }
         },
         {
           path: '/usermanger',
@@ -63,16 +71,6 @@ const router = new VueRouter({
           meta: {
             requiredRoles:['superuser']
           }
-        
-          // beforeEnter(to,from,next){
-          //   let curentadmin = JSON.parse(localStorage.getItem('auth'));
-          // console.log(curentadmin.superuser)
-          //   if (curentadmin && curentadmin.superusertrue && curentadmin.admin ) {
-          //       next();
-          //   }else{  
-          //       next('/')
-          //   }
-          // }
         },
       
         {
@@ -87,31 +85,44 @@ const router = new VueRouter({
           path: '/viewspecies_product',
           name: 'Quản Lý Thể Loại Món',
         
-          component: () => import(/* webpackChunkName: "demo" */ '../views/ViewSpeciesProduct.vue')
+          component: () => import(/* webpackChunkName: "demo" */ '../views/ViewSpeciesProduct.vue'),
+          meta:{
+            requiredRoles:['superuser','admin']
+          }
         },
         {
           path: '/meterial',
           name: 'Danh sách nguyên liệu',
          
-          component: () => import(/* webpackChunkName: "demo" */ '../views/Meterial.vue')
+          component: () => import(/* webpackChunkName: "demo" */ '../views/Meterial.vue'),
+          meta:{
+            requiredRoles:['superuser','admin']
+          }
         },
         {
           path: '/meterial_product',
           name: 'Quản Lý Nhập Nguyên Liệu',
        
           component: () => import(/* webpackChunkName: "demo" */ '../views/MeterialProduct.vue'),
-          
+          meta:{
+            requiredRoles:['superuser','admin']
+          }
         },
         {
           path: '/report',
           name: 'Báo Cáo',
          
-          component: () => import(/* webpackChunkName: "demo" */ '../views/ReportProduct.vue')
+          component: () => import(/* webpackChunkName: "demo" */ '../views/ReportProduct.vue'),
+          meta:{
+            requiredRoles:['superuser','admin']
+          }
         },
         {
           path: '/productlist',
           name: 'Thông tin bàn ăn',   
-        
+          meta:{
+            requiredRoles:['superuser','admin','user']
+          },
           component: () => import(/* webpackChunkName: "demo" */ '../views/Product-List.vue')
         },
 
@@ -172,7 +183,7 @@ router.beforeEach((to, from, next) => {
         if(to.meta.requiredRoles.includes(auth.role)) {
           next()
         } else {
-          next('/404')
+          next('/*')
         }
       } else {
         next()

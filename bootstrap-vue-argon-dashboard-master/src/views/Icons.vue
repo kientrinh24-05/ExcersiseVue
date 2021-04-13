@@ -204,21 +204,21 @@ export default {
         this.booktables.datebook = "";
       }
     },
-    // BOOK TABLE 
+    // BOOK TABLE
     booktTables(payload) {
       const path = "http://127.0.0.1:8000/food_tabel/book_table/";
       axios
         .post(path, payload)
         .then((res) => {
-           this.getTable();
+          this.getTable();
           console.log(res);
         })
         .catch((error) => {
-           this.getTable();
+          this.getTable();
           console.log(error);
         });
     },
-    // BOOK TABLE 
+    // BOOK TABLE
     onSubmitBookTables(event) {
       event.preventDefault();
 
@@ -238,7 +238,6 @@ export default {
       this.$toaster.success("Đặt bàn thành công");
     },
 
-   
     // GET ALL TABLE
     getTable() {
       // this.tableStatus = status;
@@ -251,7 +250,7 @@ export default {
           console.log(err);
         });
     },
-   
+
     //ADD TABLE
     addTable(payload) {
       const path = "http://127.0.0.1:8000/food_tabel/create_table/";
@@ -265,7 +264,7 @@ export default {
           console.log(error);
         });
     },
-     onSubmit(event) {
+    onSubmit(event) {
       event.preventDefault();
 
       this.$refs.modalAddTable.hide();
@@ -278,7 +277,7 @@ export default {
 
       this.$toaster.success("Thêm  bàn thành công");
     },
-  /////////
+    /////////
 
     onCopy() {
       this.$notify({

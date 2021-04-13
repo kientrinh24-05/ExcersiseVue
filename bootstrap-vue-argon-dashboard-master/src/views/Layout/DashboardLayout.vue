@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
-    <!-- <notifications></notifications> -->
-    <side-bar >
+    <notifications></notifications>
+    <!-- <side-bar>
       <template slot="links">
-        <sidebar-item v-for="(m, idx) in menuList" :key="idx" :link="m">
-        </sidebar-item>
+        <sidebar-item v-for="(m, idx) in menuList" :key="idx" :link="m"> </sidebar-item>
       </template>
-    </side-bar>
-    <!-- <side-bar> comment het lai
+    </side-bar>-->
+
+    <side-bar>
       <template slot="links">
         <sidebar-item
           :link="{
@@ -114,8 +114,8 @@
           }"
         >
         </sidebar-item>
-      </template>
-    </side-bar> -->
+      </template> </side-bar
+    >-->
     <div class="main-content">
       <dashboard-navbar :type="$route.meta.navbarType"></dashboard-navbar>
 
@@ -157,38 +157,64 @@ import { FadeTransition } from "vue2-transitions";
 export default {
   data() {
     return {
-      menu: [
-        {
-          name: "Trang Chủ",
-          path: "/dashboard",
-          icon: "ni ni-tv-2 text-primary",
-          role: ["superuser", "admin", "user"],
-        },
-        {
-          name: "Cài Đặt Bàn",
-          path: "/icons",
-          icon: "ni ni-planet text-blue",
-          role: ["superuser", "admin", "user"],
-        },
-        {
-          name: "Order Món Ăn",
-          path: "/productlist",
-          icon: "ni ni-planet text-green",
-          role: ["superuser", "admin", "user"],
-        },
-        {
-          name: "Quản Lý Nhân Viên",
-          path: "/usermanger",
-          icon: "ni ni-circle-08 text-red",
-          role: ["superuser"],
-        },
-        {
-          name: "Cài đặt menu",
-          icon: "ni ni-shop text-primary",
-
-          role: ["superuser", "admin"],
-        },
-      ],
+      // menu: [
+      //   {
+      //     name: "Trang Chủ",
+      //     path: "/dashboard",
+      //     icon: "ni ni-tv-2 text-primary",
+      //     role: ["superuser", "admin", "user"],
+      //   },
+      //   {
+      //     name: "Cài Đặt Bàn",
+      //     path: "/icons",
+      //     icon: "ni ni-planet text-blue",
+      //     role: ["superuser", "admin", "user"],
+      //   },
+      //   {
+      //     name: "Order Món Ăn",
+      //     path: "/productlist",
+      //     icon: "ni ni-planet text-green",
+      //     role: ["superuser", "admin", "user"],
+      //   },
+      //   {
+      //     name: "Quản Lý Nhân Viên",
+      //     path: "/usermanger",
+      //     icon: "ni ni-circle-08 text-red",
+      //     role: ["superuser"],
+      //   },
+      //   {
+      //     name: "Cài đặt menu",
+      //     path: "/map",
+      //     icon: "ni ni-shop text-primary",
+      //     role: ["superuser", "admin", "user"],
+      //     child: [
+      //       {
+      //         name: "Danh sách món",
+      //         path: "/maps",
+      //         icon: "ni ni-air-baloon text-green",
+      //         role: ["superuser", "admin", "user"],
+      //       },
+      //       {
+      //         name: "Danh sách món",
+      //         path: "/maps",
+      //         icon: "ni ni-air-baloon text-green",
+      //         role: ["superuser", "admin", "user"],
+      //       },
+      //       {
+      //         name: "Cài đặt phân loại",
+      //         path: "/viewspecies_product",
+      //         icon: "ni ni-pin-3 text-yellow",
+      //         role: ["superuser", "admin", "user"],
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     name: "Cài đặt phân loại",
+      //     path: "/viewspecies_product",
+      //     icon: "ni ni-pin-3 text-yellow",
+      //     role: ["superuser", "admin"],
+      //   },
+      // ],
     };
   },
   components: {
@@ -205,6 +231,7 @@ export default {
       }
     },
   },
+
   computed: {
     user() {
       return JSON.parse(localStorage.getItem("auth"));
