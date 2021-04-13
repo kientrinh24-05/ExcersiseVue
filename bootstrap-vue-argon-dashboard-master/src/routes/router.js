@@ -27,7 +27,7 @@ const router = new VueRouter({
          
           component: () => import(/* webpackChunkName: "demo" */ '../views/Dashboard.vue'),
           meta:{
-            requiredRoles:['supperuser','admin','user']
+            requiredRoles:['superuser','admin','user']
           }
         },
         {
@@ -35,7 +35,7 @@ const router = new VueRouter({
           name: 'Quản Lý Bàn',
           component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue'),
           meta:{
-            requiredRoles:['supperuser','admin']
+            requiredRoles:['superuser','admin']
           }
         },
         {
@@ -60,6 +60,10 @@ const router = new VueRouter({
           path: '/usermanger',
           name: 'Quản Lý Nhân Viên',
           component: () => import(/* webpackChunkName: "demo" */ '../views/Usermanager.vue'),
+          meta: {
+            requiredRoles:['superuser']
+          }
+        
           // beforeEnter(to,from,next){
           //   let curentadmin = JSON.parse(localStorage.getItem('auth'));
           // console.log(curentadmin.superuser)
@@ -75,7 +79,7 @@ const router = new VueRouter({
           path: '/viewproduct',
           name: 'Quản Lý Món Ăn',
           meta: {
-            requiresRoles:['supperuser','admin  ']
+            requiresRoles:['supperuser','admin']
           },
           component: () => import(/* webpackChunkName: "demo" */ '../views/ViewProduct.vue')
         },
@@ -136,6 +140,11 @@ const router = new VueRouter({
         { path: '*', component: NotFound }
 
       ]
+    },
+    {
+      path: '/404',
+      redirect: '404',
+      component: AuthLayout
     }
   ],
  
@@ -156,12 +165,18 @@ const router = new VueRouter({
 //   next()
 // })
 router.beforeEach((to, from, next) => {
- 
+  var auth = JSON.parse(localStorage.getItem('auth'));
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    
-    var token = JSON.parse(localStorage.getItem('auth'));
-
-    if (token) {
+    if (auth) {
+      if(Object.hasOwnProperty.call(to.meta, 'requiredRoles')) {
+        if(to.meta.requiredRoles.includes(auth.role)) {
+          next()
+        } else {
+          next('/404')
+        }
+      } else {
+        next()
+      }
       next()
       return;
     }

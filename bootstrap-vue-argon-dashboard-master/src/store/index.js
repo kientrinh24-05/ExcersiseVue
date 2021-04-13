@@ -53,12 +53,25 @@ const store= new Vuex.Store({
           axios({url: 'http://127.0.0.1:8000/auth/login/', data: username, method: 'POST' })
           .then(resp => {
             // const token = resp.data.token;
-            const username = resp.data.username
+            //const username = resp.data.username
             // const admin = resp.data.admin
             // const superuser = resp.data.superuser
             const { status_code, ...infor } = resp.data;
-            
-            localStorage.setItem('auth', JSON.stringify(infor));
+            const info = {};
+            for (const key in infor) {
+              const u = infor[key];
+              info[key] = u;
+              if(infor['admin'] && infor['superuser']){
+                info.role = 'superuser'
+              } else if (infor['admin'] && !infor['superuser']) {
+                info.role = 'admin'
+              } else if (!infor['admin'] && infor['superuser']) {
+                info.role = 'superuser'
+              } else {
+                info.role = 'user'
+              }
+            };
+            localStorage.setItem('auth', JSON.stringify(info));
             // localStorage.setItem('token', token)
            // localStorage.setItem('username', username)
             // localStorage.setItem('admin', admin)

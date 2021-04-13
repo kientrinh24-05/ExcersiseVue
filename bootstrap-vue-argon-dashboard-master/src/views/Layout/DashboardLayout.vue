@@ -1,13 +1,18 @@
 <template>
   <div class="wrapper">
-    <notifications></notifications>
-    <side-bar>
+    <!-- <notifications></notifications> -->
+    <side-bar >
+      <template slot="links">
+        <sidebar-item v-for="(m, idx) in menuList" :key="idx" :link="m">
+        </sidebar-item>
+      </template>
+    </side-bar>
+    <!-- <side-bar> comment het lai
       <template slot="links">
         <sidebar-item
           :link="{
             name: 'Trang Chủ',
             path: '/dashboard',
-
             icon: 'ni ni-tv-2 text-primary',
           }"
         >
@@ -29,8 +34,8 @@
           }"
         >
         </sidebar-item>
-        <!-- v-if="curentadmin.superuser && curentadmin.admin" -->
         <sidebar-item
+          v-if="$route.meta.requiredRoles.includes(user.role)"
           :link="{
             name: 'Quản Lý Nhân Viên',
             path: '/usermanger',
@@ -38,7 +43,6 @@
           }"
         >
         </sidebar-item>
-        <!-- Cài đặt Món -->
         <sidebar-item
           :link="{
             name: 'Cài đặt menu',
@@ -70,7 +74,6 @@
           >
           </sidebar-item>
         </sidebar-item>
-        <!-- Cài đặt nhà phân phối -->
         <sidebar-item
           :link="{
             name: 'Cài đặt nhà phân phối',
@@ -111,17 +114,8 @@
           }"
         >
         </sidebar-item>
-
-        <!--  <sidebar-item
-          :link="{
-            name: 'Đăng Xuất',
-            path: '/login',
-            icon: 'ni ni-key-25 text-info',
-          }"
-        >
-        </sidebar-item>-->
       </template>
-    </side-bar>
+    </side-bar> -->
     <div class="main-content">
       <dashboard-navbar :type="$route.meta.navbarType"></dashboard-navbar>
 
@@ -162,7 +156,40 @@ import { FadeTransition } from "vue2-transitions";
 
 export default {
   data() {
-    return {};
+    return {
+      menu: [
+        {
+          name: "Trang Chủ",
+          path: "/dashboard",
+          icon: "ni ni-tv-2 text-primary",
+          role: ["superuser", "admin", "user"],
+        },
+        {
+          name: "Cài Đặt Bàn",
+          path: "/icons",
+          icon: "ni ni-planet text-blue",
+          role: ["superuser", "admin", "user"],
+        },
+        {
+          name: "Order Món Ăn",
+          path: "/productlist",
+          icon: "ni ni-planet text-green",
+          role: ["superuser", "admin", "user"],
+        },
+        {
+          name: "Quản Lý Nhân Viên",
+          path: "/usermanger",
+          icon: "ni ni-circle-08 text-red",
+          role: ["superuser"],
+        },
+        {
+          name: "Cài đặt menu",
+          icon: "ni ni-shop text-primary",
+
+          role: ["superuser", "admin"],
+        },
+      ],
+    };
   },
   components: {
     DashboardNavbar,
@@ -178,12 +205,17 @@ export default {
       }
     },
   },
+  computed: {
+    user() {
+      return JSON.parse(localStorage.getItem("auth"));
+    },
+    menuList() {
+      const auth = JSON.parse(localStorage.getItem("auth"));
+      return this.menu.filter((o) => o.role.includes(auth.role));
+    },
+  },
   mounted() {
     this.initScrollbar();
-  },
-  created() {
-    //   supperuser = localStorage.getItem("superuser");
-    //  admin = localStorage.getItem("admin");
   },
 };
 </script>
