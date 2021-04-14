@@ -48,10 +48,15 @@ Vue.prototype.moment = moment
 Vue.prototype.$http = axios;
 
 // Get token nếu có token thì call.
-let token = localStorage.getItem('token') ;
+// const info = {};
+// localStorage.setItem('auth', JSON.stringify(info));
+// let token = localStorage.getItem('token') ;
+
+let token = JSON.parse(window.localStorage.getItem('auth'))
+
 
 if( token ){
-  axios.defaults.headers.common['Authorization'] = 'Bearer '+token
+  axios.defaults.headers.common['Authorization'] = 'Bearer '+token.token
 }
 
 

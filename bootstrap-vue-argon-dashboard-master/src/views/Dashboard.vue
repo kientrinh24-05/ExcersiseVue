@@ -31,13 +31,44 @@
         </b-col>
       </b-row>
     </base-header>
-    <base-header class="pb-6 pb-8 bg-gradient-success">
-      <b-container fluid class="mt--7">
+    <base-header class="pb-6 pb-8">
+      <b-container fluid class="mt--5">
         <b-row>
-          <b-col lg="12">
-            <chart />
+          <b-col xl="12" class="mb-5 mb-xl-0">
+            <card type="default">
+              <b-row align-v="center" slot="header">
+                <b-col>
+                  <h6 class="text-light text-uppercase ls-1 mb-1">Thống kê</h6>
+                  <h5 class="h3 text-white mb-0">Doanh thu 6 tháng gần đây</h5>
+                </b-col>
+                <b-col>
+                  <b-nav class="nav-pills justify-content-end">
+                    <b-nav-item
+                      class="mr-2 mr-md-0"
+                      :active="bigLineChart.activeIndex === 0"
+                      link-classes="py-2 px-3"
+                    >
+                      <span class="d-none d-md-block">Tháng</span>
+                      <span class="d-md-none">M</span>
+                    </b-nav-item>
+                  </b-nav>
+                </b-col>
+              </b-row>
+              <line-chart
+                :height="350"
+                ref="bigChart"
+                :chart-data="chartData"
+                :extra-options="bigLineChart.extraOptions"
+              >
+              </line-chart>
+            </card>
           </b-col>
         </b-row>
+        <!-- End charts-->
+
+        <!--Tables-->
+
+        <!--End tables-->
       </b-container>
     </base-header>
 
@@ -47,7 +78,6 @@
 <script>
 //Chart
 
-import Chart from "@/components/Chart.vue";
 
 // Charts
 import * as chartConfigs from "@/components/Charts/config";
@@ -74,44 +104,49 @@ export default {
     PageVisitsTable,
     SocialTrafficTable,
     //Char
-    chart: Chart,
+   
   },
   data() {
-    let bigLineChartData = [12011, 223, 110, 40000, 55000, 2410, 20, 360, 160];
+   
     return {
-      selected: "chart",
-      currentView: "chart",
-      message: "gia tri khoi tao cua message",
-      //Check lại change data khi call a
-      labels: [],
+
+      datas: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+      labels1: [],
+
 
       bigLineChart: {
-        // allData: [
-        //   [0, 203, 10, 30, 215, 240, 20, 360, 160],
-        //   [0, 20, 5, 25, 10, 30, 15, 40, 40],
-        // ],
         activeIndex: 0,
-        chartData: {
-          datasets: [
-            {
-              label: "Doanh Thu",
-              data: bigLineChartData,
-            },
-          ],
-          // labels: ["11/2020", "12/2020", "1/2021", "2/2021", "3/2021", "4/2021"],
-          labels: this.labels,
-        },
+  
         extraOptions: chartConfigs.blueChartOptions,
       },
+
+      chartData: {
+          datasets: [
+            {
+              label: "Performance",
+              data:[10, 20, 10, 30, 15, 40, 20, 60, 60],
+            },
+          ],
+          labels:['1','2','3','3'],
+        },
 
       info: null,
     };
   },
+  computed: {
+     
+  },
+  // mounted() {
+  //   this.renderChart(this.chartData, this.options);
+  // },
   created() {
     this.getDataGreneral();
+    console.log(this.datas);
+    console.log(this.labels1);
   },
   mounted() {
     this.GetMonthLineChart();
+    this.render;
   },
   methods: {
     //Chart
@@ -135,7 +170,7 @@ export default {
 
       let i = 1;
       while (i <= TOTAL_MONTH_STATISTIC) {
-        this.labels.push(
+        this.labels1.push(
           moment(now)
             .subtract(TOTAL_MONTH_STATISTIC - i, "months")
             .format("M/YYYY")
@@ -144,7 +179,7 @@ export default {
       }
       // this.labels = listMonth;
 
-      // console.log(this.labels, "labels");
+       console.log(this.labels1, "labels");
       // this.message = "bien message sau khi call api lay so lieu render lai";
     },
 

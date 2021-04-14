@@ -194,9 +194,9 @@
                   <div class="count_price">
                     <b-col lg="4">
                       <span>Tổng tiền</span>
-                      <label class="label-cout">{{ sumprice }} vnđ</label>
+                      <label class="label-cout" v-for="sumprices in sumprice" :key="sumprices.id">{{sumprices.sumprice.sum  }} vnđ</label>
                     </b-col>
-                  </div>
+                  </div>  
 
                   <b-card-footer class="py-4 d-flex justify-content-end">
                     <base-pagination
@@ -237,6 +237,7 @@ export default {
   },
   data() {
     return {
+      
       payload: [],
       apartment: {
         supplier_id: "",
@@ -332,6 +333,7 @@ export default {
   methods: {
     //SEARCH METERIAL PRODUCT
     searchItem(payload) {
+         console.log(payload);
       const path = "http://127.0.0.1:8000/material/search_date_importmaterial/";
       axios
         .post(path, payload)
@@ -361,6 +363,7 @@ export default {
         from_date: this.searchit_form.from_date,
         to_date: this.searchit_form.to_date,
       };
+   
 
       this.searchItem(payload);
       this.hideModal();

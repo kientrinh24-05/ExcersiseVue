@@ -1,5 +1,5 @@
 <template>
-  <div class="chartElem">
+  <!-- <div class="chartElem">
     <div class="row">
       <highcharts
         class="chart"
@@ -28,7 +28,7 @@
           <option>2000</option>
         </select>
       </div>
-      <!-- <div id="seriesColor">
+       <div id="seriesColor">
         <h3>Select color of the series:</h3>
         <div class="row">
           <input
@@ -51,51 +51,92 @@
         </div>
         <p>Current color: {{ seriesColor }}</p>
       </div>-->
-    </div>
-  </div>
+      <div>
+         <b-row align-v="center" slot="header">
+              <b-col>
+                <h6 class="text-light text-uppercase ls-1 mb-1">Thống kê</h6>
+                <h5 class="h3 text-white mb-0">Doanh thu 6 tháng gần đây</h5>
+              </b-col>
+              <b-col>
+                <b-nav class="nav-pills justify-content-end">
+                  <b-nav-item
+                    class="mr-2 mr-md-0"
+                    :active="bigLineChart.activeIndex === 0"
+                    link-classes="py-2 px-3"
+                    @click.prevent="initBigChart(0)"
+                  >
+                    <span class="d-none d-md-block">Tháng</span>
+                    <span class="d-md-none">M</span>
+                  </b-nav-item>
+                
+                </b-nav>
+              </b-col>
+            </b-row>
+            <line-chart
+              :height="350"
+              ref="bigChart"
+              :chart-data="chartData"
+              :extra-options="bigLineChart.extraOptions"
+            >
+            </line-chart>
+      </div>
+     
+  
 </template>
 
 <script>
+import * as chartConfigs from "@/components/Charts/config";
+import LineChart from "@/components/Charts/LineChart";
+import { Bar } from "vue-chartjs";
 import axios from "axios";
 import moment from "moment";
 export default {
+  components:{
+      LineChart,
+  },
+   extends: Bar,
   data() {
     return {
+        chartData:null,
+       bigLineChart: {
+        allData: [
+          [0, 20, 10, 30, 15, 40, 20, 60, 60],
+          [0, 20, 5, 25, 10, 30, 15, 40, 40],
+        ],
+        activeIndex: 0,
+        // chartData: {
+        //   datasets: [
+        //     {
+        //       label: "Performance",
+        //       data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+        //     },
+        //   ],
+        //   labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        // },
+        extraOptions: chartConfigs.blueChartOptions,
+      },
       title: "",
       lable: [],
 
       datas: [501, 110, 1228, 1442, 261, 411],
-      datas: [],
+  
       points: [101, 0, 8, 2, 6, 4],
-      chartType: "Column",
-      seriesColor: "#6fcd98",
-      colorInputIsSupported: null,
-      animationDuration: 1000,
-      updateArgs: [true, true, { duration: 1000 }],
-      chartOptions: {
-        chart: {
-          type: "column",
-        },
-        title: {
-          text: "Doanh Thu 6 Tháng Gần Đây",
-        },
-
-        series: [
-          {
-            data: [501, 110, 1228, 1442, 261, 411],
-            color: "#6fcd98",
-          },
-        ],
-        xAxis: {
-          categories: ["Month 1", "Month 2", "Month 3", "Month 4", "Month 5", "Month 6"],
-          // categories:[],
-        },
-      },
+      
+     
     };
   },
-  // computed: {
-  //   data: this.datas,
-  // },
+  
+  computed: {
+     chartData: {
+          datasets: [
+            {
+              label: "Performance",
+              data: [501, 110, 1228, 1442, 261, 411],
+            },
+          ],
+          labels:[101, 0, 8, 2, 6, 4],
+        },
+  },
   created() {
     let i = document.createElement("input");
     i.setAttribute("type", "color");
@@ -127,7 +168,7 @@ export default {
         );
         i++;
       }
-      this.datas = listMonth;
+      this.lable = listMonth;
 
       console.log(this.datas, "datas");
       // console.log(, "data");
