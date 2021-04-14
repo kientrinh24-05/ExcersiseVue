@@ -103,7 +103,7 @@ const store= new Vuex.Store({
           })
           .catch(err => {
             commit('auth_error', err)
-            localStorage.removeItem('token')
+            localStorage.removeItem('auth')
             reject(err)
           })
         })
@@ -111,7 +111,7 @@ const store= new Vuex.Store({
     logout({commit}){
         return new Promise((resolve, reject) => {
           commit('logout')
-          localStorage.removeItem('token')
+          localStorage.removeItem('auth')
           delete axios.defaults.headers.common['Authorization']
           resolve()
         })

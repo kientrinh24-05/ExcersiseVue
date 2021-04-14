@@ -143,23 +143,9 @@ export default {
         }
 
         if (res.data.status_code[0] == 400) {
-          this.$toaster.success("Đổi mật khẩu fail");
+          this.$toaster.success("Đổi mật khẩu thất bại Vui lòng thử lại");
           return;
         }
-
-        console.log(this.user.password_old);
-        console.log(this.user.password);
-        console.log(this.user.confirm_password);
-        console.log(res.data);
-        // console.log(res.data.message);
-
-        // console.log(res.data.message);
-
-        // if(res.status_code === 400) {
-        //   return
-
-        // }
-        ///tod show loi
       });
       // .catch((err) => {
       //   // this.$refs.editSupModal.hide();

@@ -6,16 +6,6 @@
         :options="chartOptions"
         :updateArgs="updateArgs"
       ></highcharts>
-      <div>
-        <h3>Flexibly change the value of each point:</h3>
-        <h4>Points:</h4>
-        <form class="row points">
-          <div v-for="index in 5" :key="index">
-            <p>{{ index }}</p>
-            <input v-model.number="points[index + 1]" type="number" class="numberInput" />
-          </div>
-        </form>
-      </div>
     </div>
     <div class="row">
       <div id="chartType">
@@ -38,7 +28,7 @@
           <option>2000</option>
         </select>
       </div>
-      <div id="seriesColor">
+      <!-- <div id="seriesColor">
         <h3>Select color of the series:</h3>
         <div class="row">
           <input
@@ -60,7 +50,7 @@
           </select>
         </div>
         <p>Current color: {{ seriesColor }}</p>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -73,15 +63,18 @@ export default {
     return {
       title: "",
       lable: [],
+
+      datas: [501, 110, 1228, 1442, 261, 411],
+      datas: [],
       points: [101, 0, 8, 2, 6, 4],
-      chartType: "Spline",
+      chartType: "Column",
       seriesColor: "#6fcd98",
       colorInputIsSupported: null,
       animationDuration: 1000,
       updateArgs: [true, true, { duration: 1000 }],
       chartOptions: {
         chart: {
-          type: "spline",
+          type: "column",
         },
         title: {
           text: "Doanh Thu 6 Tháng Gần Đây",
@@ -89,7 +82,7 @@ export default {
 
         series: [
           {
-            data: [110, 20, 8, 2, 6, 5],
+            data: [501, 110, 1228, 1442, 261, 411],
             color: "#6fcd98",
           },
         ],
@@ -100,6 +93,9 @@ export default {
       },
     };
   },
+  // computed: {
+  //   data: this.datas,
+  // },
   created() {
     let i = document.createElement("input");
     i.setAttribute("type", "color");
@@ -110,15 +106,7 @@ export default {
     this.GetMonthLineChart();
   },
   methods: {
-    // Note Componet
-    // renderChart(lables,prr) {
-    //     return {
-    //       '<p>adsda</p>'
-    //     }
-    // },
-
     getListMonthChart(data) {
-      console.log(data);
       const TOTAL_MONTH_STATISTIC = 6;
 
       const now = moment();
@@ -139,9 +127,10 @@ export default {
         );
         i++;
       }
-      this.lable = listMonth;
+      this.datas = listMonth;
 
-      console.log(this.lable, "labels");
+      console.log(this.datas, "datas");
+      // console.log(, "data");
     },
 
     GetMonthLineChart() {
@@ -149,7 +138,7 @@ export default {
         .get("http://127.0.0.1:8000/comsum/statis_month/")
         .then((response) => {
           this.getListMonthChart(response.data.data);
-          console.log(response);
+          // console.log(response);
         })
         .catch((err) => {
           console.log(err);

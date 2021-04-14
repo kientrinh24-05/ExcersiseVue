@@ -325,9 +325,9 @@ export default {
     this.getMeterial();
     this.getSupplier();
     this.Sumprice();
-    setInterval(() => {
-      this.onSeachName();
-    }, 600);
+    // setInterval(() => {
+    //   this.onSeachName();
+    // }, 600);
   },
   methods: {
     //SEARCH METERIAL PRODUCT
@@ -350,11 +350,9 @@ export default {
               sumprice: sum,
             };
           });
-        
         })
 
         .catch((error) => {
-        
           console.log(error);
         });
     },
@@ -385,11 +383,8 @@ export default {
               ngày_nhập: meterial.import_date,
             };
           });
-
-          console.log(sumprice);
         })
         .catch((error) => {
-          
           console.log(error);
         });
     },
@@ -400,16 +395,14 @@ export default {
 
       this.searchItemName(payload);
     },
-  //GET SUM PRICE 
- Sumprice() {
+    //GET SUM PRICE
+    Sumprice() {
       axios
         .get("http://127.0.0.1:8000/material/sum_price/")
         .then((response) => (this.sumprice = response.data.price));
     },
 
-   
-    
-   // ADD ROW ITEMS
+    // ADD ROW ITEMS
     addNewApartment() {
       // this.apartments.push(Vue.util.extend({}, this.apartment));
       this.apartments.push({
@@ -420,7 +413,7 @@ export default {
         import_date: "",
       });
     },
-  // REMOVE ROW ITEMS
+    // REMOVE ROW ITEMS
     removeApartment(index) {
       Vue.delete(this.apartments, index);
     },
@@ -465,7 +458,7 @@ export default {
           });
         });
     },
-    // ADD METERIAL 
+    // ADD METERIAL
     addMeterial(payload) {
       const path = "http://127.0.0.1:8000/material/list_importmaterial/";
       axios
@@ -478,7 +471,7 @@ export default {
           console.error(error);
         });
     },
-    
+
     onSubmit(event) {
       event.preventDefault();
       console.log("apartment", this.apartments);
@@ -489,8 +482,8 @@ export default {
       });
       this.$toaster.success("Nhập nguyên liệu thành công");
     },
-    
- hideModal() {
+
+    hideModal() {
       this.$refs["modalLoc"].hide();
     },
     onReset(event) {

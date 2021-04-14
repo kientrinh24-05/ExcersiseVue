@@ -10,16 +10,7 @@
             <div class="items-click-add">
               <h3>Danh sách nhân viên</h3>
               <div>
-                <div class="pseudo-search">
-                  <input
-                    type="text"
-                    v-model="searchit_form.material_name"
-                    placeholder="Tìm kiếm..."
-                    autofocus
-                    required
-                  />
-                  <button class="fa fa-search" type="submit"></button>
-                </div>
+                <div class="pseudo-search"></div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-1 variant="success" to="/register"
                   >Thêm mới</b-button
@@ -69,7 +60,12 @@
                   </div>
 
                   <!-- Modal  -->
-                  <b-modal id="my-modal1" title="Thông tin nhân viên" ok-only>
+                  <b-modal
+                    id="my-modal1"
+                    ref="Modal-Update"
+                    title="Thông tin nhân viên"
+                    ok-only
+                  >
                     <pre></pre>
                     <div>
                       <h2 style="text-align: center">Sửa Nhân Viên</h2>
@@ -219,7 +215,7 @@ export default {
     this.getMeterial();
 
     let token = localStorage.getItem("token");
-  
+
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     }
@@ -261,7 +257,8 @@ export default {
           this.editform.is_active = data.is_active;
         });
     },
-    update() {
+    update(event) {
+      event.preventDefault();
       axios
         .put(`http://127.0.0.1:8000/auth/update_user/` + this.isEdit, this.editform, {})
         .then((res) => {
@@ -269,6 +266,9 @@ export default {
           this.getMeterial();
           //   this.$refs.editSupModal.hide();
           this.$toaster.success("Thành công");
+          this.getMeterial();
+
+          this.$refs["Modal-Update"].hide();
         })
         .catch((err) => {
           //   this.$refs.editSupModal.hide();

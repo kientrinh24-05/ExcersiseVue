@@ -13,7 +13,9 @@
             <div class="items-click-add">
               <h3>Tất cả bàn ăn</h3>
               <div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                <b-button v-b-modal.modal-2 variant="primary"
+                  ><i class="fas fa-sync-alt"></i>
+                </b-button>
 
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới </b-button>
               </div>
@@ -31,6 +33,54 @@
                 </b-form-group>
                 <div>
                   <b-button variant="success" type="submit">Xác nhận</b-button>
+                  <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
+                </div>
+              </b-form>
+            </b-modal>
+            <b-modal id="modal-2" ref="modalMove" title="Chuyển bàn">
+              <b-form @submit="SubmitMove">
+                <b-row>
+                  <b-col lg="5">
+                    <b-form-group
+                      id="input-group-3"
+                      label="Chuyển từ"
+                      label-for="input-3"
+                    >
+                      <select class="custom-select" v-model="moveTable.tablebeforemove">
+                        <option
+                          v-for="tablemove in tablemoves"
+                          :key="tablemove.id"
+                          :value="tablemove.id"
+                        >
+                          {{ tablemove.name }}
+                        </option>
+                      </select>
+                    </b-form-group>
+                  </b-col>
+
+                  <b> - </b>
+
+                  <b-col lg="5">
+                    <b-form-group
+                      id="input-group-3"
+                      label="Chuyển đến"
+                      label-for="input-3"
+                    >
+                      <select class="custom-select" v-model="moveTable.tableaftermove">
+                        <option
+                          v-for="tableaftermove in tableaftermoves"
+                          :key="tableaftermove.id"
+                          :value="tableaftermove.id"
+                        >
+                          {{ tableaftermove.name }}
+                        </option>
+                      </select>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+
+                <div>
+                  <b-button variant="success" type="submit">Chuyển</b-button>
                   <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
                 </div>
               </b-form>
@@ -54,7 +104,7 @@
                 </b-button>
               </b-col>
             </b-row>
-            <b-modal id="modal-10" title="Thông tin bàn  ">
+            <b-modal id="modal-10" ref="ModalBook" title="Thông tin bàn  ">
               <b-row>
                 <b-col lg="12" md="6">
                   <h3>Thông tin đặt bàn</h3>
@@ -101,9 +151,11 @@
                         required
                       ></b-form-input>
                     </b-form-group>
+
                     <b-button type="submit" variant="success">Đặt Bàn</b-button>
-                    <b-button  :disabled="
-                    !show1" variant="success">Hủy Bàn</b-button>
+                    <b-button v-if="show1" @click="canCelTable" variant="success"
+                      >Hủy Bàn</b-button
+                    >
                   </b-form>
                 </b-col>
                 <hr />
@@ -128,9 +180,15 @@ export default {
   name: "icons",
   data() {
     return {
-      show1:true,
+      show1: false,
       tableID: null,
       tables: [],
+      tableaftermoves: [],
+      tablemoves: [],
+      moveTable: {
+        tablebeforemove: "",
+        tableaftermove: "",
+      },
       booktables: {
         id: "",
         namebook: "",
@@ -168,9 +226,54 @@ export default {
   },
   created() {
     this.getTable();
-        
+    this.GetTalbeMove();
+    this.GetTalbeOnMove();
   },
   methods: {
+    MoveTable(payload) {
+      const path = "http://127.0.0.1:8000/order/switch_table/";
+      axios.post(path, payload).then((res) => {
+        this.getTable();
+      });
+    },
+    SubmitMove(event) {
+      event.preventDefault();
+      const payload = {
+        table_one: this.moveTable.tablebeforemove,
+        table_two: this.moveTable.tableaftermove,
+      };
+
+      this.MoveTable(payload);
+      this.$toaster.success(
+        `Đã chuyển bàn ` +
+          this.moveTable.tablebeforemove +
+          `  Sang Bàn  ` +
+          this.moveTable.tableaftermove
+      );
+      this.$refs["modalMove"].hide();
+    },
+    GetTalbeMove() {
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/search_table/Có người`)
+
+        .then((response) => {
+          this.tablemoves = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    GetTalbeOnMove() {
+      axios
+        .get(`http://127.0.0.1:8000/food_tabel/search_table/Trống`)
+
+        .then((response) => {
+          this.tableaftermoves = response.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     //Mapper
     getTableColor(value) {
       switch (value) {
@@ -184,29 +287,34 @@ export default {
           return "no-change";
       }
     },
-
-    
+    canCelTable() {
+      const path = `http://127.0.0.1:8000/food_tabel/cancel_book_table/` + this.tableID;
+      axios.post(path).then((res) => {});
+      this.getTable();
+      this.$toaster.success(`Đã hủy bàn số  ` + this.tableID);
+      this.$refs["ModalBook"].hide();
+    },
     // BOOK TABLE DATA
     BookTable(id, status) {
-
       this.tableID = id;
       if (status == "Bàn đã đặt") {
         axios
           .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
           .then((res) => res.data)
           .then((response) => {
-              //  this.show1=true;
+            this.show1 = true;
+
             const { data } = response;
+
+            this.booktables.id = data.id;
             this.booktables.namebook = data.name_book;
             this.booktables.phonebook = data.phone_book;
             this.booktables.countbook = data.number_of_people;
             this.booktables.moneybook = data.money_book;
             this.booktables.datebook = data.time_book;
-             
-          }); 
-        
-    
+          });
       } else {
+        this.show1 = false;
         this.booktables.namebook = "";
         this.booktables.phonebook = "";
 
@@ -222,7 +330,6 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.getTable();
-          console.log(res);
         })
         .catch((error) => {
           this.getTable();
@@ -242,11 +349,10 @@ export default {
         money_book: this.booktables.moneybook,
         time_book: this.booktables.datebook,
       };
-      console.log(payload);
-      console.log(payload.time_book);
 
       this.booktTables(payload);
       this.$toaster.success("Đặt bàn thành công");
+      this.$refs["ModalBook"].hide();
     },
 
     // GET ALL TABLE
@@ -326,16 +432,16 @@ ul li {
 }
 
 .no-change {
-  background-color: white;
+  background-color: #ecf0f1;
 }
 .sucses {
-  background: red;
+  background: #3498db;
 }
 .no-sucses {
-  background: green;
+  background: #7f8c8d;
 }
 .change {
-  background: yellow;
+  background: #27ae60;
 }
 .content_search {
   width: 60%;

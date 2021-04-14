@@ -182,9 +182,9 @@ export default {
   },
   created() {
     this.getMeterial();
-    setInterval(() => {
-      this.onSeach();
-    }, 500);
+    // setInterval(() => {
+    //   this.onSeach();
+    // }, 500);
   },
   computed: {
     rows() {
@@ -192,7 +192,7 @@ export default {
     },
   },
   methods: {
-    //SEARCH METERIAL 
+    //SEARCH METERIAL
     searchItem(payload) {
       const path = "http://127.0.0.1:8000/material/search_material/";
       axios
@@ -219,7 +219,7 @@ export default {
 
       this.searchItem(payload);
     },
-    // GET ALL METERIAL 
+    // GET ALL METERIAL
     getMeterial() {
       axios
         .get(`http://127.0.0.1:8000/material/list_material/`)
@@ -233,7 +233,7 @@ export default {
           });
         });
     },
-    // ADD METERIAL 
+    // ADD METERIAL
     addMeterial(payload) {
       const path = "http://127.0.0.1:8000/material/list_material/";
       axios
@@ -287,7 +287,7 @@ export default {
           this.$toaster.error("Sửa nguyên liệu thất bại");
         });
     },
-    
+
     onReset(event) {
       event.preventDefault();
       // Reset our form values

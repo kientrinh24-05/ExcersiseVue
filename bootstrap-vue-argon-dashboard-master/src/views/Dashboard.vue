@@ -12,7 +12,6 @@
             class="mb-2"
           >
             <template slot="footer">
-              <span class="text-success mr-2">3.481%</span>
               <span class="text-nowrap">Kể từ tháng trước</span>
             </template>
           </stats-card>
@@ -26,7 +25,6 @@
             class="mb-4"
           >
             <template slot="footer">
-              <span class="text-success mr-2">12.18%</span>
               <span class="text-nowrap">Kể từ tháng trước</span>
             </template>
           </stats-card>

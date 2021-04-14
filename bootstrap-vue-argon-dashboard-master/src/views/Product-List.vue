@@ -511,17 +511,17 @@ export default {
       // });
     },
     // PLUS PRODUCT
-    increaseQ(product) {
-      this.products.map((p) => {
-        if (product.id == p.id) {
+    increaseQ(cartItem) {
+      this.cart.map((p) => {
+        if (cartItem.id == p.id) {
           p.amount += 1;
         }
       });
     },
     // MINUS PRODUCT
-    decreaseQ(product) {
-      this.products.map((p) => {
-        if (product.id == p.id && p.amount > 1) {
+    decreaseQ(cartItem) {
+      this.cart.map((p) => {
+        if (cartItem.id == p.id && p.amount > 1) {
           p.amount -= 1;
         }
       });
@@ -586,7 +586,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-       this.$refs["modal-2"].hide();
+      this.$refs["modal-2"].hide();
     },
 
     getAllCategory() {
