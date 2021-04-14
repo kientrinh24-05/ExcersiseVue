@@ -102,6 +102,12 @@ export default {
       default: "default", // default|light
       description: "Look of the dashboard navbar. Default (Green) or light (gray)",
     },
+    menu: {
+      type: Boolean,
+      default: false,
+      description:""
+        
+  },
   },
   computed: {
     routeName() {

@@ -182,9 +182,9 @@ export default {
   },
   created() {
     this.getMeterial();
-    // setInterval(() => {
-    //   this.onSeach();
-    // }, 300);
+    setInterval(() => {
+      this.onSeach();
+    }, 500);
   },
   computed: {
     rows() {

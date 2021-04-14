@@ -102,6 +102,8 @@
                       ></b-form-input>
                     </b-form-group>
                     <b-button type="submit" variant="success">Đặt Bàn</b-button>
+                    <b-button  :disabled="
+                    !show1" variant="success">Hủy Bàn</b-button>
                   </b-form>
                 </b-col>
                 <hr />
@@ -126,6 +128,7 @@ export default {
   name: "icons",
   data() {
     return {
+      show1:true,
       tableID: null,
       tables: [],
       booktables: {
@@ -165,6 +168,7 @@ export default {
   },
   created() {
     this.getTable();
+        
   },
   methods: {
     //Mapper
@@ -180,21 +184,28 @@ export default {
           return "no-change";
       }
     },
+
+    
     // BOOK TABLE DATA
     BookTable(id, status) {
+
       this.tableID = id;
       if (status == "Bàn đã đặt") {
         axios
           .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
           .then((res) => res.data)
           .then((response) => {
+              //  this.show1=true;
             const { data } = response;
             this.booktables.namebook = data.name_book;
             this.booktables.phonebook = data.phone_book;
             this.booktables.countbook = data.number_of_people;
             this.booktables.moneybook = data.money_book;
             this.booktables.datebook = data.time_book;
-          });
+             
+          }); 
+        
+    
       } else {
         this.booktables.namebook = "";
         this.booktables.phonebook = "";

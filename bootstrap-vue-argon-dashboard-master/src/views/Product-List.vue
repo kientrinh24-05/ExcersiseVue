@@ -586,6 +586,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+       this.$refs["modal-2"].hide();
     },
 
     getAllCategory() {

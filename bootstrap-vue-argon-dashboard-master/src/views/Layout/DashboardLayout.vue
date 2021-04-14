@@ -35,7 +35,7 @@
         >
         </sidebar-item>
         <sidebar-item
-          v-if="$route.meta.requiredRoles.includes(user.role)"
+      
           :link="{
             name: 'Quản Lý Nhân Viên',
             path: '/usermanger',

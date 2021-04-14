@@ -325,9 +325,9 @@ export default {
     this.getMeterial();
     this.getSupplier();
     this.Sumprice();
-    // setInterval(() => {
-    //   this.onSeachName();
-    // }, 800);
+    setInterval(() => {
+      this.onSeachName();
+    }, 600);
   },
   methods: {
     //SEARCH METERIAL PRODUCT
