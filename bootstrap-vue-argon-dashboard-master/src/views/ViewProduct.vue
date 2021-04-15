@@ -446,7 +446,7 @@ export default {
 
       meterialdetail: {
         material: "",
-        amount_material: "",
+        amount_material: 1,
       },
       items3: [],
     };
@@ -560,13 +560,19 @@ export default {
             .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
             .then((response) => response.data)
             .then((res) => {
-              this.items3 = res.data.map((meterial1) => {
-                return {
-                  idmeterial: meterial1.id,
-                  namemiterial: meterial1.material_name,
-                  count: meterial1.amount_material,
-                };
-              });
+              console.log(res.data.message);
+              if (res.data.status_code == 400) {
+                this.$toaster.error(res.data.message);
+              } else {
+                this.items3 = res.data.map((meterial1) => {
+                  return {
+                    idmeterial: meterial1.id,
+                    namemiterial: meterial1.material_name,
+                    count: meterial1.amount_material,
+                  };
+                });
+                this.$toaster.success("Sửa nguyên liệu món thành công");
+              }
             });
         })
         .catch((error) => {
@@ -582,7 +588,7 @@ export default {
         },
       ];
       this.addDetaiFood(this.isEdit, { data: payload });
-      this.$toaster.success("Sửa nguyên liệu món thành công");
+
       console.log(payload);
     },
     // ADD METERIAL

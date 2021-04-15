@@ -2,7 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import nguyenlieu from './nguyenlieu'
 import axios from 'axios'
+import Toaster from 'v-toaster'
+import 'v-toaster/dist/v-toaster.css'
 Vue.use(Vuex)
+Vue.use(Toaster, {timeout: 3000})
 
 const store= new Vuex.Store({
     // modules:{
@@ -56,30 +59,40 @@ const store= new Vuex.Store({
             //const username = resp.data.username
             // const admin = resp.data.admin
             // const superuser = resp.data.superuser
-            const { status_code, ...infor } = resp.data;
-            console.log(resp.data);
-            console.log(infor);
-            const info = {};
-            for (const key in infor) {
-              const u = infor[key];
-              info[key] = u;
-              if(infor['admin'] && infor['superuser']){
-                info.role = 'superuser'
-              } else if (infor['admin'] && !infor['superuser']) {
-                info.role = 'admin'
-              } else if (!infor['admin'] && infor['superuser']) {
-                info.role = 'superuser'
-              } else {
-                info.role = 'user'
-              }
-            };
-            localStorage.setItem('auth', JSON.stringify(info));
-      
-          
-            axios.defaults.headers.common['Authorization'] = 'Bearer '+ resp.data.token
+    
+            if(resp.data.status_code[0] == 400){
+              alert(resp.data.message[0])
+
+            }else{
+              const { status_code, ...infor } = resp.data;
             
-            commit('auth_success', resp.data.token, username)
-            resolve(resp)
+              console.log(infor);
+              const info = {};
+              for (const key in infor) {
+                const u = infor[key];
+                info[key] = u;
+                if(infor['admin'] && infor['superuser']){
+                  info.role = 'superuser'
+                } else if (infor['admin'] && !infor['superuser']) {
+                  info.role = 'admin'
+                } else if (!infor['admin'] && infor['superuser']) {
+                  info.role = 'superuser'
+                } else {
+                  info.role = 'user'
+                }
+              };
+              localStorage.setItem('auth', JSON.stringify(info));
+        
+            
+              axios.defaults.headers.common['Authorization'] = 'Bearer '+ resp.data.token
+              
+              commit('auth_success', resp.data.token, username)
+              
+              resolve(resp)
+            }
+            
+            
+           
           })
           .catch(err => {
             console.log("Chạy vào đây r");
@@ -94,22 +107,34 @@ const store= new Vuex.Store({
           commit('auth_request')
           axios({url: 'http://127.0.0.1:8000/auth/register/', data: user, method: 'POST' })
           .then(resp => {
-            const { status_code, ...infor } = resp.data;
-            console.log(infor);
+            if(resp.data.status_code==400){
+              alert(resp.data.message[0]);
+            
+            }else{
+            
+              const { status_code, ...infor } = resp.data;
+            
             const info = {};
-            localStorage.setItem('auth', JSON.stringify(info));
+            //localStorage.setItem('auth', JSON.stringify(infor));
+            let token = JSON.parse(window.localStorage.getItem('auth'))
             // const token = resp.data.token
             // const user = resp.data.user
-            localStorage.setItem('token', token)
+            // localStorage.setItem('token', token)
             // axios.defaults.headers.common['Authorization'] = token
             // axios.defaults.headers.common['Authorization'] = 'Bearer '+token
-            axios.defaults.headers.common['Authorization'] = 'Bearer '+ resp.data.token
-            commit('auth_success', resp.data.token, resp.data.username)
+
+            axios.defaults.headers.common['Authorization'] = 'Bearer '+ token.token
+
+            commit('auth_success', token.token, resp.data.username)
+
             resolve(resp)
+            }
+            
+            
           })
           .catch(err => {
             commit('auth_error', err)
-            localStorage.removeItem('auth')
+            // localStorage.removeItem('auth')
             reject(err)
           })
         })

@@ -178,7 +178,7 @@ export default {
         is_staff: Boolean,
         is_active: Boolean,
       },
-      perPage: 10,
+      perPage: 50,
       currentPage: 1,
       infoModal: {
         id: "info-modal",
@@ -262,13 +262,16 @@ export default {
       axios
         .put(`http://127.0.0.1:8000/auth/update_user/` + this.isEdit, this.editform, {})
         .then((res) => {
-          console.log(res.data);
-          this.getMeterial();
-          //   this.$refs.editSupModal.hide();
-          this.$toaster.success("Thành công");
-          this.getMeterial();
+          if (res.data.status_code == 400 || res.data.status_code == 400) {
+            this.$toaster.error(res.data.message[0]);
+          } else {
+            this.getMeterial();
+            //   this.$refs.editSupModal.hide();
+            this.$toaster.success("Thành công");
+            this.getMeterial();
 
-          this.$refs["Modal-Update"].hide();
+            this.$refs["Modal-Update"].hide();
+          }
         })
         .catch((err) => {
           //   this.$refs.editSupModal.hide();

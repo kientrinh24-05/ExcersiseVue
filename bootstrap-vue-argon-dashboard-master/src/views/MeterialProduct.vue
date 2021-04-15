@@ -177,6 +177,7 @@
                 <div>
                   <div class="content-table">
                     <b-table
+                      :per-page="perPage"
                       class="table-sc"
                       striped
                       hover
@@ -194,14 +195,22 @@
                   <div class="count_price">
                     <b-col lg="4">
                       <span>Tổng tiền</span>
-                      <label class="label-cout" v-for="sumprices in sumprice" :key="sumprices.id">{{sumprices.sumprice.sum  }} vnđ</label>
+                      <label
+                        class="label-cout"
+                        v-for="sumprices in sumprice"
+                        :key="sumprices.id"
+                        >{{ sumprices.sumprice.sum }} VNĐ</label
+                      >
+                      <label v-if="lablecount" class="label-cout">
+                        {{ sumcount }} VNĐ</label
+                      >
                     </b-col>
-                  </div>  
+                  </div>
 
                   <b-card-footer class="py-4 d-flex justify-content-end">
                     <base-pagination
                       v-model="currentPage"
-                      :per-page="10"
+                      :per-page="perPage"
                       :total="40"
                     ></base-pagination>
                   </b-card-footer>
@@ -237,7 +246,8 @@ export default {
   },
   data() {
     return {
-      
+      lablecount: true,
+      sumcount: [],
       payload: [],
       apartment: {
         supplier_id: "",
@@ -267,6 +277,7 @@ export default {
       ],
       projects,
       users,
+      perPage: 50,
       currentPage: 1,
 
       form: [
@@ -333,25 +344,29 @@ export default {
   methods: {
     //SEARCH METERIAL PRODUCT
     searchItem(payload) {
-         console.log(payload);
       const path = "http://127.0.0.1:8000/material/search_date_importmaterial/";
       axios
         .post(path, payload)
         .then((res) => {
-          this.items = res.data.data.map((meterial) => {
-            return {
-              tên_nguyên_liệu: meterial.material_name,
-              nhà_phân_phối: meterial.supplier_name,
-              số_lượng: meterial.amount,
-              giá: meterial.price,
-              ngày_nhập: meterial.import_date,
-            };
-          });
-          this.sumprice = res.data.sumprice.map((sum) => {
-            return {
-              sumprice: sum,
-            };
-          });
+          if (res.data.status_code == 400) {
+            this.$toaster.error(res.data.message[0]);
+          } else {
+            this.items = res.data.data.map((meterial) => {
+              return {
+                tên_nguyên_liệu: meterial.material_name,
+                nhà_phân_phối: meterial.supplier_name,
+                số_lượng: meterial.amount,
+                giá: meterial.price,
+                ngày_nhập: meterial.import_date,
+              };
+            });
+            this.sumprice = res.data.sumprice.map((sum) => {
+              return {
+                sumprice: sum,
+              };
+            });
+            this.$toaster.success("Lọc thành công");
+          }
         })
 
         .catch((error) => {
@@ -359,15 +374,14 @@ export default {
         });
     },
     onSeach() {
+      this.lablecount = false;
       const payload = {
         from_date: this.searchit_form.from_date,
         to_date: this.searchit_form.to_date,
       };
-   
 
       this.searchItem(payload);
       this.hideModal();
-      this.$toaster.success("Lọc thành công");
     },
     //SEARCH METERIAL PRODUCT IN NAME
     searchItemName(payload) {
@@ -400,9 +414,10 @@ export default {
     },
     //GET SUM PRICE
     Sumprice() {
-      axios
-        .get("http://127.0.0.1:8000/material/sum_price/")
-        .then((response) => (this.sumprice = response.data.price));
+      axios.get("http://127.0.0.1:8000/material/sum_price/").then((response) => {
+        this.sumcount = response.data.price;
+        console.log(this.sumcount);
+      });
     },
 
     // ADD ROW ITEMS
@@ -466,8 +481,13 @@ export default {
       const path = "http://127.0.0.1:8000/material/list_importmaterial/";
       axios
         .post(path, payload)
-        .then(() => {
-          this.getImportMeterial();
+        .then((res) => {
+          if (res.data.status_code == 400) {
+            this.$toaster.error(res.data.message);
+          } else {
+            this.getImportMeterial();
+            this.$toaster.success("Nhập nguyên liệu thành công");
+          }
         })
         .catch((error) => {
           this.getImportMeterial();
@@ -483,7 +503,6 @@ export default {
       this.addMeterial({
         data: payload,
       });
-      this.$toaster.success("Nhập nguyên liệu thành công");
     },
 
     hideModal() {

@@ -93,7 +93,6 @@ export default {
         last_name: "",
         username: "",
         email: "",
-
         address: "",
         avatar: "",
       },
@@ -147,6 +146,9 @@ export default {
           {}
         )
         .then((res) => {
+          if (res.data.status_code == 400 || res.data.status_code == 404) {
+            this.$toaster.error(res.data.message[0]);
+          }
           // this.ShowProfile(thisUser);
           console.log(res.data);
           console.log(formData);

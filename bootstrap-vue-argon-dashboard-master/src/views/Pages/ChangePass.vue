@@ -136,14 +136,16 @@ export default {
         // Errrr
         console.log(res, "res");
 
-        if (res.data.status_code[0] == 200) {
-          this.$toaster.success("Đổi mật khẩu thành công");
-          this.$router.push("/dashboard");
-          return;
-        }
+        // if (res.data.status_code[0] == 200) {
+
+        // }
 
         if (res.data.status_code[0] == 400) {
-          this.$toaster.success("Đổi mật khẩu thất bại Vui lòng thử lại");
+          this.$toaster.error(res.data.message[0]);
+          return;
+        } else {
+          this.$toaster.success("Đổi mật khẩu thành công");
+          this.$router.push("/dashboard");
           return;
         }
       });

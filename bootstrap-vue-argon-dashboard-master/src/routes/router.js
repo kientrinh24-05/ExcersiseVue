@@ -125,6 +125,14 @@ const router = new VueRouter({
           },
           component: () => import(/* webpackChunkName: "demo" */ '../views/Product-List.vue')
         },
+        {
+          path: '/register',
+          name: 'Đăng Ký',
+          component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue'),
+          meta: {
+            requiredRoles:['superuser']
+          }
+        },
 
       ]
     },
@@ -132,21 +140,33 @@ const router = new VueRouter({
       path: '/',
       redirect: 'login',
       component: AuthLayout,
+      meta:{
+        requiredRoles:['superuser','admin','user']
+      },
       children: [
         {
           path: '/login',
           name: 'Đăng Nhập',
-          component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Login.vue')
+          component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Login.vue'),
+          meta:{
+            requiredRoles:['superuser','admin','user']
+          },
         },
         {
           path: '/register',
           name: 'Đăng Ký',
-          component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue')
+          component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue'),
+          meta: {
+            requiredRoles:['superuser']
+          }
         },
         {
           path: '/changepass',
           name: 'Đổi Mật Khẩu',
-          component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ChangePass.vue')
+          component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ChangePass.vue'),
+          meta:{
+            requiredRoles:['superuser','admin','user']
+          },
         },
         { path: '*', component: NotFound }
 
@@ -182,7 +202,8 @@ router.beforeEach((to, from, next) => {
       if(Object.hasOwnProperty.call(to.meta, 'requiredRoles')) {
         if(to.meta.requiredRoles.includes(auth.role)) {
           next()
-        } else {
+        } else {  
+        
           next('/*')
         }
       } else {

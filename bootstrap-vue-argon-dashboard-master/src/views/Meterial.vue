@@ -13,6 +13,7 @@
                 <div class="pseudo-search">
                   <input
                     type="text"
+                    @change="onSeach()"
                     v-model="searchit_form.material_name"
                     placeholder="Tìm kiếm..."
                     autofocus
@@ -72,7 +73,6 @@
                     <b-card-footer class="py-4 d-flex justify-content-start">
                       <b-pagination
                         v-model="currentPage"
-                        :total-rows="rows"
                         :per-page="perPage"
                         first-number
                         last-number

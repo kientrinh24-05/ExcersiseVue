@@ -7,8 +7,6 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col lg="12">
-    
-
           <card header-classes="bg-transparent">
             <div class="items-click-add">
               <h3>Danh sách nhà cung cấp</h3>
@@ -279,7 +277,7 @@ export default {
     //         }))
     //     );
     // },
-  // GET SUPPLIER 
+    // GET SUPPLIER
     getSuplier() {
       axios
         .get(`http://127.0.0.1:8000/supplier/list_supplier/`)
@@ -295,7 +293,7 @@ export default {
           });
         });
     },
-    // SEARCH SUPPLIER 
+    // SEARCH SUPPLIER
     searchItem(payload) {
       const path = "http://127.0.0.1:8000/supplier/search_supplier/";
       axios
@@ -328,8 +326,12 @@ export default {
       const path = "http://127.0.0.1:8000/supplier/list_supplier/";
       axios
         .post(path, payload)
-        .then(() => {
-          this.getSuplier();
+        .then((res) => {
+          if (res.data.status_code == 400) {
+            this.$toaster.error(res.data.message[0]);
+          } else {
+            this.getSuplier();
+          }
         })
         .catch((error) => {
           this.getSuplier();
@@ -371,6 +373,9 @@ export default {
           {}
         )
         .then((res) => {
+          if (res.data.status_code == 400 || res.data.status_code == 404) {
+            this.$toaster.error(res.data.message[0]);
+          }
           console.log(res.data);
           this.getSuplier();
           this.$refs.editSupModal.hide();
@@ -381,7 +386,6 @@ export default {
           this.$toaster.error("Sữa nhà cung cấp thất bại");
         });
     },
-  
 
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;

@@ -75,7 +75,13 @@
 
                   <b-row class="my-4">
                     <b-col cols="12">
-                      <b-form-checkbox v-model="model.is_staff"> Staf </b-form-checkbox>
+                      <b-form-checkbox
+                        v-model="model.is_staff"
+                        name="check-button"
+                        switch
+                      >
+                        Admin
+                      </b-form-checkbox>
                     </b-col>
                   </b-row>
                   <div class="text-center">
@@ -103,7 +109,7 @@ export default {
         email: "",
         password: "",
         confirm_password: "",
-        is_staff: "",
+        is_staff: false,
       },
     };
   },
