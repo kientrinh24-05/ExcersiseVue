@@ -103,11 +103,15 @@ export default {
       description: "Look of the dashboard navbar. Default (Green) or light (gray)",
     },
     menu: {
-      type: Boolean,
-      default: false,
+      type: Array,
+      required: true,
       description:""
         
   },
+   collapsed: {
+      type: Boolean,
+      default: false
+    },
   },
   computed: {
     routeName() {

@@ -58,14 +58,15 @@
           <card header-classes="bg-transparent">
             <b-card body>
               <b-row>
-                <b-col lg="6 " md="12">
+                <b-col lg="7" md="12">
                   <b-tabs pills card>
                     <b-tab title="Tất Cả">
                       <b-card-text>
                         <b-row>
                           <b-col
                             lg="4"
-                            md="6"
+                            md="4"
+                            sm="4"
                             mb="6"
                             class="product-content"
                             v-for="product in products"
@@ -104,8 +105,8 @@
                       <b-card-text>
                         <b-row>
                           <b-col
-                            lg="6"
-                            md="6"
+                            lg="4"
+                            md="4"
                             mb="6"
                             class="product-content"
                             v-for="food in foods"
@@ -137,7 +138,7 @@
                     </b-tab>
                   </b-tabs>
                 </b-col>
-                <b-col lg="6" md="12">
+                <b-col lg="5" md="12">
                   <div class="content_view">
                     <h2>Order Món Ăn</h2>
                     <!-- <div>
@@ -256,15 +257,7 @@
                     </div>
                   </div>
                 </b-col>
-                <b-col lg="6" md="12">
-                  <div class="view_table">
-                    <h2>Thông tin bàn</h2>
-
-                    <span>Chọn bàn</span>
-                    <b-form-select id="ratio"></b-form-select>
-                    <b-button class="btn_table" variant="primary">Chuyển bàn</b-button>
-                  </div>
-                </b-col>
+               
               </b-row>
             </b-card>
           </card>
