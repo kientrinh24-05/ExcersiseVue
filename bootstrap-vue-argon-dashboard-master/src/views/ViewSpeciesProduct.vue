@@ -250,7 +250,6 @@ export default {
           {}
         )
         .then((res) => {
-          console.log(res.data);
           this.getCategory();
           this.$refs.editCategoryModal.hide();
           this.$toaster.success("Sửa thể loại thành công");

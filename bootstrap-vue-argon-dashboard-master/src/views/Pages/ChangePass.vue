@@ -134,7 +134,6 @@ export default {
     update() {
       axios.put(`http://127.0.0.1:8000/auth/change_pass/`, this.user, {}).then((res) => {
         // Errrr
-        console.log(res, "res");
 
         // if (res.data.status_code[0] == 200) {
 

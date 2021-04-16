@@ -11,7 +11,14 @@
               <h3>Danh sách món ăn</h3>
               <div>
                 <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
+                  <input
+                    type="text"
+                    @keyup="onSeach"
+                    placeholder="Tìm kiếm..."
+                    v-model="searchit_form.food_name"
+                    autofocus
+                    required
+                  />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
@@ -56,8 +63,10 @@
                           >
                             <b-form-input
                               id="input-2"
+                              type="number"
                               placeholder="Nhập giá món ăn"
                               required
+                              min="0"
                               v-model="form.food_price"
                             ></b-form-input>
                           </b-form-group>
@@ -71,12 +80,7 @@
                           </b-form-group>
 
                           <div class="btn_click">
-                            <b-button
-                              type="submit"
-                              variant="primary"
-                              @click="show1 = !show1"
-                              >Thêm Món</b-button
-                            >
+                            <b-button type="submit" variant="primary">Thêm Món</b-button>
                             <b-button type="reset" variant="danger">Hủy Bỏ</b-button>
                           </div>
                         </b-form>
@@ -111,7 +115,11 @@
                                   label="Số lượng"
                                   label-for="input-3"
                                 >
-                                  <b-input type="text" v-model="formadd.sl"></b-input>
+                                  <b-input
+                                    type="number"
+                                    min="1"
+                                    v-model="formadd.sl"
+                                  ></b-input>
                                 </b-form-group>
                               </b-col>
                             </b-row>
@@ -234,6 +242,7 @@
                               v-model="editform.food_price"
                               placeholder="Giá Sản Phẩm"
                               required
+                              type="number"
                             ></b-form-input>
                           </b-form-group>
                           <b-form-group id="input-group-2" label="Hình Ảnh">
@@ -241,7 +250,6 @@
                               placeholder="Chọn địa chỉ hình ảnh..."
                               drop-placeholder="Drop file here..."
                               v-model="editform.food_image"
-                              @input="input"
                             ></b-form-file>
                           </b-form-group>
 
@@ -374,8 +382,9 @@ export default {
         title: "",
         content: "",
       },
-      meterials: [{ text: "", value: "" }],
-      foods: [{ text: "", value: "" }],
+
+      meterials: [{ text: "", value: () => [] }],
+      foods: [{ text: "", value: () => [] }],
       items1: [],
       items2: [],
       fields1: [
@@ -428,7 +437,7 @@ export default {
         food_name: "",
         category_name: "",
         food_price: "",
-        food_image: "",
+        food_image: [],
       },
       formadd: {
         material_id: "",
@@ -439,7 +448,7 @@ export default {
         food_name: "",
         category: [],
         food_price: "",
-        food_image: "",
+        food_image: [],
       },
       formmeterial: {},
       show: true,
@@ -449,6 +458,9 @@ export default {
         amount_material: 1,
       },
       items3: [],
+      searchit_form: {
+        food_name: "",
+      },
     };
   },
 
@@ -463,6 +475,33 @@ export default {
     // ...mapState(['nguyenlieu'])
   },
   methods: {
+    searchItem(payload) {
+      const path = "http://127.0.0.1:8000/food_tabel/search_food/";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.items = res.data.data.map((product) => {
+            return {
+              mã_món_ăn: product.id,
+              tên_món_ăn: product.food_name,
+              phân_loại: product.category_name,
+              giá_sản_phẩm: product.food_price,
+            };
+          });
+        })
+        .catch((error) => {
+          // this.getSuplier();
+          console.log(error);
+        });
+    },
+
+    onSeach() {
+      const payload = {
+        food_name: this.searchit_form.food_name,
+      };
+
+      this.searchItem(payload);
+    },
     // DELETER FOOD
     removeMeterialFoodAdd(id) {
       const path = `http://127.0.0.1:8000/food_tabel/delete_detailfood/` + id;
@@ -560,7 +599,6 @@ export default {
             .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
             .then((response) => response.data)
             .then((res) => {
-              console.log(res.data.message);
               if (res.data.status_code == 400) {
                 this.$toaster.error(res.data.message);
               } else {
@@ -588,8 +626,6 @@ export default {
         },
       ];
       this.addDetaiFood(this.isEdit, { data: payload });
-
-      console.log(payload);
     },
     // ADD METERIAL
     AddMeterial() {
@@ -611,7 +647,7 @@ export default {
         supplier_address: this.form.supplier_address,
         supplier_phone: this.form.supplier_phone,
       };
-
+      debugger;
       this.AddMeterial(payload);
       this.$toaster.success("Thêm món ăn thành công");
     },
@@ -691,11 +727,14 @@ export default {
       event.preventDefault();
 
       const payload = formData;
-      console.log(payload);
 
       this.addProduct(payload);
 
       this.$toaster.success("Thêm món ăn thành công");
+      this.show1 = true;
+      setTimeout(() => {
+        this.onReset();
+      }, 10000);
     },
     //Update
     edit(id) {
@@ -705,15 +744,13 @@ export default {
         .then((res) => res.data)
         .then((response) => {
           const { data } = response;
-          console.log(this.editform.food_name);
-          // let formData = new FormData();
 
-          console.log("data", data);
+          // let formData = new FormData();
 
           this.editform.food_name = data.food_name;
           this.editform.category = data.category;
           this.editform.food_price = data.food_price;
-          this.editform.food_image = data.food_image;
+          // this.editform.food_image = data.food_image;
 
           axios
             .get(`http://127.0.0.1:8000/food_tabel/get_detailfood/` + id)
@@ -737,11 +774,13 @@ export default {
       formData.append("food_name", this.editform.food_name);
       formData.append("category", this.editform.category);
       formData.append("food_price", this.editform.food_price);
-      formData.append("food_image", this.editform.food_image);
+      if (this.editform.food_image != []) {
+        formData.append("food_image", this.editform.food_image);
+      }
+
       axios
         .put(`http://127.0.0.1:8000/food_tabel/detail_food/` + this.isEdit, formData, {})
         .then((res) => {
-          console.log(res.data);
           this.Getproduct();
           this.$refs.editFood.hide();
           this.$toaster.success("Sửa món ăn thành công");
@@ -771,18 +810,13 @@ export default {
       event.preventDefault();
       // alert(JSON.stringify(this.form));
     },
-    onReset(event) {
-      event.preventDefault();
+    onReset() {
       // Reset our form values
-      this.form.email = "";
-      this.form.name = "";
-      this.form.food = null;
-      this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+      this.form.food_name = "";
+      this.form.category_name = "";
+      this.form.food_price = "";
+      this.form.food_image = null;
+      this.show1 = false;
     },
   },
 };

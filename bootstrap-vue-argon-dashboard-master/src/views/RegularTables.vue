@@ -16,12 +16,13 @@
                     type="text"
                     placeholder="Tìm kiếm..."
                     autofocus
+                    @keyup="onSeach()"
                     required
                     v-model="searchit_form.supplier_name"
                   />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <!-- Modal Tạo nhà cc -->
@@ -261,22 +262,6 @@ export default {
     },
   },
   methods: {
-    // Get All
-    // getSuplier() {
-    //   fetch("http://127.0.0.1:8000/supplier/list_supplier/")
-    //     .then((response) => response.json())
-    //     .then(
-    //       (json) =>
-    //         (this.items = json.data.map((supplier) => {
-    //           return {
-    //             mã_nhà_cung_cấp: supplier.id,
-    //             tên_nhà_cung_cấp: supplier.supplier_name,
-    //             địa_chỉ: supplier.supplier_address,
-    //             số_điện_thoại: supplier.supplier_phone,
-    //           };
-    //         }))
-    //     );
-    // },
     // GET SUPPLIER
     getSuplier() {
       axios
@@ -318,7 +303,7 @@ export default {
       const payload = {
         supplier_name: this.searchit_form.supplier_name,
       };
-      console.log(payload);
+
       this.searchItem(payload);
     },
     // Add Suplier
@@ -341,15 +326,15 @@ export default {
     onSubmit(event) {
       event.preventDefault();
 
-      this.$refs.addBookModal.hide();
       const payload = {
         supplier_name: this.form.supplier_name,
         supplier_address: this.form.supplier_address,
         supplier_phone: this.form.supplier_phone,
       };
-
+      this.$refs.addBookModal.hide();
       this.addSuplier(payload);
       this.$toaster.success("Thêm nhà cung cấp thành công");
+      this.onReset();
     },
     //Update
     edit(id) {
@@ -402,18 +387,10 @@ export default {
       this.currentPage = 1;
     },
 
-    onReset(event) {
-      event.preventDefault();
-      // Reset our form values
-      this.form.email = "";
-      this.form.name = "";
-      this.form.food = null;
-      this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+    onReset() {
+      this.form.supplier_name = "";
+      this.form.supplier_address = "";
+      this.form.supplier_phone = "";
     },
     showAlert() {
       this.dismissCountDown = this.dismissSecs;

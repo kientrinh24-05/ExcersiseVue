@@ -10,7 +10,6 @@
             <div class="items-click-add">
               <h2>Danh sách bàn ăn</h2>
               <div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
@@ -58,7 +57,7 @@
           <card header-classes="bg-transparent">
             <b-card body>
               <b-row>
-                <b-col lg="7" md="12">
+                <b-col lg="6" md="12">
                   <b-tabs pills card>
                     <b-tab title="Tất Cả">
                       <b-card-text>
@@ -138,7 +137,7 @@
                     </b-tab>
                   </b-tabs>
                 </b-col>
-                <b-col lg="5" md="12">
+                <b-col lg="6" md="12">
                   <div class="content_view">
                     <h2>Order Món Ăn</h2>
                     <!-- <div>
@@ -188,15 +187,15 @@
                               -
                             </button>
                             <input
-                              type="text"
+                              type="number"
                               v-model="product.amount"
-                              style="width: 30px; margin: 0 5px"
+                              style="width: 40px"
+                              min="1"
                             />
 
                             <button
                               @click="increaseQ(product)"
                               class="btn btn-info btn-sm"
-                              size="sm"
                             >
                               +
                             </button>
@@ -257,7 +256,6 @@
                     </div>
                   </div>
                 </b-col>
-               
               </b-row>
             </b-card>
           </card>
@@ -381,7 +379,9 @@ export default {
       const path = `http://127.0.0.1:8000/order/pay_bill/` + this.idTables;
       axios
         .post(path)
-        .then(() => {})
+        .then((res) => {
+          this.$toaster.success("Thanh toán thành công cho bàn " + this.idTables);
+        })
         .catch((error) => {
           console.log(error);
           // this.$toaster.error("Thất bại");
@@ -412,9 +412,7 @@ export default {
       const path = "http://127.0.0.1:8000/order/order_food/";
       axios
         .post(path, payload)
-        .then(() => {
-          console.log(payload);
-        })
+        .then(() => {})
         .catch((error) => {
           console.log(error);
           // this.$toaster.error("Thất bại");
@@ -438,7 +436,7 @@ export default {
 
       this.saveBill(payload);
 
-      this.$toaster.success("Thêm nguyên liệu thành công");
+      this.$toaster.success("Đã gọi món cho bàn " + idtable);
     },
 
     // ADD PRODUCT CATEGORY
@@ -468,7 +466,6 @@ export default {
       }
       var a = 0;
       let flag = true;
-      console.log(this.cart);
 
       this.cart.map((item) => {
         if (item.id === cartItem.id) {
@@ -530,7 +527,6 @@ export default {
           .then((response) => {
             this.cart = response.data.data;
           });
-      console.log(idTable);
     },
     // Mapper
     getTableColor(value) {
@@ -596,11 +592,7 @@ export default {
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_food/`)
         .then((response) => {
-          // console.log(response, "response");
           this.products = response.data.data;
-
-          console.log(response.data.data, "response");
-          // this.setfoodItems(response.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -608,7 +600,6 @@ export default {
     },
 
     showNameCategory(name) {
-      console.log(name);
       axios
         .get(`http://127.0.0.1:8000/food_tabel/list_category_food/` + name)
 
@@ -626,11 +617,20 @@ export default {
 };
 </script>
 <style>
-.btn-danger {
-  border: 2px solid red;
+button:not(:disabled) {
+  margin-left: 5px;
 }
-.btn-success {
-  border: 2px solid gold;
+.no-change {
+  background-color: #ecf0f1;
+}
+.sucses {
+  background: #3498db;
+}
+.no-sucses {
+  background: #7f8c8d;
+}
+.change {
+  background: #27ae60;
 }
 .add {
   cursor: pointer;

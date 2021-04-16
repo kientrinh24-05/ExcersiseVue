@@ -1,45 +1,41 @@
 <template>
-  <b-card no-body class="card-profile" alt="Image placeholder" img-top>
-    <b-row class="justify-content-center">
-      <b-col lg="3" class="order-lg-2">
-        <div class="card-profile-image">
-          <a href="#">
-            <b-img src="img/theme/team-4.jpg" rounded="circle" />
-          </a>
-        </div>
-      </b-col>
-    </b-row>
-
-    <b-card-header class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-      <div class="d-flex justify-content-between">
-        <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>
-        <a href="#" class="btn btn-sm btn-default float-right">Message</a>
+  <b-row class="justify-content-center">
+    <b-col lg="3" class="order-lg-2">
+      <div class="card-profile-image">
+        <a href="#">
+          <b-img :src="'http://127.0.0.1:8000' + image" rounded="circle" />
+        </a>
       </div>
-    </b-card-header>
-
-    <b-card-body class="pt-0">
-      <b-row>
-        <b-col>
-          <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-            <div>
-              <span class="heading">22</span>
-              <span class="description">Friends</span>
-            </div>
-            <div>
-              <span class="heading">10</span>
-              <span class="description">Photos</span>
-            </div>
-            <div>
-              <span class="heading">89</span>
-              <span class="description">Comments</span>
-            </div>
-          </div>
-        </b-col>
-      </b-row>
-    </b-card-body>
-  </b-card>
+    </b-col>
+  </b-row>
 </template>
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      image: null,
+    };
+  },
+  created() {
+    var isUser = JSON.parse(localStorage.getItem("auth"));
+
+    if (isUser) {
+      this.ShowProfile(isUser.username);
+    }
+  },
+  methods: {
+    ShowProfile(name) {
+      axios
+        .get(`http://127.0.0.1:8000/auth/change_profile/` + name)
+        .then((res) => res.data)
+        .then((response) => {
+          const { data } = response;
+
+          this.image = data.avatar;
+        });
+    },
+  },
+};
 </script>
 <style></style>

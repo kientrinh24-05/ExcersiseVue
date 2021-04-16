@@ -34,7 +34,7 @@
         }"
         id="navbar-search-main"
       >
-        <b-form-group class="mb-0">
+        <!-- <b-form-group class="mb-0">
           <b-input-group class="input-group-alternative input-group-merge">
             <b-form-input placeholder="Search" type="text"> </b-form-input>
 
@@ -42,7 +42,7 @@
               <span class="input-group-text"><i class="fas fa-search"></i></span>
             </div>
           </b-input-group>
-        </b-form-group>
+        </b-form-group> -->
       </b-form>
       <base-dropdown
         menu-on-right
@@ -54,10 +54,12 @@
         <a href="#" class="nav-link pr-0" @click.prevent slot="title-container">
           <b-media no-body class="align-items-center">
             <span class="avatar avatar-sm rounded-circle">
-              <img alt="Image placeholder" src="img/theme/team-4.jpg" />
+              <b-img :src="'http://127.0.0.1:8000' + info.avatar" rounded="circle" />
             </span>
             <b-media-body class="ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm font-weight-bold">{{ info.username }}</span>
+              <span class="mb-0 text-sm font-weight-bold">{{
+                !!info ? info.username : ""
+              }}</span>
             </b-media-body>
           </b-media>
         </a>
@@ -66,13 +68,17 @@
           <b-dropdown-header class="noti-title">
             <h6 class="text-overflow m-0">Welcome!</h6>
           </b-dropdown-header>
-          <b-dropdown-item href="http://localhost:8080/profile#/profile">
-            <i class="ni ni-settings-gear-65"></i>
-            <span>Thông tin</span>
+          <b-dropdown-item>
+            <router-link to="/profile" class="dropdown-item">
+              <i class="ni ni-single-02"></i>
+              <span>My profile</span>
+            </router-link>
           </b-dropdown-item>
-          <b-dropdown-item href="http://localhost:8080/profile#/changepass">
-            <i class="ni ni-settings-gear-65"></i>
-            <span>Đổi mật khẩu</span>
+          <b-dropdown-item>
+            <router-link to="/changepass" class="dropdown-item">
+              <i class="ni ni-settings-gear-65"></i>
+              <span>Đổi mật khẩu</span>
+            </router-link>
           </b-dropdown-item>
 
           <div class="dropdown-divider"></div>
@@ -102,15 +108,14 @@ export default {
       default: "default", // default|light
       description: "Look of the dashboard navbar. Default (Green) or light (gray)",
     },
-    menu: {
-      type: Array,
-      required: true,
-      description:""
-        
-  },
-   collapsed: {
+    // menu: {
+    //   type: Array,
+    //   required: true,
+    //   description: "",
+    // },
+    collapsed: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   computed: {
@@ -121,7 +126,6 @@ export default {
   },
   created() {
     var isUser = JSON.parse(localStorage.getItem("auth"));
-
     if (isUser.username) {
       this.ShowProfile(isUser.username);
     }
@@ -133,7 +137,7 @@ export default {
       searchModalVisible: false,
       searchQuery: "",
 
-      info: null,
+      info: [],
     };
   },
   methods: {
@@ -142,7 +146,6 @@ export default {
         .get(`http://127.0.0.1:8000/auth/change_profile/` + username)
         .then((response) => {
           this.info = response.data.data;
-          console.log(this.info);
         });
     },
     LogOut() {

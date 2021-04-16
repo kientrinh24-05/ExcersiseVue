@@ -111,8 +111,6 @@ export default {
   // },
   created() {
     this.getDataGreneral();
-    console.log(this.datas);
-    console.log(this.labels1);
   },
 
   async mounted() {
@@ -157,7 +155,6 @@ export default {
       }
       // this.labels = listMonth;
 
-      console.log(this.labels1, "labels");
       // this.message = "bien message sau khi call api lay so lieu render lai";
     },
 

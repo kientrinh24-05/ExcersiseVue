@@ -47,7 +47,7 @@ const store= new Vuex.Store({
       commit('setFoodItemsById', array);
     },
     setfoodItems({commit}, items){
-      console.log(items, 'items')
+  
       commit('setFoodItems',items );
     },
     login({commit}, username){
@@ -66,7 +66,6 @@ const store= new Vuex.Store({
             }else{
               const { status_code, ...infor } = resp.data;
             
-              console.log(infor);
               const info = {};
               for (const key in infor) {
                 const u = infor[key];
@@ -95,7 +94,7 @@ const store= new Vuex.Store({
            
           })
           .catch(err => {
-            console.log("Chạy vào đây r");
+            
             commit('auth_error')
             localStorage.removeItem('auth')
             reject(err)

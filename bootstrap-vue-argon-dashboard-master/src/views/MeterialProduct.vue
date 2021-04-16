@@ -20,7 +20,7 @@
                   />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>

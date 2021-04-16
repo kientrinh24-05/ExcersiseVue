@@ -5,11 +5,7 @@
       <template slot="links">
         <sidebar-item v-for="(m, idx) in menuList" :key="idx" :link="m">
           <div v-if="m.children">
-            <sidebar-item
-              v-for="(ch, chidx) in m.children"
-              :key="chidx"
-              :link="ch"
-            >
+            <sidebar-item v-for="(ch, chidx) in m.children" :key="chidx" :link="ch">
             </sidebar-item>
           </div>
         </sidebar-item>
@@ -193,7 +189,7 @@ export default {
         },
         {
           name: "Cài đặt menu",
-     
+
           icon: "ni ni-shop text-primary",
           role: ["superuser", "admin"],
           children: [

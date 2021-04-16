@@ -10,8 +10,6 @@
             <div class="items-click-add">
               <h3>Danh sách nhân viên</h3>
               <div>
-                <div class="pseudo-search"></div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-1 variant="success" to="/register"
                   >Thêm mới</b-button
                 >
@@ -78,6 +76,7 @@
                           >
                             <b-form-input
                               id="input-1"
+                              disabled
                               placeholder="Nhập username"
                               v-model="editform.username"
                               required
@@ -92,6 +91,7 @@
                               id="input-1"
                               placeholder="clreax@gmail.com"
                               v-model="editform.email"
+                              disabled
                               required
                             ></b-form-input>
                           </b-form-group>
@@ -248,7 +248,6 @@ export default {
         .get(`http://127.0.0.1:8000/auth/update_user/` + username)
         .then((res) => res.data)
         .then((response) => {
-          console.log(response);
           const { data } = response;
 
           this.editform.username = data.username;

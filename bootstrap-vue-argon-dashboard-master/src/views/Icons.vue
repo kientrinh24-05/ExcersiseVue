@@ -125,6 +125,7 @@
                         v-model="booktables.phonebook"
                         placeholder="Số ĐT"
                         required
+                        type="number"
                       ></b-form-input>
                     </b-form-group>
                     <b-form-group>
@@ -133,22 +134,27 @@
                         v-model="booktables.countbook"
                         placeholder="Số Lượng"
                         required
+                        min="0"
+                        type="number"
                       ></b-form-input>
                     </b-form-group>
                     <b-form-group>
                       <b-form-input
-                        v-model="booktables.datebook"
                         type="datetime-local"
-                        value="2011-08-19T13:45:00"
+                        value="2017-06-01T08:30"
                         id="example-datetime-local-input"
-                      ></b-form-input>
+                        v-model="booktables.datebook"
+                      >
+                      </b-form-input>
                     </b-form-group>
                     <b-form-group>
                       <b-form-input
                         id="input-2"
                         v-model="booktables.moneybook"
                         placeholder="Tiền Đặt"
+                        type="number"
                         required
+                        min="0"
                       ></b-form-input>
                     </b-form-group>
 
@@ -195,7 +201,7 @@ export default {
         phonebook: "",
         countbook: "",
         moneybook: " ",
-        datebook: " ",
+        datebook: "",
       },
       // AddBookTable: {
       //   id: "",
@@ -303,15 +309,20 @@ export default {
           .then((res) => res.data)
           .then((response) => {
             this.show1 = true;
+            if (response.status == 404) {
+              this.$toaster.success(response.message);
+            } else {
+              const { data } = response;
 
-            const { data } = response;
+              this.booktables.id = data.id;
+              this.booktables.namebook = data.name_book;
+              this.booktables.phonebook = data.phone_book;
+              this.booktables.countbook = data.number_of_people;
+              this.booktables.moneybook = data.money_book;
+              this.booktables.datebook = data.time_book;
+            }
 
-            this.booktables.id = data.id;
-            this.booktables.namebook = data.name_book;
-            this.booktables.phonebook = data.phone_book;
-            this.booktables.countbook = data.number_of_people;
-            this.booktables.moneybook = data.money_book;
-            this.booktables.datebook = data.time_book;
+            return;
           });
       } else {
         this.show1 = false;
@@ -329,7 +340,12 @@ export default {
       axios
         .post(path, payload)
         .then((res) => {
-          this.getTable();
+          if (res.data.status_code == 400) {
+            this.$toaster.error(res.data.message);
+          } else {
+            this.getTable();
+            this.$toaster.success("Đặt bàn thành công");
+          }
         })
         .catch((error) => {
           this.getTable();
@@ -351,7 +367,7 @@ export default {
       };
 
       this.booktTables(payload);
-      this.$toaster.success("Đặt bàn thành công");
+
       this.$refs["ModalBook"].hide();
     },
 
@@ -374,7 +390,12 @@ export default {
       axios
         .post(path, payload)
         .then((res) => {
-          this.getTable();
+          if (res.data.status_code == 400) {
+            this.$toaster.error(res.data.message);
+          } else {
+            this.getTable();
+            this.$toaster.success("Thêm  bàn thành công");
+          }
         })
         .catch((error) => {
           this.getTable();
@@ -384,15 +405,12 @@ export default {
     onSubmit(event) {
       event.preventDefault();
 
-      this.$refs.modalAddTable.hide();
       const payload = {
         name: this.FormAdd.name,
       };
-      console.log(payload);
 
       this.addTable(payload);
-
-      this.$toaster.success("Thêm  bàn thành công");
+      this.$refs.modalAddTable.hide();
     },
     /////////
 
@@ -403,7 +421,7 @@ export default {
       });
     },
     hideModal() {
-      this.$refs["modal-1"].hide();
+      this.$refs["modalAddTable"].hide();
     },
     hideModal1() {
       this.$refs["modal-2"].hide();

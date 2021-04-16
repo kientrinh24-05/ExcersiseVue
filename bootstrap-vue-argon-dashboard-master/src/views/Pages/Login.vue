@@ -53,8 +53,6 @@
                     v-model="model.password"
                   >
                   </base-input>
-
-                  <b-form-checkbox>Lưu tên đăng nhập</b-form-checkbox>
                   <div class="text-center">
                     <base-button type="primary" native-type="submit" class="my-4"
                       >Đăng nhập</base-button
@@ -64,13 +62,6 @@
               </validation-observer>
             </b-card-body>
           </b-card>
-          <b-row class="mt-3">
-            <b-col cols="6">
-              <router-link to="/changepass" class="text-light"
-                ><small>Đổi mật khẩu</small></router-link
-              >
-            </b-col>
-          </b-row>
         </b-col>
       </b-row>
     </b-container>

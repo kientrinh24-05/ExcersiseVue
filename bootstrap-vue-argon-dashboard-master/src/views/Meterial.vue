@@ -21,7 +21,7 @@
                   />
                   <button class="fa fa-search" type="submit"></button>
                 </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <b-modal id="modal-1" title="Thêm nguyên liệu" ref="ModalAdd">
@@ -277,7 +277,6 @@ export default {
           {}
         )
         .then((res) => {
-          console.log(res.data);
           this.getMeterial();
           this.$refs.editSupModal.hide();
           this.$toaster.success("Sửa nguyên liệu thành");
