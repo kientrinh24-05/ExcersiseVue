@@ -17,7 +17,9 @@
                   ><i class="fas fa-sync-alt"></i>
                 </b-button>
 
-                <b-button v-b-modal.modal-1 variant="success">Thêm mới </b-button>
+                <b-button v-b-modal.modal-1 variant="success"
+                  >Thêm mới
+                </b-button>
               </div>
             </div>
 
@@ -33,7 +35,9 @@
                 </b-form-group>
                 <div>
                   <b-button variant="success" type="submit">Xác nhận</b-button>
-                  <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
+                  <b-button variant="secondary" @click="hideModal"
+                    >Hủy Bỏ</b-button
+                  >
                 </div>
               </b-form>
             </b-modal>
@@ -46,7 +50,10 @@
                       label="Chuyển từ"
                       label-for="input-3"
                     >
-                      <select class="custom-select" v-model="moveTable.tablebeforemove">
+                      <select
+                        class="custom-select"
+                        v-model="moveTable.tablebeforemove"
+                      >
                         <option
                           v-for="tablemove in tablemoves"
                           :key="tablemove.id"
@@ -66,7 +73,10 @@
                       label="Chuyển đến"
                       label-for="input-3"
                     >
-                      <select class="custom-select" v-model="moveTable.tableaftermove">
+                      <select
+                        class="custom-select"
+                        v-model="moveTable.tableaftermove"
+                      >
                         <option
                           v-for="tableaftermove in tableaftermoves"
                           :key="tableaftermove.id"
@@ -81,7 +91,9 @@
 
                 <div>
                   <b-button variant="success" type="submit">Chuyển</b-button>
-                  <b-button variant="secondary" @click="hideModal">Hủy Bỏ</b-button>
+                  <b-button variant="secondary" @click="hideModal"
+                    >Hủy Bỏ</b-button
+                  >
                 </div>
               </b-form>
             </b-modal>
@@ -159,7 +171,11 @@
                     </b-form-group>
 
                     <b-button type="submit" variant="success">Đặt Bàn</b-button>
-                    <b-button v-if="show1" @click="canCelTable" variant="success"
+
+                    <b-button v-if="show2" @click="removeTable" variant="danger"
+                      >Xóa Bàn</b-button
+                    >
+                    <b-button v-if="show1" @click="canCelTable" variant="danger"
                       >Hủy Bàn</b-button
                     >
                   </b-form>
@@ -187,6 +203,7 @@ export default {
   data() {
     return {
       show1: false,
+      show2: false,
       tableID: null,
       tables: [],
       tableaftermoves: [],
@@ -236,6 +253,27 @@ export default {
     this.GetTalbeOnMove();
   },
   methods: {
+    //RemoveTalve
+    removeTable() {
+      axios
+        .put(`http://127.0.0.1:8000/food_tabel/detail_table/` + this.tableID)
+        .then((res) => {
+         
+          this.$toaster.success("Xóa bàn thành công");
+          
+          this.getTable();
+         
+          setTimeout(() => {
+              this.$refs['modalAddTable'].hide();
+         
+          }, 1000);
+           
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    //Move Table
     MoveTable(payload) {
       const path = "http://127.0.0.1:8000/order/switch_table/";
       axios.post(path, payload).then((res) => {
@@ -294,21 +332,27 @@ export default {
       }
     },
     canCelTable() {
-      const path = `http://127.0.0.1:8000/food_tabel/cancel_book_table/` + this.tableID;
-      axios.post(path).then((res) => {});
-      this.getTable();
-      this.$toaster.success(`Đã hủy bàn số  ` + this.tableID);
-      this.$refs["ModalBook"].hide();
+      const path =
+        `http://127.0.0.1:8000/food_tabel/cancel_book_table/` + this.tableID;
+      axios.post(path).then((res) => {
+        this.$toaster.success(`Đã hủy bàn số  ` + this.tableID);
+        this.getTable();
+        this.$refs["ModalBook"].hide();
+      });
     },
     // BOOK TABLE DATA
     BookTable(id, status) {
       this.tableID = id;
+      if (status == "Trống") {
+        this.show2 = true;
+      }
       if (status == "Bàn đã đặt") {
         axios
           .get(`http://127.0.0.1:8000/food_tabel/update_book_table/` + id)
           .then((res) => res.data)
           .then((response) => {
             this.show1 = true;
+            this.show2 = false;
             if (response.status == 404) {
               this.$toaster.success(response.message);
             } else {

@@ -24,7 +24,7 @@
                 <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
                 <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
-                <b-modal id="modal-1" title="Thêm món ăn" size="lg" ref="modal-1">
+                <b-modal id="modal-1" title="Thêm món ăn" size="lg" ref="modal-add">
                   <div>
                     <b-row>
                       <b-col lg="6" md="12">
@@ -81,7 +81,7 @@
 
                           <div class="btn_click">
                             <b-button type="submit" variant="primary">Thêm Món</b-button>
-                            <b-button type="reset" variant="danger">Hủy Bỏ</b-button>
+                            <b-button  @click="CloseModal()" variant="danger">Hủy Bỏ</b-button>
                           </div>
                         </b-form>
                       </b-col>
@@ -144,6 +144,10 @@
                                 </b-button>
                               </template>
                             </b-table>
+                             <div class="btn_click">
+                            <b-button @click="CloseModal()" variant="primary">Xác Nhận</b-button>
+                            <b-button type="reset" @click="CloseModal()" variant="danger">Hủy Bỏ</b-button>
+                          </div>
                           </div>
                         </div>
                       </b-col>
@@ -157,7 +161,8 @@
             <div>
               <b-card no-body>
                 <div>
-                  <b-table class="table-sc" striped hover :items="items" :fields="fields">
+                  <b-table class="table-sc" striped hover :items="items" :fields="fields"  :per-page="perPage"
+                    :current-page="currentPage">
                     <template #cell(actions)="row">
                       <i
                         @click="watchMeterial(row.item.mã_món_ăn)"
@@ -171,6 +176,7 @@
                       ></i>
                     </template>
                   </b-table>
+                 
 
                   <!-- Modal  -->
                   <b-modal
@@ -336,8 +342,10 @@
                 <b-card-footer class="py-4 d-flex justify-content-end">
                   <base-pagination
                     v-model="currentPage"
-                    :per-page="10"
-                    :total="40"
+                      :total-rows="rows"
+                      :per-page="perPage"
+                      first-number
+                      last-number
                   ></base-pagination>
                 </b-card-footer>
               </b-card>
@@ -376,7 +384,9 @@ export default {
       isFood: null,
       show1: false,
       projects,
+       perPage:5,
       currentPage: 1,
+      
       infoModal: {
         id: "info-modal",
         title: "",
@@ -585,7 +595,7 @@ export default {
       };
 
       this.AddMeterialFood(payload);
-      console.log(payload);
+    
       this.$toaster.success("Thêm nguyên liệu món thành công");
     },
     // ADD DETAIL FOOD
@@ -647,7 +657,7 @@ export default {
         supplier_address: this.form.supplier_address,
         supplier_phone: this.form.supplier_phone,
       };
-      debugger;
+  
       this.AddMeterial(payload);
       this.$toaster.success("Thêm món ăn thành công");
     },
@@ -709,8 +719,16 @@ export default {
       const path = "http://127.0.0.1:8000/food_tabel/create_food/";
       axios
         .post(path, payload)
-        .then(() => {
-          this.Getproduct();
+        .then((res) => {
+          if (res.data.status_code == 400) {
+            this.$toaster.error(res.data.message);
+          }else{
+             this.Getproduct();
+               this.$toaster.success("Thêm món ăn thành công");
+                 this.show1 = true;
+           
+          }
+         
         })
         .catch((error) => {
           this.Getproduct();
@@ -729,12 +747,12 @@ export default {
       const payload = formData;
 
       this.addProduct(payload);
+      
 
-      this.$toaster.success("Thêm món ăn thành công");
-      this.show1 = true;
+    
       setTimeout(() => {
         this.onReset();
-      }, 10000);
+      }, 30000);
     },
     //Update
     edit(id) {
@@ -790,7 +808,10 @@ export default {
           this.$toaster.error("Sửa món ăn thành công");
         });
     },
-
+    CloseModal(){
+             this.$refs["modal-add"].hide();
+    },
+    
     // UpLoadIMG
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;

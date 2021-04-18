@@ -63,13 +63,14 @@
                       >
                         <b-form-input
                           id="input-4"
-                          type="text"
+                          type="number"
+                          min="1"
                           v-model="form.supplier_phone"
                           placeholder="Số Điện Thoại"
                           required
                         ></b-form-input>
 
-                        <b-button type="submit" variant="primary">Submit</b-button>
+                        <b-button type="submit" variant="primary" style="margin-top:1rem;">Thêm </b-button>
                       </b-form-group>
 
                       <!-- <b-button type="submit" variant="primary">Submit</b-button>
@@ -153,7 +154,8 @@
                               <b-form-input
                                 id="input-4"
                                 v-model="editform.supplier_phone"
-                                type="text"
+                                type="number"
+                                min="0"
                                 placeholder="Số Điện Thoại"
                                 required
                               ></b-form-input>
@@ -203,7 +205,7 @@ export default {
 
       projects,
       users,
-      perPage: 5,
+      perPage: 3,
       currentPage: 1,
       search: "",
       infoModal: {
@@ -361,7 +363,7 @@ export default {
           if (res.data.status_code == 400 || res.data.status_code == 404) {
             this.$toaster.error(res.data.message[0]);
           }
-          console.log(res.data);
+         
           this.getSuplier();
           this.$refs.editSupModal.hide();
           this.$toaster.success("Sửa nhà cung cấp thành công");

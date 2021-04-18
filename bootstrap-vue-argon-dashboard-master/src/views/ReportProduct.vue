@@ -10,15 +10,11 @@
             <div class="items-click-add">
               <h2>Báo Cáo</h2>
               <div>
-                <div class="pseudo-search">
-                  <input type="text" placeholder="Tìm kiếm..." autofocus required />
-                  <button class="fa fa-search" type="submit"></button>
-                </div>
-                <b-button variant="primary"><i class="fas fa-sync-alt"></i></b-button>
+                
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
-                <b-modal id="modal-2">
+                <b-modal id="modal-2" ref="Model_filter">
                   <b-form-group id="input-group-1" label="Thời gian.">
                     <b-row>
                       <b-col lg="6">
@@ -45,14 +41,17 @@
 
               <!-- Table  -->
             </div>
-            <div>
+            <div> 
+            <b>
+              Top 10 sản phẩm bán chạy nhất trong tháng
+            </b>
               <b-row class="mt-7">
                 <b-col xl="12" class="mb-5 mb-xl-0">
                   <b-table :items="items2" :fields="fields2" caption-top> </b-table>
                 </b-col>
                 <hr />
                 <div>
-                  <b-modal id="modalPopover" title="Modal with Popover" ok-only>
+                  <b-modal id="modalPopover"  title="Modal with Popover" ok-only>
                     <b-row>
                       <b-col lg="7">
                         <b-form-group
@@ -75,9 +74,10 @@
                         <b-form-group
                           id="input-group-3"
                           label="Số lượng"
+                          t
                           label-for="input-3"
                         >
-                          <b-input type="text" v-model="form.material_reality"></b-input>
+                          <b-input type="number" min="0" v-model="form.material_reality"></b-input>
                         </b-form-group>
                       </b-col>
                     </b-row>
@@ -201,7 +201,7 @@ export default {
         material: "",
         material_reality: "",
       },
-      date: null,
+      date: "",
       meterials: [],
       items: [],
       items1: [],
@@ -214,8 +214,26 @@ export default {
     this.getMeterial();
     this.getRealMaterial();
     this.getDateStais();
+    this.GetProductTop();
   },
   methods: {
+
+    GetProductTop(){
+     axios
+        .get(`http://127.0.0.1:8000/comsum/top_food/`)
+        .then((response) => response.data)
+        .then((res) => {
+          
+          this.items2 = res.data.map((material) => {
+            return {
+              nameproduct: material.food_name,
+              price: material.food_price,
+            };
+          
+          });
+         
+        });
+    },
     // SEARCH PRODUCT
     searchItem(payload) {
       const path = "http://127.0.0.1:8000/comsum/consum_food/";
@@ -243,6 +261,10 @@ export default {
       };
 
       this.searchItem(payload);
+     
+      this.$refs.Model_filter.hide();
+    this.$toaster.success("Lọc thành công");
+      
     },
     // UPDATE STATIS
     Consumption() {
@@ -250,7 +272,7 @@ export default {
       axios
         .post(path)
         .then((res) => {
-          console.log(res);
+      
           this.getStatisMeterial();
           this.getConsumption();
         })
@@ -353,8 +375,9 @@ export default {
     // showModal() {
     //   this.$refs["my-modal"].show();
     // },
-    // hideModal() {
-    //   this.$refs["my-modal"].hide();
+    hideModal() {
+      this.$refs["modal-2"].hide();
+    }
     // },
     // toggleModal() {
     //   // We pass the ID of the button that we want to return focus to

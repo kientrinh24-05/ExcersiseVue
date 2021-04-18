@@ -16,6 +16,7 @@
                     type="text"
                     placeholder="Tìm kiếm..."
                     autofocus
+                    @keyup="onSeachName()"
                     required
                   />
                   <button class="fa fa-search" type="submit"></button>
@@ -116,6 +117,8 @@
                             <b-form-input
                               :name="`apartments[${index}][amount]`"
                               id="input-3"
+                              type="number"
+                              min="1"
                               v-model="apartment.amount"
                               placeholder="Nhập số lượng"
                               required
@@ -129,6 +132,8 @@
                             <b-form-input
                               :name="`apartments[${index}][price]`"
                               id="input-3"
+                              type="number"
+                              min="10"
                               v-model="apartment.price"
                               placeholder="Nhập Giá Cả"
                               required
@@ -416,7 +421,7 @@ export default {
     Sumprice() {
       axios.get("http://127.0.0.1:8000/material/sum_price/").then((response) => {
         this.sumcount = response.data.price;
-        console.log(this.sumcount);
+    
       });
     },
 

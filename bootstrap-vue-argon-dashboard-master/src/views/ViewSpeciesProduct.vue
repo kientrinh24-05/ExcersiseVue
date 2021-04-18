@@ -12,10 +12,12 @@
               <div>
                 <div class="pseudo-search">
                   <input
-                    v-model="titlesearch"
+                    v-model="searchit_form.category_name"
+                    @keyup="onSeach()"
                     type="text"
                     placeholder="Tìm kiếm..."
                     autofocus
+
                     required
                   />
                   <button class="fa fa-search" type="submit"></button>
@@ -156,6 +158,9 @@ export default {
       formedit: {
         category_name: "",
       },
+      searchit_form:{
+        category_name:""
+      },
       show: true,
     };
   },
@@ -177,22 +182,31 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
-    searchTitle() {
+    searchItem(payload) {
+      const path = "http://127.0.0.1:8000/food_tabel/search_category/";
       axios
-        .get(`http://127.0.0.1:8000/material/search_material/`, {
-          params: {
-            matertial_name: this.titlesearch,
-          },
+        .post(path, payload)
+        .then((res) => {
+          this.items = res.data.data.map((category) => {
+           return {
+              Mã_thể_loại: category.id,
+              tên_thể_loại: category.category_name,
+            };
+          });
         })
-        .then((response) => (this.items = response.data))
 
-        // .then((response) => {
-        //   this.products = response.data.data;
-        //   console.log(this.products);
-        // })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          // this.getSuplier();
+          console.log(error);
         });
+    },
+   
+    onSeach() {
+      const payload = {
+        category_name: this.searchit_form.category_name,
+      };
+
+      this.searchItem(payload);
     },
     //Get All
     getCategory() {
@@ -229,6 +243,7 @@ export default {
       };
       this.addMeterial(payload);
       this.$toaster.success("Thêm thể loại thành công");
+      this.onReset();
     },
     //Update
     edit(id) {
@@ -275,18 +290,11 @@ export default {
       this.currentPage = 1;
     },
 
-    onReset(event) {
-      event.preventDefault();
+    onReset() {
+    
       // Reset our form values
-      this.form.email = "";
-      this.form.name = "";
-      this.form.food = null;
-      this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+      this.form.category_name = "";
+     
     },
   },
 };

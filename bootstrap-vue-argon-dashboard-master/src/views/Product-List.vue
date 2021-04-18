@@ -42,6 +42,7 @@
                 md="6"
                 v-for="table in tables"
                 :key="table.id"
+                :class="{'selected': current === table.id}"
               >
                 <!--    {'btn-danger': lights, 'btn-success': !lights} -->
                 <b-button :class="getTableColor(table.status)" class="btn-icon-clipboard">
@@ -285,6 +286,7 @@ export default {
   },
   data() {
     return {
+      current: null,
       total: 0,
       idTables: null,
       tables: [],
@@ -519,6 +521,7 @@ export default {
     // GET ORDER TABLE ORDER IN ID TABLE
     getOrderFood(idTable) {
       this.idTables = idTable;
+       this.current = idTable;
       // this.foods.cart = true;
       // this.products.cart = true;
       localStorage.setItem("idtalbe", idTable),
@@ -617,6 +620,11 @@ export default {
 };
 </script>
 <style>
+.selected{
+transform: translateY(-20px);
+transition: 1s all;
+}
+  
 button:not(:disabled) {
   margin-left: 5px;
 }

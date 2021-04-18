@@ -37,19 +37,19 @@ const store= new Vuex.Store({
     //   addnguyenlieu({ commit }, nguyenlieus) {
     //       commit('addnguyenlieu', nguyenlieus)
     //   },
-    setfoodItemsById({commit}, state, id){
-      let array = state.find(d=> d.id == id);
-      newarry = {
-        name: Array.name,
-        tien: arrr.tien,
-        count: count ++
-      }
-      commit('setFoodItemsById', array);
-    },
-    setfoodItems({commit}, items){
+    // setfoodItemsById({commit}, state, id){
+    //   let array = state.find(d=> d.id == id);
+    //   newarry = {
+    //     name: Array.name,
+    //     tien: arrr.tien,
+    //     count: count ++
+    //   }
+    //   commit('setFoodItemsById', array);
+    // },
+    // setfoodItems({commit}, items){
   
-      commit('setFoodItems',items );
-    },
+    //   commit('setFoodItems',items );
+    // },
     login({commit}, username){
         return new Promise((resolve, reject) => {
           commit('auth_request')

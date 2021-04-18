@@ -13,7 +13,7 @@
                 <div class="pseudo-search">
                   <input
                     type="text"
-                    @change="onSeach()"
+                    @keyup="onSeach()"
                     v-model="searchit_form.material_name"
                     placeholder="Tìm kiếm..."
                     autofocus
@@ -22,7 +22,9 @@
                   <button class="fa fa-search" type="submit"></button>
                 </div>
 
-                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
+                <b-button v-b-modal.modal-1 variant="success"
+                  >Thêm mới</b-button
+                >
 
                 <b-modal id="modal-1" title="Thêm nguyên liệu" ref="ModalAdd">
                   <div>
@@ -40,7 +42,9 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-button type="submit" variant="success">Xác Nhận</b-button>
+                      <b-button type="submit" variant="success"
+                        >Xác Nhận</b-button
+                      >
                       <b-button type="reset" variant="light">Đóng</b-button>
                     </b-form>
                   </div>
@@ -109,8 +113,12 @@
 
                           <!-- Button Click Submit -->
                           <div class="link-btn">
-                            <b-button type="submit" variant="success">Xác Nhận</b-button>
-                            <b-button type="reset" variant="light">Đóng</b-button>
+                            <b-button type="submit" variant="success"
+                              >Xác Nhận</b-button
+                            >
+                            <b-button type="reset" variant="light"
+                              >Đóng</b-button
+                            >
                           </div>
                         </b-form>
                       </div>
@@ -128,7 +136,13 @@
 </template>
 <script>
 import axios from "axios";
-import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Table,
+  TableColumn,
+} from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -238,8 +252,14 @@ export default {
       const path = "http://127.0.0.1:8000/material/list_material/";
       axios
         .post(path, payload)
-        .then(() => {
-          this.getMeterial();
+        .then((res) => {
+          if (res.data.status_code == 400) {
+           
+            this.$toaster.error(res.data.message);
+          } else {
+            this.getMeterial();
+            this.$toaster.success("Thêm nguyên liệu thành công");
+          }
         })
         .catch((error) => {
           this.getMeterial();
@@ -254,8 +274,9 @@ export default {
       const payload = {
         material_name: this.form.material_name,
       };
+
       this.addMeterial(payload);
-      this.$toaster.success("Thêm nguyên liệu thành công");
+      this.onReset();
     },
     // EDIT METERIAL
     edit(id) {
@@ -287,18 +308,11 @@ export default {
         });
     },
 
-    onReset(event) {
-      event.preventDefault();
+    onReset() {
+    
       // Reset our form values
-      this.form.email = "";
-      this.form.name = "";
-      this.form.food = null;
-      this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+      this.form.material_name = "";
+      
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
