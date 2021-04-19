@@ -70,7 +70,9 @@
                           required
                         ></b-form-input>
 
-                        <b-button type="submit" variant="primary" style="margin-top:1rem;">Thêm </b-button>
+                        <b-button type="submit" variant="primary" style="margin-top: 1rem"
+                          >Thêm
+                        </b-button>
                       </b-form-group>
 
                       <!-- <b-button type="submit" variant="primary">Submit</b-button>
@@ -205,8 +207,10 @@ export default {
 
       projects,
       users,
-      perPage: 3,
+
+      perPage: 10,
       currentPage: 1,
+
       search: "",
       infoModal: {
         id: "info-modal",
@@ -363,7 +367,7 @@ export default {
           if (res.data.status_code == 400 || res.data.status_code == 404) {
             this.$toaster.error(res.data.message[0]);
           }
-         
+
           this.getSuplier();
           this.$refs.editSupModal.hide();
           this.$toaster.success("Sửa nhà cung cấp thành công");

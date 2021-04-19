@@ -171,7 +171,7 @@ export default {
         },
         {
           name: "Cài Đặt Bàn",
-          path: "/icons",
+          path: "/managetable",
           icon: "ni ni-planet text-blue",
           role: ["superuser", "admin", "user"],
         },
@@ -195,7 +195,7 @@ export default {
           children: [
             {
               name: "Danh sách món",
-              path: "/maps",
+              path: "/list_food",
               icon: "ni ni-air-baloon text-green",
               role: ["superuser", "admin"],
             },
@@ -220,7 +220,7 @@ export default {
           children: [
             {
               name: "Thiết lập nhà phân phối",
-              path: "/tables",
+              path: "/manage_superlier",
               icon: "ni ni-air-baloon text-green",
               role: ["superuser", "admin"],
             },

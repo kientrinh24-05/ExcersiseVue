@@ -31,7 +31,7 @@ const router = new VueRouter({
           }
         },
         {
-          path: '/icons',
+          path: '/managetable',
           name: 'Quản Lý Bàn',
           component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue'),
           meta:{
@@ -47,7 +47,7 @@ const router = new VueRouter({
           }
         },
         {
-          path: '/maps',
+          path: '/list_food',
           name: 'Danh sách món ăn ',
           component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue'),
           meta:{
@@ -56,7 +56,7 @@ const router = new VueRouter({
           
         },
         {
-          path: '/tables',
+          path: '/manage_superlier',
           name: 'Quản Lý Nhà Cung Cấp',
         
           component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue'),

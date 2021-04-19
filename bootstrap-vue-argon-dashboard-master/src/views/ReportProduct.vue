@@ -10,7 +10,6 @@
             <div class="items-click-add">
               <h2>Báo Cáo</h2>
               <div>
-                
                 <b-button v-b-modal.modal-2 variant="info"
                   ><i class="fas fa-filter"></i>
                 </b-button>
@@ -41,17 +40,15 @@
 
               <!-- Table  -->
             </div>
-            <div> 
-            <b>
-              Top 10 sản phẩm bán chạy nhất trong tháng
-            </b>
+            <div>
+              <b> Top 10 sản phẩm bán chạy nhất trong tháng </b>
               <b-row class="mt-7">
                 <b-col xl="12" class="mb-5 mb-xl-0">
                   <b-table :items="items2" :fields="fields2" caption-top> </b-table>
                 </b-col>
                 <hr />
                 <div>
-                  <b-modal id="modalPopover"  title="Modal with Popover" ok-only>
+                  <b-modal id="modalPopover" title="Modal with Popover" ok-only>
                     <b-row>
                       <b-col lg="7">
                         <b-form-group
@@ -77,7 +74,11 @@
                           t
                           label-for="input-3"
                         >
-                          <b-input type="number" min="0" v-model="form.material_reality"></b-input>
+                          <b-input
+                            type="number"
+                            min="0"
+                            v-model="form.material_reality"
+                          ></b-input>
                         </b-form-group>
                       </b-col>
                     </b-row>
@@ -103,7 +104,7 @@
                 </div>
                 <b-col xl="12" class="mb-5 mb-xl-0 mt-6">
                   <div class="d-flex">
-                    <b>Bạn đã cập nhập nguyên liệu thực gần nhất vào {{ date.date }}</b>
+                    <b>Bạn đã cập nhập nguyên liệu thực gần nhất vào {{ date }}</b>
                     <div>
                       <b-button
                         v-b-modal.modalPopover
@@ -130,7 +131,26 @@
                     </div>
                   </div>
 
-                  <b-table :items="items" :fields="fields" caption-top> </b-table>
+                  <b-table
+                    class="table-sc"
+                    hover
+                    id="my-table"
+                    :items="items"
+                    :per-page="perPage"
+                    :current-page="currentPage"
+                    :fields="fields"
+                  >
+                  </b-table>
+
+                  <b-card-footer class="py-4 d-flex justify-content-start">
+                    <b-pagination
+                      v-model="currentPage"
+                      :total-rows="rows"
+                      :per-page="perPage"
+                      first-number
+                      last-number
+                    ></b-pagination>
+                  </b-card-footer>
                 </b-col>
               </b-row>
             </div>
@@ -148,6 +168,7 @@ import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import axios from "axios";
+import moment from "moment";
 
 export default {
   components: {
@@ -160,10 +181,17 @@ export default {
     PageVisitsTable,
     SocialTrafficTable,
   },
+  computed: {
+    rows() {
+      return this.items.length;
+    },
+  },
   data() {
     return {
       projects,
       users,
+      perPage: 10,
+      currentPage: 1,
       selected: null,
       fields: [
         { key: "nameproduct", label: "Tên Nguyên Liệu" },
@@ -201,7 +229,7 @@ export default {
         material: "",
         material_reality: "",
       },
-      date: "",
+      date: null,
       meterials: [],
       items: [],
       items1: [],
@@ -217,21 +245,17 @@ export default {
     this.GetProductTop();
   },
   methods: {
-
-    GetProductTop(){
-     axios
+    GetProductTop() {
+      axios
         .get(`http://127.0.0.1:8000/comsum/top_food/`)
         .then((response) => response.data)
         .then((res) => {
-          
           this.items2 = res.data.map((material) => {
             return {
               nameproduct: material.food_name,
               price: material.food_price,
             };
-          
           });
-         
         });
     },
     // SEARCH PRODUCT
@@ -261,10 +285,9 @@ export default {
       };
 
       this.searchItem(payload);
-     
+
       this.$refs.Model_filter.hide();
-    this.$toaster.success("Lọc thành công");
-      
+      this.$toaster.success("Lọc thành công");
     },
     // UPDATE STATIS
     Consumption() {
@@ -272,7 +295,6 @@ export default {
       axios
         .post(path)
         .then((res) => {
-      
           this.getStatisMeterial();
           this.getConsumption();
         })
@@ -364,8 +386,9 @@ export default {
     getDateStais() {
       axios
         .get(`http://127.0.0.1:8000/comsum/load_date_ware/`)
-        .then((response) => {
-          this.date = response.data.data[0];
+        .then((response) => response.data)
+        .then((res) => {
+          this.date = res.data[0].date = moment(res.data[0].date).format("DD/MM/YYYY");
         })
         .catch((err) => {
           console.log(err);
@@ -377,7 +400,7 @@ export default {
     // },
     hideModal() {
       this.$refs["modal-2"].hide();
-    }
+    },
     // },
     // toggleModal() {
     //   // We pass the ID of the button that we want to return focus to

@@ -50,7 +50,7 @@
                     <b-button variant="success" type="submit">Xác Nhận</b-button>
                   </b-form>
                 </b-modal>
-                <b-modal id="modal-1" title="Thêm nguyên liệu">
+                <b-modal id="modal-1" title="Thêm nguyên liệu" ref="Modalmeterial">
                   <b-form @submit="onSubmit" @reset="onReset">
                     <div
                       v-for="(apartment, index) in apartments"
@@ -78,11 +78,13 @@
                               class="custom-select"
                               v-model="apartment.material_id"
                               :name="`apartments[${index}][material_id]`"
+                              required
                             >
                               <option
                                 v-for="meterial in meterials"
                                 :key="meterial.id"
                                 :value="meterial.id"
+                                required
                               >
                                 {{ meterial.material_name }}
                               </option>
@@ -96,6 +98,7 @@
                           >
                             <select
                               class="custom-select"
+                              required
                               v-model="apartment.supplier_id"
                               :name="`apartments[${index}][supplier_id]`"
                             >
@@ -146,6 +149,7 @@
                           >
                             <div class="">
                               <input
+                                required
                                 :name="`apartments[${index}][import_date]`"
                                 class="form-control"
                                 type="datetime-local"
@@ -168,8 +172,10 @@
                     </b-button>
                     <br />
                     <div class="link-btn" style="margin: 1rem 0">
-                      <b-button @click="onSubmit" variant="success">Xác Nhận</b-button>
-                      <b-button type="reset" variant="light">Đóng</b-button>
+                      <b-button type="submit" variant="success">Xác Nhận</b-button>
+                      <b-button type="reset" @click="CancelModal()" variant="light"
+                        >Đóng</b-button
+                      >
                     </div>
                   </b-form>
                 </b-modal>
@@ -182,11 +188,12 @@
                 <div>
                   <div class="content-table">
                     <b-table
-                      :per-page="perPage"
                       class="table-sc"
-                      striped
                       hover
+                      id="my-table"
                       :items="items"
+                      :per-page="perPage"
+                      :current-page="currentPage"
                       :fields="fields"
                     >
                       <template #cell(actions)="row">
@@ -207,17 +214,19 @@
                         >{{ sumprices.sumprice.sum }} VNĐ</label
                       >
                       <label v-if="lablecount" class="label-cout">
-                        {{ sumcount }} VNĐ</label
+                        {{ formatPrice(sumcount) }} VNĐ</label
                       >
                     </b-col>
                   </div>
 
-                  <b-card-footer class="py-4 d-flex justify-content-end">
-                    <base-pagination
+                  <b-card-footer class="py-4 d-flex justify-content-start">
+                    <b-pagination
                       v-model="currentPage"
+                      :total-rows="rows"
                       :per-page="perPage"
-                      :total="40"
-                    ></base-pagination>
+                      first-number
+                      last-number
+                    ></b-pagination>
                   </b-card-footer>
 
                   <!-- Modal  -->
@@ -238,6 +247,7 @@ import FormAdd from "./Pages/FormAdd.vue";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import axios from "axios";
+import moment from "moment";
 
 export default {
   components: {
@@ -251,9 +261,11 @@ export default {
   },
   data() {
     return {
+      add: false,
       lablecount: true,
       sumcount: [],
       payload: [],
+
       apartment: {
         supplier_id: "",
         material_id: "",
@@ -282,25 +294,10 @@ export default {
       ],
       projects,
       users,
-      perPage: 50,
+      perPage: 10,
       currentPage: 1,
 
-      form: [
-        // {
-        //   supplier_id: "",
-        //   material_id: "",
-        //   amount: "",
-        //   price: "",
-        //   import_date: "",
-        // },
-        // {
-        //   supplier_id1: "",
-        //   material_id1: "",
-        //   amount1: "",
-        //   price1: "",
-        //   import_date1: "",
-        // },
-      ],
+      form: [],
 
       infoModal: {
         id: "info-modal",
@@ -314,21 +311,15 @@ export default {
         },
         {
           key: "nhà_phân_phối",
-
-          // Variant applies to the whole column, including the header and footer
         },
         {
           key: "số_lượng",
-
-          // Variant applies to the whole column, including the header and footer
         },
         {
           key: "giá",
         },
         {
           key: "ngày_nhập",
-
-          // Variant applies to the whole column, including the header and footer
         },
 
         // { key: "actions", label: "Hành động" },
@@ -362,7 +353,9 @@ export default {
                 nhà_phân_phối: meterial.supplier_name,
                 số_lượng: meterial.amount,
                 giá: meterial.price,
-                ngày_nhập: meterial.import_date,
+                ngày_nhập: (meterial.import_date = moment(meterial.import_date).format(
+                  "DD/MM/YYYY hh:mm:ss"
+                )),
               };
             });
             this.sumprice = res.data.sumprice.map((sum) => {
@@ -387,6 +380,11 @@ export default {
 
       this.searchItem(payload);
       this.hideModal();
+    },
+    //Format Price
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
     //SEARCH METERIAL PRODUCT IN NAME
     searchItemName(payload) {
@@ -421,7 +419,6 @@ export default {
     Sumprice() {
       axios.get("http://127.0.0.1:8000/material/sum_price/").then((response) => {
         this.sumcount = response.data.price;
-    
       });
     },
 
@@ -476,7 +473,9 @@ export default {
               nhà_phân_phối: meterial.supplier_name,
               số_lượng: meterial.amount,
               giá: meterial.price,
-              ngày_nhập: meterial.import_date,
+              ngày_nhập: (meterial.import_date = moment(meterial.import_date).format(
+                "DD/MM/YYYY hh:mm:ss"
+              )),
             };
           });
         });
@@ -492,6 +491,7 @@ export default {
           } else {
             this.getImportMeterial();
             this.$toaster.success("Nhập nguyên liệu thành công");
+            this.$refs["Modalmeterial"].hide();
           }
         })
         .catch((error) => {
@@ -502,7 +502,7 @@ export default {
 
     onSubmit(event) {
       event.preventDefault();
-      console.log("apartment", this.apartments);
+
       const payload = this.apartments;
 
       this.addMeterial({
@@ -512,6 +512,9 @@ export default {
 
     hideModal() {
       this.$refs["modalLoc"].hide();
+    },
+    CancelModal() {
+      this.$refs["Modalmeterial"].hide();
     },
     onReset(event) {
       event.preventDefault();
@@ -550,6 +553,9 @@ export default {
         .map((f) => {
           return { text: f.label, value: f.key };
         });
+    },
+    rows() {
+      return this.items.length;
     },
   },
 };

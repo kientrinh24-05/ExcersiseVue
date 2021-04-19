@@ -22,9 +22,7 @@
                   <button class="fa fa-search" type="submit"></button>
                 </div>
 
-                <b-button v-b-modal.modal-1 variant="success"
-                  >Thêm mới</b-button
-                >
+                <b-button v-b-modal.modal-1 variant="success">Thêm mới</b-button>
 
                 <b-modal id="modal-1" title="Thêm nguyên liệu" ref="ModalAdd">
                   <div>
@@ -42,9 +40,7 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-button type="submit" variant="success"
-                        >Xác Nhận</b-button
-                      >
+                      <b-button type="submit" variant="success">Xác Nhận</b-button>
                       <b-button type="reset" variant="light">Đóng</b-button>
                     </b-form>
                   </div>
@@ -77,6 +73,7 @@
                     <b-card-footer class="py-4 d-flex justify-content-start">
                       <b-pagination
                         v-model="currentPage"
+                        :total-rows="rows"
                         :per-page="perPage"
                         first-number
                         last-number
@@ -113,12 +110,8 @@
 
                           <!-- Button Click Submit -->
                           <div class="link-btn">
-                            <b-button type="submit" variant="success"
-                              >Xác Nhận</b-button
-                            >
-                            <b-button type="reset" variant="light"
-                              >Đóng</b-button
-                            >
+                            <b-button type="submit" variant="success">Xác Nhận</b-button>
+                            <b-button type="reset" variant="light">Đóng</b-button>
                           </div>
                         </b-form>
                       </div>
@@ -136,13 +129,7 @@
 </template>
 <script>
 import axios from "axios";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Table,
-  TableColumn,
-} from "element-ui";
+import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from "element-ui";
 import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
@@ -162,6 +149,9 @@ export default {
       projects,
       users,
 
+      perPage: 10,
+      currentPage: 1,
+
       form: {
         material_name: "",
       },
@@ -169,8 +159,7 @@ export default {
         id: "",
         material_name: "",
       },
-      perPage: 10,
-      currentPage: 1,
+
       infoModal: {
         id: "info-modal",
         title: "",
@@ -200,11 +189,7 @@ export default {
     //   this.onSeach();
     // }, 500);
   },
-  computed: {
-    rows() {
-      return this.items.length;
-    },
-  },
+
   methods: {
     //SEARCH METERIAL
     searchItem(payload) {
@@ -254,7 +239,6 @@ export default {
         .post(path, payload)
         .then((res) => {
           if (res.data.status_code == 400) {
-           
             this.$toaster.error(res.data.message);
           } else {
             this.getMeterial();
@@ -309,10 +293,8 @@ export default {
     },
 
     onReset() {
-    
       // Reset our form values
       this.form.material_name = "";
-      
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;
@@ -337,6 +319,9 @@ export default {
         .map((f) => {
           return { text: f.label, value: f.key };
         });
+    },
+    rows() {
+      return this.items.length;
     },
   },
 };

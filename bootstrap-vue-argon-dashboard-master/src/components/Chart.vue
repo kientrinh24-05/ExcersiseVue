@@ -69,14 +69,14 @@ export default {
       listprice: [], //[110, 52650000, 338, 452, 566, 665],
 
       datas: [110, 52650000, 338, 452, 566, 665],
-      chartType: "Line",
+      chartType: "AreaSpline",
       seriesColor: "#6fcd98",
       colorInputIsSupported: null,
       animationDuration: 1000,
       updateArgs: [true, true, { duration: 1000 }],
       chartOptions: {
         chart: {
-          type: "line",
+          type: "areaspline",
         },
         title: {
           text: "Doanh Thu 6 Tháng Gần Đây",

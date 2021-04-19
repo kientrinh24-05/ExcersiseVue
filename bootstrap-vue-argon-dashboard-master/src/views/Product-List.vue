@@ -42,10 +42,13 @@
                 md="6"
                 v-for="table in tables"
                 :key="table.id"
-                :class="{'selected': current === table.id}"
+                :class="{ selected: current === table.id }"
               >
                 <!--    {'btn-danger': lights, 'btn-success': !lights} -->
-                <b-button :class="getTableColor(table.status)" class="btn-icon-clipboard">
+                <b-button
+                  :class="getTableColor(table.status)"
+                  class="btn-icon-clipboard table_btn"
+                >
                   {{ table.name }}
                 </b-button>
               </b-col>
@@ -58,87 +61,7 @@
           <card header-classes="bg-transparent">
             <b-card body>
               <b-row>
-                <b-col lg="6" md="12">
-                  <b-tabs pills card>
-                    <b-tab title="Tất Cả">
-                      <b-card-text>
-                        <b-row>
-                          <b-col
-                            lg="4"
-                            md="4"
-                            sm="4"
-                            mb="6"
-                            class="product-content"
-                            v-for="product in products"
-                            :key="product.id"
-                          >
-                            <img
-                              class="img_food"
-                              :src="'http://127.0.0.1:8000' + product.food_image"
-                            />
-                            <strong>{{ product.food_price }}.VND</strong>
-                            <p>{{ product.food_name }}</p>
-
-                            <button
-                              :disabled="product.cart"
-                              @click="addProduct(product)"
-                              href="#"
-                              class="btn btn-block"
-                              :class="{
-                                'btn-primary': !product.cart,
-                                'btn-success': product.cart,
-                              }"
-                            >
-                              {{ !product.cart ? "Add" : "Added" }}
-                            </button>
-                          </b-col>
-                        </b-row></b-card-text
-                      >
-                    </b-tab>
-                    <b-tab
-                      style="margin: 0.5rem 0"
-                      v-for="category in categorys"
-                      :key="category.id"
-                      :title="category.category_name"
-                      @click="showNameCategory(category.category_name)"
-                    >
-                      <b-card-text>
-                        <b-row>
-                          <b-col
-                            lg="4"
-                            md="4"
-                            mb="6"
-                            class="product-content"
-                            v-for="food in foods"
-                            :key="food.id"
-                          >
-                            <img
-                              class="img_food"
-                              :src="'http://127.0.0.1:8000' + food.food_image"
-                            />
-                            <strong>{{ food.food_price }}.VND</strong>
-
-                            <p>{{ food.food_name }}</p>
-
-                            <button
-                              :disabled="food.cart"
-                              @click="addProduct(food)"
-                              href="#"
-                              class="btn btn-block"
-                              :class="{
-                                'btn-primary': !food.cart,
-                                'btn-success': food.cart,
-                              }"
-                            >
-                              {{ !food.cart ? "Add" : "Added" }}
-                            </button>
-                          </b-col>
-                        </b-row>
-                      </b-card-text>
-                    </b-tab>
-                  </b-tabs>
-                </b-col>
-                <b-col lg="6" md="12">
+                <b-col lg="10" md="12">
                   <div class="content_view">
                     <h2>Order Món Ăn</h2>
                     <!-- <div>
@@ -237,7 +160,9 @@
                             </tr>
                           </tbody>
                         </table>
-                        <p>Tổng thành tiền : {{ print.total_price }}</p>
+                        <p>
+                          Tổng thành tiền : {{ formatPrice(print.total_price) + "VNĐ" }}
+                        </p>
 
                         <b-button @click="LocalBill()"> In Bill </b-button>
                       </b-modal>
@@ -252,10 +177,100 @@
                         label="Tổng tiền"
                         label-for="input-1"
                       >
-                        <label class="label-cout">{{ calcSum + "  VNĐ" }}</label>
+                        <label class="label-cout">{{
+                          formatPrice(calcSum) + "VNĐ"
+                        }}</label>
                       </b-form-group>
                     </div>
                   </div>
+                </b-col>
+                <b-col lg="12" md="12">
+                  <b-tabs pills card>
+                    <b-tab title="Tất Cả">
+                      <b-card-text>
+                        <b-row>
+                          <b-col
+                            lg="4"
+                            md="4"
+                            sm="4"
+                            mb="6"
+                            class="product-content"
+                            v-for="product in products"
+                            :key="product.id"
+                          >
+                            <img
+                              class="img_food"
+                              :src="'http://127.0.0.1:8000' + product.food_image"
+                            />
+                            <div class="rows_content">
+                              <div>
+                                <b>{{ product.food_price }}.VND</b>
+                                <p>{{ product.food_name }}</p>
+                              </div>
+                              <div></div>
+                              <button
+                                :disabled="product.cart"
+                                @click="addProduct(product)"
+                                href="#"
+                                class="add_btn"
+                                :class="{
+                                  'btn-primary': !product.cart,
+                                  'btn-success': product.cart,
+                                }"
+                              >
+                                {{ !product.cart ? "+" : "Added" }}
+                              </button>
+                            </div>
+                          </b-col>
+                        </b-row></b-card-text
+                      >
+                    </b-tab>
+                    <b-tab
+                      style="margin: 0.5rem 0"
+                      v-for="category in categorys"
+                      :key="category.id"
+                      :title="category.category_name"
+                      @click="showNameCategory(category.category_name)"
+                    >
+                      <b-card-text>
+                        <b-row>
+                          <b-col
+                            lg="4"
+                            md="4"
+                            mb="6"
+                            class="product-content"
+                            v-for="food in foods"
+                            :key="food.id"
+                          >
+                            <img
+                              class="img_food"
+                              :src="'http://127.0.0.1:8000' + food.food_image"
+                            />
+                            <div class="rows_content">
+                              <div>
+                                <b>{{ food.food_price }}.VND</b>
+                                <p>{{ food.food_name }}</p>
+                              </div>
+                              <div>
+                                <button
+                                  :disabled="food.cart"
+                                  @click="addProduct(food)"
+                                  href="#"
+                                  class="add_btn"
+                                  :class="{
+                                    'btn-primary': !food.cart,
+                                    'btn-success': food.cart,
+                                  }"
+                                >
+                                  {{ !food.cart ? "+" : "Added" }}
+                                </button>
+                              </div>
+                            </div>
+                          </b-col>
+                        </b-row>
+                      </b-card-text>
+                    </b-tab>
+                  </b-tabs>
                 </b-col>
               </b-row>
             </b-card>
@@ -273,6 +288,7 @@ import projects from "./Tables/projects";
 import users from "./Tables/users";
 import LightTable from "./Tables/RegularTables/LightTable";
 import axios from "axios";
+import moment from "moment";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -284,6 +300,7 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
   },
+
   data() {
     return {
       current: null,
@@ -346,7 +363,8 @@ export default {
     this.getAllCategory();
     this.getAllProducts();
 
-    this.ShowTableActive("Trống");
+    (this.print.time_created = moment(print.time_created).format("DD/MM/YYYY hh:mm:ss")),
+      this.ShowTableActive("Trống");
   },
   mounted() {
     // console.log(this.products, "products");
@@ -370,13 +388,12 @@ export default {
     },
   },
   methods: {
-    // ...mapActions(["setfoodItems", "setfoodItemsById"]),
-    // setfoodItemsAll() {
-    //   this.setfoodItems(this.foods);
-    // },
-    // setProduct(id) {
-    //   this.setfoodItemsById(this.foodItems, id);
-    // },
+    //Format Price
+    formatPrice(value) {
+      let val = (value / 1).toFixed(0).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
+    // Xuat bill
     LocalBill() {
       const path = `http://127.0.0.1:8000/order/pay_bill/` + this.idTables;
       axios
@@ -389,7 +406,7 @@ export default {
           // this.$toaster.error("Thất bại");
         });
     },
-
+    // Print Bill
     printBill() {
       // let id = localStorage.getItem("idtalbe");
 
@@ -521,7 +538,7 @@ export default {
     // GET ORDER TABLE ORDER IN ID TABLE
     getOrderFood(idTable) {
       this.idTables = idTable;
-       this.current = idTable;
+      this.current = idTable;
       // this.foods.cart = true;
       // this.products.cart = true;
       localStorage.setItem("idtalbe", idTable),
@@ -620,14 +637,28 @@ export default {
 };
 </script>
 <style>
-.selected{
-transform: translateY(-20px);
-transition: 1s all;
+.table_btn {
 }
-  
-button:not(:disabled) {
-  margin-left: 5px;
+.add_btn {
+  background-color: #2dce89;
+  width: 40px;
+  height: 40px;
+  margin-right: 34px;
+  border-radius: 50%;
+  border: none;
 }
+.rows_content {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.selected {
+  border: 2px solid red;
+  margin: 0;
+  padding: 0;
+}
+
 .no-change {
   background-color: #ecf0f1;
 }
@@ -709,19 +740,6 @@ button:not(:disabled) {
   height: 5rem;
   text-align: center;
   font-weight: bold;
-}
-
-.no-change {
-  background-color: white;
-}
-.sucses {
-  background: red;
-}
-.no-sucses {
-  background: green;
-}
-.change {
-  background: yellow;
 }
 
 .items-click-add {

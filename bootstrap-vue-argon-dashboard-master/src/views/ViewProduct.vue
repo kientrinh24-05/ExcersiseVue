@@ -81,7 +81,9 @@
 
                           <div class="btn_click">
                             <b-button type="submit" variant="primary">Thêm Món</b-button>
-                            <b-button  @click="CloseModal()" variant="danger">Hủy Bỏ</b-button>
+                            <b-button @click="CloseModal()" variant="danger"
+                              >Hủy Bỏ</b-button
+                            >
                           </div>
                         </b-form>
                       </b-col>
@@ -144,10 +146,17 @@
                                 </b-button>
                               </template>
                             </b-table>
-                             <div class="btn_click">
-                            <b-button @click="CloseModal()" variant="primary">Xác Nhận</b-button>
-                            <b-button type="reset" @click="CloseModal()" variant="danger">Hủy Bỏ</b-button>
-                          </div>
+                            <div class="btn_click">
+                              <b-button @click="CloseModal()" variant="primary"
+                                >Xác Nhận</b-button
+                              >
+                              <b-button
+                                type="reset"
+                                @click="CloseModal()"
+                                variant="danger"
+                                >Hủy Bỏ</b-button
+                              >
+                            </div>
                           </div>
                         </div>
                       </b-col>
@@ -161,8 +170,15 @@
             <div>
               <b-card no-body>
                 <div>
-                  <b-table class="table-sc" striped hover :items="items" :fields="fields"  :per-page="perPage"
-                    :current-page="currentPage">
+                  <b-table
+                    class="table-sc"
+                    hover
+                    id="my-table"
+                    :items="items"
+                    :per-page="perPage"
+                    :current-page="currentPage"
+                    :fields="fields"
+                  >
                     <template #cell(actions)="row">
                       <i
                         @click="watchMeterial(row.item.mã_món_ăn)"
@@ -176,7 +192,6 @@
                       ></i>
                     </template>
                   </b-table>
-                 
 
                   <!-- Modal  -->
                   <b-modal
@@ -339,14 +354,14 @@
                   </b-modal>
                 </div>
 
-                <b-card-footer class="py-4 d-flex justify-content-end">
-                  <base-pagination
+                <b-card-footer class="py-4 d-flex justify-content-start">
+                  <b-pagination
                     v-model="currentPage"
-                      :total-rows="rows"
-                      :per-page="perPage"
-                      first-number
-                      last-number
-                  ></base-pagination>
+                    :total-rows="rows"
+                    :per-page="perPage"
+                    first-number
+                    last-number
+                  ></b-pagination>
                 </b-card-footer>
               </b-card>
               <!-- End -->
@@ -384,9 +399,9 @@ export default {
       isFood: null,
       show1: false,
       projects,
-       perPage:5,
+      perPage: 10,
       currentPage: 1,
-      
+
       infoModal: {
         id: "info-modal",
         title: "",
@@ -458,7 +473,7 @@ export default {
         food_name: "",
         category: [],
         food_price: "",
-        food_image: [],
+        food_image: null,
       },
       formmeterial: {},
       show: true,
@@ -481,8 +496,9 @@ export default {
     // console.log(this.nguyenlieu, 'nguyenlieu');
   },
   computed: {
-    // mix this into the outer object with the object spread operator
-    // ...mapState(['nguyenlieu'])
+    rows() {
+      return this.items.length;
+    },
   },
   methods: {
     searchItem(payload) {
@@ -595,7 +611,7 @@ export default {
       };
 
       this.AddMeterialFood(payload);
-    
+
       this.$toaster.success("Thêm nguyên liệu món thành công");
     },
     // ADD DETAIL FOOD
@@ -650,6 +666,7 @@ export default {
           console.log(error);
         });
     },
+
     onSubmitMeterial(event) {
       event.preventDefault();
       const payload = {
@@ -657,7 +674,7 @@ export default {
         supplier_address: this.form.supplier_address,
         supplier_phone: this.form.supplier_phone,
       };
-  
+
       this.AddMeterial(payload);
       this.$toaster.success("Thêm món ăn thành công");
     },
@@ -676,6 +693,7 @@ export default {
           });
         });
     },
+    // Get Meterial
     getMeterial() {
       axios
         .get(`http://127.0.0.1:8000/material/list_material/`)
@@ -722,13 +740,11 @@ export default {
         .then((res) => {
           if (res.data.status_code == 400) {
             this.$toaster.error(res.data.message);
-          }else{
-             this.Getproduct();
-               this.$toaster.success("Thêm món ăn thành công");
-                 this.show1 = true;
-           
+          } else {
+            this.Getproduct();
+            this.$toaster.success("Thêm món ăn thành công");
+            this.show1 = true;
           }
-         
         })
         .catch((error) => {
           this.Getproduct();
@@ -747,9 +763,7 @@ export default {
       const payload = formData;
 
       this.addProduct(payload);
-      
 
-    
       setTimeout(() => {
         this.onReset();
       }, 30000);
@@ -792,8 +806,10 @@ export default {
       formData.append("food_name", this.editform.food_name);
       formData.append("category", this.editform.category);
       formData.append("food_price", this.editform.food_price);
-      if (this.editform.food_image != []) {
+
+      if (this.editform.food_image != null) {
         formData.append("food_image", this.editform.food_image);
+      } else {
       }
 
       axios
@@ -808,10 +824,10 @@ export default {
           this.$toaster.error("Sửa món ăn thành công");
         });
     },
-    CloseModal(){
-             this.$refs["modal-add"].hide();
+    CloseModal() {
+      this.$refs["modal-add"].hide();
     },
-    
+
     // UpLoadIMG
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`;

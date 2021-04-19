@@ -25,11 +25,15 @@ export default {
 </script>
 
 <style>
+input[type="text"]:focus {
+  border: none;
+  outline: none;
+}
 .modal-footer {
   display: none;
 }
 .img_food {
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
 }
 </style>

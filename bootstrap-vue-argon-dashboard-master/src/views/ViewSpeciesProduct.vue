@@ -17,7 +17,6 @@
                     type="text"
                     placeholder="Tìm kiếm..."
                     autofocus
-
                     required
                   />
                   <button class="fa fa-search" type="submit"></button>
@@ -53,7 +52,15 @@
             <div>
               <b-card no-body>
                 <div>
-                  <b-table class="table-sc" striped hover :items="items" :fields="fields">
+                  <b-table
+                    class="table-sc"
+                    hover
+                    id="my-table"
+                    :items="items"
+                    :per-page="perPage"
+                    :current-page="currentPage"
+                    :fields="fields"
+                  >
                     <template #cell(actions)="row">
                       <i
                         v-b-modal.myModal
@@ -95,12 +102,14 @@
                   </b-modal>
                 </div>
 
-                <b-card-footer class="py-4 d-flex justify-content-end">
-                  <base-pagination
+                <b-card-footer class="py-4 d-flex justify-content-start">
+                  <b-pagination
                     v-model="currentPage"
-                    :per-page="10"
-                    :total="40"
-                  ></base-pagination>
+                    :total-rows="rows"
+                    :per-page="perPage"
+                    first-number
+                    last-number
+                  ></b-pagination>
                 </b-card-footer>
               </b-card>
               <!-- End -->
@@ -132,6 +141,7 @@ export default {
       isEdit: null,
       projects,
       users,
+      perPage: 6,
       currentPage: 1,
       titlesearch: "",
       infoModal: {
@@ -158,8 +168,8 @@ export default {
       formedit: {
         category_name: "",
       },
-      searchit_form:{
-        category_name:""
+      searchit_form: {
+        category_name: "",
       },
       show: true,
     };
@@ -176,6 +186,9 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
+    rows() {
+      return this.items.length;
+    },
   },
   mounted() {
     // Set the initial number of items
@@ -188,7 +201,7 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.items = res.data.data.map((category) => {
-           return {
+            return {
               Mã_thể_loại: category.id,
               tên_thể_loại: category.category_name,
             };
@@ -200,7 +213,7 @@ export default {
           console.log(error);
         });
     },
-   
+
     onSeach() {
       const payload = {
         category_name: this.searchit_form.category_name,
@@ -291,10 +304,8 @@ export default {
     },
 
     onReset() {
-    
       // Reset our form values
       this.form.category_name = "";
-     
     },
   },
 };

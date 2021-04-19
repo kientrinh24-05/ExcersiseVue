@@ -142,8 +142,8 @@ export default {
 </script>
 <style>
 .img_food {
-  height: 120px;
-  width: 120px;
+  height: 200px;
+  width: 200px;
 }
 
 .el-table.table-dark {
